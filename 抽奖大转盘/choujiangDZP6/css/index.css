@@ -1,0 +1,319 @@
+html {
+	font-family: "Helvetica Neue", Helvetica, Hiragino Sans GB, "Microsoft Yahei", STHeiTi, Arial, sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-tap-highlight-color: transparent;
+	-webkit-font-smoothing: antialiased;
+	height: 100%;
+}
+
+body {
+	margin: 0 auto;
+	font-size: 12px;
+	color: #333;
+	line-height: 1;
+	width: 100%;
+	max-width: 640px;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+	-webkit-touch-callout: none;
+	overflow: hidden;
+
+}
+
+.bg {
+	height: 100%;
+	background: url(../img/bg@3x.png) no-repeat;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	background-size:cover;
+}
+
+.pedestal {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: -37%;
+	width: 3.3rem;
+	height: 1.42rem;
+	background: url(../img/base_bg@3x.png) no-repeat center;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	z-index: -1;
+}
+
+.child {
+	position: absolute;
+	left: 13%;
+	bottom: -22%;
+	width: 0.8rem;
+	height: 1.185rem;
+	background: url(../img/tongtonmg_bg@3x.png) no-repeat center;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+}
+
+.surplus {
+	margin: .2rem 0;
+	text-align: center;
+	color: #6361FF;
+	font-size: .16rem;
+}
+
+.marquee {
+	font-size: 0;
+	width: 100%;
+}
+
+.viewpager {
+	display: inline-block;
+	padding: .1rem;
+	color: #fff;
+	font-size: .15rem;
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.btn-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: .2rem;
+	margin-top: 1.4rem;
+}
+
+.btn-wrap .btn {
+	text-decoration: none;
+	padding: .14rem;
+	text-align: center;
+	width: 1.8rem;
+	border-radius: 1rem;
+	color: #fff;
+	font-size: .14rem;
+	font-weight: bold;
+	background: #8281FE;
+	box-shadow: 2px 3px 4px #5150D1;
+}
+
+.btn-wrap .prize {
+	background: #FAC52C;
+	box-shadow: 2px 3px 4px #CC5F74;
+	margin-left: .2rem;
+}
+
+.core {
+	position: relative;
+}
+
+.circle-box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	overflow: hidden;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	background: red;
+}
+
+#circle {
+	border-radius: 50%;
+	position: relative;
+	width: 3.3rem;
+	height: 3.3rem;
+	margin: 0 auto;
+	background-image: url(../img/bigcircle_bg@3x.png);
+	background-repeat: no-repeat;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%
+}
+
+#circle .prize {
+	position: absolute;
+	top: -.02rem;
+	left: .42rem;
+	/* top: -2px;
+    left: 42px; */
+	height: 1.49rem;
+	width: 1.08rem;
+	/* height: 149px;
+	width: 108px; */
+	-webkit-transform-origin: right bottom;
+	-moz-transform-origin: right bottom;
+	-ms-transform-origin: right bottom;
+	transform-origin: right bottom
+}
+
+#circle .prize:nth-child(1) {
+	-webkit-transform: rotate(60deg)skew(-15deg, 45deg);
+	-moz-transform: rotate(60deg)skew(-15deg, 45deg);
+	-ms-transform: rotate(60deg)skew(-15deg, 45deg);
+	transform: rotate(60deg) skewY(-15deg, 45deg)
+}
+
+#circle .prize:nth-child(2) {
+	-webkit-transform: rotate(120deg)skew(-15deg, 45deg);
+	-moz-transform: rotate(120deg)skew(-15deg, 45deg);
+	-ms-transform: rotate(120deg)skew(-15deg, 45deg);
+	transform: rotate(120deg) skew(-15deg, 45deg)
+}
+
+#circle .prize:nth-child(3) {
+	-webkit-transform: rotate(180deg)skew(-15deg, 45deg);
+	-moz-transform: rotate(180deg)skew(-15deg, 45deg);
+	-ms-transform: rotate(180deg)skew(-15deg, 45deg);
+	transform: rotate(180deg) skew(-15deg, 45deg)
+}
+
+#circle .prize:nth-child(4) {
+	-webkit-transform: rotate(240deg)skew(-15deg, 45deg);
+	-moz-transform: rotate(240deg)skew(-15deg, 45deg);
+	-ms-transform: rotate(240deg)skew(-15deg, 45deg);
+	transform: rotate(240deg) skew(-15deg, 45deg)
+}
+
+#circle .prize:nth-child(5) {
+	-webkit-transform: rotate(300deg)skew(-15deg, 45deg);
+	-moz-transform: rotate(300deg)skew(-15deg, 45deg);
+	-ms-transform: rotate(300deg)skew(-15deg, 45deg);
+	transform: rotate(300deg) skew(-15deg, 45deg)
+}
+
+#circle .prize:nth-child(6) {
+	-webkit-transform: rotate(360deg)skew(-15deg, 45deg);
+	-moz-transform: rotate(360deg)skew(-15deg, 45deg);
+	-ms-transform: rotate(360deg)skew(-15deg, 45deg);
+	transform: rotate(360deg) skew(-15deg, 45deg)
+}
+
+#circle .prize:nth-child(odd) {
+	background: #fff;
+}
+
+#circle .prize:nth-child(even) {
+	background: #F4F4FF;
+}
+
+#circle .prize .prize-dialog {
+	position: absolute;
+	top: .8rem;
+	left: .35rem;
+    -webkit-transform: skewY(-44deg) rotate(-24deg);
+	-moz-transform: skewY(-44deg) rotate(-24deg);
+	-ms-transform: skewY(-44deg) rotate(-24deg);
+	transform: skewY(-44deg) rotate(-24deg);
+	text-align: center
+}
+
+#circle .prize .prize-dialog img {
+	width: .35rem;
+	height: .35rem;
+	margin-top: .2rem
+}
+
+#circle .prize .prize-dialog span {
+	font-size: .1rem;
+	color: #FF7172;
+	font-weight: 700;
+	display: block;
+	/* min-width:78px ; */
+	min-width:.78rem ;
+}
+
+#circle .prize .prize-dialog .number {
+	font-size: .1rem;
+	color: #8A89FE;
+	margin-top: .14rem;
+}
+
+
+#start {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 1.07rem;
+	height:1.16rem;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-image: url(../img/circle_bg@3x.png);
+	background-repeat: no-repeat;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	color: #fff;
+	text-align: center;
+}
+
+#start span {
+	display: block;
+	font-size: .16rem;
+	font-weight: bold;
+	margin: .46rem 0 .06rem 0;
+}
+
+#start div {
+	font-size: .1rem;
+	color: #f0f0f0;
+}
+
+/* 抽奖排行 */
+.raking-wrap {
+	display: flex;
+	flex-direction: column;
+	margin: 0 .1rem;
+	font-size: .1rem;
+}
+
+.raking-wrap .item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: .1rem;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.raking-wrap .item .left {
+	flex: 1;
+
+}
+
+.raking-wrap .item .left .raking {
+	font-weight: bold;
+	margin-bottom: .1rem;
+}
+
+.raking-wrap .item .left .time {
+	font-size: 0.08rem;
+	color: #666;
+}
+
+.raking-wrap .item .right {
+	width: .6rem;
+	text-align: center;
+}
+
+.raking-wrap .item .right .count {
+	color: #FE8CAD;
+}
+
+.raking-wrap .item .right .failure {
+	color: #000;
+}
+
+.raking-wrap .item .right .get {
+	color: #fff;
+	background: #FF7172;
+	padding: .1rem;
+	border-radius: 1rem;
+
+}
+
+.announced {
+	background: #FFFFCC;
+	text-align: center;
+	padding: .1rem 0;
+	color: #4CB749;
+	font-size: .1rem;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta content="telephone=no" name="format-detection">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
+		<title>详细信息</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script type="text/javascript">
+			(function() {
+				function w() {
+					var r = document.documentElement;
+					var a = r.getBoundingClientRect().width;
+					if(a > 750) {
+						a = 750;
+					}
+					rem = 100 * (a / 375);
+					r.style.fontSize = rem + "px"
+				}
+				var t;
+				w();
+				window.addEventListener("resize", function() {
+					clearTimeout(t);
+					t = setTimeout(w, 300)
+				}, false);
+			})();
+		</script>
+	</head>
+
+	<body>
+		<!--个人信息-->
+		<article class="personage-info">
+			<img class="head" src="img/gsjj.png" />
+			<div class="info">
+				<div class="name">乔彬</div>
+				<div class="account">账号：18768871893</div>
+			</div>
+		</article>
+		<!--设置备注和标签-->
+		<a href="" class="row">
+			<div class="hook">设置备注和标签</div>
+			<i class="icon-right"></i>
+		</a>
+		<div class="card-wrap">
+			<div class="row">
+				<div class="lable">地区</div>
+				<div class="address">河南 郑州</div>
+			</div>
+			<a href="" class="row">
+				<div class="lable">个人相册</div>
+				<div class="album">
+					<img class="item" src="img/gsjj.png" />
+					<img class="item" src="img/gsjj.png" />
+				</div>
+				<i class="icon-right"></i>
+			</a>
+		</div>
+		<a href="" class="row">
+			<div class="lable">更多</div>
+			<i class="icon-right"></i>
+		</a>
+
+	</body>
+
+</html>

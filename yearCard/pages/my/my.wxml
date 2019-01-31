@@ -1,0 +1,15 @@
+<view class="top-wrap">
+  <button wx:if="{{!avatarUrl}}" class='userinfo' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
+    <image class="userAvatarUrl" src="/image/avatar.png" />
+  </button>
+  <view wx:if="{{avatarUrl}}" class='userinfo'>
+    <image class="userAvatarUrl" src="{{avatarUrl}}" />
+    <view class="userNickName">{{nickName}}</view>
+  </view>
+</view>
+<view class='hd'>我的贺卡</view>
+<view wx:if="{{coverList.length}}" class="card-list clearfix body-bg">
+  <view bindtap='toMyCardItem' wx:for="{{coverList}}" wx:key="unique" class='item' data-index="{{index}}">
+    <image src="{{item.v_coverimage_path}}" mode='aspectFill' class='cover' />
+  </view>
+</view>

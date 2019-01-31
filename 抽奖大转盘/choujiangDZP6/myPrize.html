@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta content="telephone=no" name="format-detection">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
+		<title>我的奖品</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script type="text/javascript">
+			(function() {
+				function w() {
+					var r = document.documentElement;
+					var a = r.getBoundingClientRect().width;
+					if (a > 750) {
+						a = 750;
+					}
+					rem = 100 * (a / 375);
+					r.style.fontSize = rem + "px"
+				}
+				var t;
+				w();
+				window.addEventListener("resize", function() {
+					clearTimeout(t);
+					t = setTimeout(w, 300)
+				}, false);
+			})();
+		</script>
+	</head>
+	<body>
+		<div class="announced">实物奖品默认按收货地址信息发货</div>
+		<div class="raking-wrap">
+			<div class="item">
+				<div class="left">
+					<div class="raking">抽中【小红花10朵】</div>
+					<div class="time">2018.11.05-2018.11.12</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="left">
+					<div class="raking">抽中【贝豆10个】</div>
+					<div class="time">2018.11.05-2018.11.12</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

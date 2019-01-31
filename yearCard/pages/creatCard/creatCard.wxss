@@ -1,0 +1,149 @@
+@import "/pages/cardItem/cardItem.wxss";
+
+.shadow {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.edit, .weixin, .pengyouquan, .flower {
+  padding-left: 0;
+}
+
+.edit image, .weixin image, .pengyouquan image, .flower image {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.list-item image {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.icon-guanbia {
+  width: 100rpx;
+  height: 100rpx;
+  position: fixed;
+  left: 50%;
+  bottom: 60rpx;
+  transform: translateX(-50%);
+}
+
+.classify-wrap .list .item {
+  width: 50%;
+}
+
+/* 送花 */
+
+.send-flower {
+  width: 500rpx;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10rpx;
+  padding: 30rpx;
+  z-index: 999;
+}
+
+.send-flower .item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.send-flower .title2 {
+  font-weight: bold;
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
+}
+
+.send-flower .item .lable {
+  margin-right: 10rpx;
+  width: 120rpx;
+  text-align: right;
+}
+
+.send-flower .item i {
+  color: red;
+}
+
+.send-flower .item input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  padding: 10rpx;
+  font-size: 30rpx;
+}
+
+.btn-ok {
+  padding: 10rpx 30rpx;
+  background: #4ab848;
+  color: #fff;
+  border-radius: 8rpx;
+  margin-top: 10rpx;
+  text-align: center;
+}
+
+.textarea {
+  flex: 1;
+  height: 120rpx;
+  border: 1px solid #ddd;
+  border-radius: 8rpx;
+  padding: 10rpx;
+  font-size: 30rpx;
+}
+
+/* pinglun */
+
+.userinfo-fix {
+  z-index: 12;
+  padding: 10rpx;
+  color: #fff;
+  font-size: 30rpx;
+  position: fixed;
+  bottom: 168rpx;
+  left: 50rpx;
+  top: none;
+  max-height: 400rpx;
+  overflow: scroll;
+}
+
+.userinfo-fix .item {
+  padding: 10rpx;
+  border-radius: 20rpx;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  min-width: 350rpx;
+  max-width: 450rpx;
+}
+
+.userinfo-fix .userAvatarUrl {
+  height: 70rpx;
+  width: 70rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+  margin-right: 10rpx;
+}
+
+.nametx {
+  padding: 0 6rpx;
+}
+
+.message-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.userNickName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pageword2{
+  top:700rpx;
+  z-index: 5000;
+}

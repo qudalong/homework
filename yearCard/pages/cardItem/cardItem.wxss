@@ -1,0 +1,686 @@
+.card-cover{
+  width: 100%;
+  height: 100%;
+}
+.bgImg {
+  /* position: absolute;
+  left: 0;
+  top: 0; */
+  height: 100%;
+  width: 100%;
+}
+
+#leaves {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.garden-info {
+  text-align: justify;
+  line-height: 1.5;
+  padding: 30rpx;
+  font-size: 30rpx;
+  background-color: #EFDCB2;
+  border-radius: 8rpx;
+}
+.intro-content{
+  padding: 30rpx;
+}
+.intro-bg{
+  width: 100%;
+  height: 130rpx;
+}
+.intro-bg image{
+  width: 100%;
+  height: 100%;
+}
+.intro-bg-top{
+  margin-bottom: -100rpx;
+}
+.intro-bg-bottom{
+  margin-top: -100rpx;
+}
+
+#leaves  .item {
+  position: absolute;
+  animation-iteration-count: infinite, infinite;
+  animation-timing-function: linear, ease-in;
+  z-index: 1;
+}
+
+@keyframes drop {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(0, 1300rpx);
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.8;
+  }
+}
+
+#leaves .item  image {
+  position: absolute;
+  width: 160rpx;
+  height:160rpx;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+  transform-origin: 50% -100%;
+}
+
+@keyframes clockwiseSpin {
+  0% {
+    transform: rotate(-50deg);
+  }
+
+  100% {
+    transform: rotate(50deg);
+  }
+}
+
+@keyframes counterclockwiseSpinAndFlip {
+  0% {
+    transform:  rotate(50deg);
+  }
+
+  100% {
+    transform: rotate(-50deg);
+  }
+}
+
+.userinfo {
+  position: fixed;
+  top: 10rpx;
+  left: 10rpx;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 45rpx;
+  padding: 10rpx;
+  color: #fff;
+  font-size: 30rpx;
+}
+
+.userinfo .userAvatarUrl {
+  height: 70rpx;
+  width: 70rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+  margin-right: 10rpx;
+}
+
+.change-type {
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 900;
+}
+.scroll-y{
+  max-height: 500rpx;
+  overflow: scroll;
+}
+.create-card {
+  font-size: 26rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  line-height: 34rpx !important;
+}
+
+.create-card {
+  font-size: 26rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  line-height: 34rpx !important;
+}
+
+.read-wish {
+  position: fixed;
+  left: 50rpx;
+  bottom: 70rpx;
+  width: 60%;
+  border-radius: 40rpx;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 14rpx 30rpx;
+  color: #fff;
+  font-size: 28rpx;
+  z-index: 200;
+}
+
+.operation .flower {
+  margin-bottom: 0 !important;
+}
+
+.flower {
+  font-size: 26rpx;
+}
+
+.change-type .item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-top: 1px solid #f0f0f0;
+}
+.change-title{
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 20rpx 30rpx 20rpx 0;
+}
+.change-title .color{
+  margin-right: 5rpx;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 20rpx 30rpx;
+}
+.btn-closed{
+  color:#4AB848;
+  font-size: 30rpx;
+}
+
+.change-type .item view {
+  flex: 1;
+  font-size: 30rpx;
+}
+
+.icon-ai03 {
+  font-size: 60rpx;
+  margin-right: 10rpx;
+  color: #fc5053;
+}
+
+.icon-baocun {
+  font-size: 50rpx;
+  color: #fff;
+}
+
+.change-type .active, .change-type .active .icon-baocun {
+  color: #fc5053;
+}
+
+.operation {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  position: fixed;
+  right: 40rpx;
+  bottom: 40rpx;
+  text-align: center;
+  color: #fff;
+  z-index: 1000;
+}
+
+.operation .item {
+  height: 100rpx;
+  width: 100rpx;
+  line-height: 100rpx;
+  border-radius: 50%;
+  margin-bottom: 30rpx;
+  position: relative;
+  text-align: center;
+}
+
+.operation .edit {
+  line-height: 68rpx;
+}
+
+.operation .iconfont {
+  font-size: 50rpx;
+  color: #fff;
+}
+
+.operation .icon-bianji::after {
+  position: absolute;
+  left: 50%;
+  bottom: -1rpx;
+  content: '编辑';
+  font-size: 24rpx;
+  transform: translateX(-50%);
+}
+
+.classify-wrap {
+  color: #fff;
+  text-align: center;
+}
+
+.classify-wrap .list {
+  width: 77%;
+  position: fixed;
+  bottom: 180rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.classify-wrap .list .iconfont {
+  padding: 30rpx 34rpx;
+  font-size: 50rpx;
+  border-radius: 50%;
+  margin-bottom: 10rpx;
+}
+
+.classify-wrap .list .icon-baocun {
+  color: #fff;
+}
+
+.classify-wrap .list .item {
+  width:33.3%;
+  padding-bottom: 50rpx;
+  font-size: 30rpx;
+}
+
+.icon-tupian {
+  background: #3598cb;
+}
+
+.icon-yinle {
+  background: #49b462;
+}
+
+.icon-wenzi {
+  background: #faa909;
+}
+
+.icon-htmal5icon11 {
+  background: #18c09b;
+}
+
+.icon-ai03 {
+  background: #17d5d3;
+  color: #fff;
+}
+
+.change-type .icon-ai03 {
+  background: #fc5053;
+  border-radius: 6rpx;
+}
+
+.icon-xingxing1 {
+  background: #a559cd;
+}
+
+.list .icon-baocun {
+  display: inline-block;
+  background: #fb6666;
+}
+
+/* 文字 */
+
+.pageword {
+  position: absolute;
+  overflow: hidden;
+  z-index: 2;
+  left: 60rpx;
+  top: 160rpx;
+  width: 600rpx;
+  overflow-x: hidden;
+  max-height: 300rpx;
+  color: #fff;
+}
+
+.scrollarea {
+  animation-name: autoscroll;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  text-align: justify;
+  font-size: 30rpx;
+  line-height: 1.8;
+}
+
+@keyframes autoscroll {
+  0% {
+    -webkit-transform: translateY(0);
+  }
+
+  100% {
+    -webkit-transform: translateY(-100%);
+  }
+}
+
+/* 广告 */
+.ad-wrap{
+  width: 100%;
+  height: 300rpx;
+  overflow: hidden;
+  padding-top: 10rpx;
+}
+.ad-wrap .tyy_banner{
+  width: 100%;
+  height: 100%;
+}
+
+.banner-wrap {
+  font-size: 30rpx;
+  line-height: 2;
+  padding: 30rpx;
+}
+
+.banner-wrap .banner {
+  width: 100%;
+  height: 300rpx;
+}
+/* 背景音乐 */
+@-webkit-keyframes rotating {
+  0% {
+    transform: rotate(0deg)
+  }
+  to {
+    transform: rotate(1turn)
+  }
+}
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg)
+  }
+  to {
+    transform: rotate(1turn)
+  }
+}
+.music-start{
+  -webkit-animation: rotating 1.2s linear infinite;
+  animation: rotating 1.2s linear infinite;
+}
+
+.music {
+  position: fixed;
+  top: 20rpx;
+  right: 20rpx;
+  color: #fff;
+  font-size: 60rpx;
+  z-index: 2000;
+}
+.music image{
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.music .icon-zanting, .music .icon-zanting1 {
+  font-size: 60rpx;
+  border-radius: 50%;
+  padding: 10rpx;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+#myAudio {
+  position: absolute;
+  z-index: 99999;
+}
+
+/* 换文字 */
+
+.changeword-wrap {
+  padding: 20rpx 30rpx 150rpx 30rpx;
+  background: #fff;
+}
+
+.head-photo {
+  margin: 0 auto;
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  border: 2rpx solid #ccc;
+  text-align: center;
+  line-height: 150rpx;
+  display: block;
+}
+
+.color {
+  color: #ff003b;
+}
+
+.mark {
+  font-size: 26rpx;
+  margin-top: 10rpx;
+  color: #ccc;
+}
+
+.content {
+  text-align: right;
+}
+
+.changeword-wrap .title {
+  padding: 14rpx 0;
+}
+
+.content input {
+  text-align: left;
+  padding: 10rpx 15rpx;
+  font-size: 30rpx;
+  border-radius: 8rpx;
+  background-color: #f0f0f0;
+}
+
+.words {
+  padding: 20rpx;
+  background-color: #f0f0f0;
+  border-radius: 20rpx;
+}
+
+.words textarea {
+  width: 100%;
+  overflow: scroll;
+  height: 200rpx;
+  position: relative;
+  font-size: 30rpx;
+  line-height: 1.5;
+}
+
+.words textarea text {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #57be4e;
+}
+
+.park-introduction {
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  background-color: #f0f0f0;
+  border-radius: 20rpx;
+}
+
+.relative {
+  position: relative;
+}
+
+.change-word {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  display: block;
+  padding: 4rpx 10rpx;
+  color: #57be4e;
+  z-index: 1000;
+  background: #dedede;
+  border-radius: 4rpx;
+}
+
+.park-introduction textarea {
+  height: 200rpx;
+  width: 100%;
+  overflow-x: scroll;
+  font-size: 30rpx;
+  line-height: 1.5;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background-color: #fff;
+  padding: 20rpx;
+}
+
+.more, .determine {
+  margin-top: 10rpx;
+  padding: 20rpx 40rpx;
+  color: #57be4e;
+  border: 2rpx solid #57be4e;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+}
+
+.determine {
+  background-color: #57be4e;
+  color: #fff;
+  padding: 20rpx 70rpx;
+}
+
+.more-wish {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  max-height: 60%;
+  background: #fff;
+  text-align: justify;
+  line-height: 1.4;
+  overflow: scroll;
+}
+
+.more-wish .item {
+  padding: 20rpx 30rpx;
+  color: #888;
+  font-size: 30rpx;
+}
+
+.more-wish .active {
+  color: #000;
+}
+/* 海报*/
+.generate-poster{
+  width: 77%;
+  margin: 120rpx auto 0;
+}
+.poster{
+  padding: 50rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+}
+.poster image{
+  width: 100%;
+  height: 550rpx;
+  border-radius:6rpx;
+}
+.look{
+  display: flex;
+  align-items: center;
+  margin-top: 30rpx;
+}
+.look image{
+  width: 180rpx;
+  height: 180rpx;
+  margin-right: 20rpx;
+  border-radius:6rpx;
+}
+.look text{
+  font-size: 28rpx;
+  color: #999999;
+}
+.save{
+  width: 100%;
+  background-color: #FB283B;
+  margin-top: 30rpx;
+  color: #fff;
+  padding: 20rpx 0;
+  text-align: center;
+  border-radius: 10rpx;
+}
+.banner-wrap .item{
+  position: relative;
+}
+.banner-wrap .item image{
+  width: 100%;
+}
+.banner-wrap .item .delete{
+  position: absolute;
+  right: 30rpx;
+  top: 30rpx;
+  color: #fff;
+  width: 80rpx;
+  height: 80rpx;
+}
+.banner-wrap .item .delete image{
+  width: 100%;
+  height: 100%;
+}
+.shadow{
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.global-cover{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* new */
+.edit,.weixin,.pengyouquan,.flower{
+  padding-left: 0;
+}
+.edit image,.weixin image,.pengyouquan image,.flower image{
+  width: 100rpx;
+  height: 100rpx;
+}
+.list-item image{
+  width: 100rpx;
+  height: 100rpx;
+}
+.icon-guanbia{
+  width: 100rpx;
+  height: 100rpx;
+  position: fixed;
+  left: 50%;
+  bottom: 60rpx;
+  z-index: 9999;
+  transform: translateX(-50%);
+}
+.classify-wrap .list .item {
+  width: 50%;
+}
+.myCanvas{
+  height:870rpx;
+  margin: 50rpx auto;
+  border-radius: 20rpx;
+  background-color: #fff;
+  font-size: 40rpx;
+}
+.tyy_banner{
+  width: 100%;
+}

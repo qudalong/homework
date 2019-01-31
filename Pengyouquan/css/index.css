@@ -1,0 +1,378 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background: #f0f0f0;
+	font-size: .18rem;
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+a {
+	display: inline-block;
+	text-decoration: none;
+	color: #000;
+}
+.hide{
+	display: none;
+}
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.fix-auto {
+	max-width: 640px;
+	left: 50% !important;
+	-webkit-transform: translateX(-50%) !important;
+	transform: translateX(-50%) !important;
+}
+
+
+.top-nav {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	background: #fff;
+}
+
+.top-nav .item {
+	display: inline-block;
+	text-align: center;
+	padding: 0.1rem 0;
+}
+
+.top-nav .item.active {
+	color: #C40000;
+	border-bottom: 2px solid #C40000;
+}
+
+.classify-item .target {
+	padding: 0.1rem;
+}
+
+.classify-item .list {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	background: #fff;
+	padding: 0.1rem;
+	border-bottom: 1px solid #F0F0F0;
+}
+
+.classify-item .list .item {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.classify-item .list .item .head {
+	width: .5rem;
+	height: .5rem;
+	margin-right: 0.1rem;
+}
+
+.classify-item .list .icon-tel {
+	height: 0.3rem;
+	width: 0.3rem;
+	display: block;
+	background: url(../img/icon_tel.png) no-repeat center;
+	background-size: 0.3rem 0.3rem;
+}
+
+.footer-fixed {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	padding: 0.1rem 0;
+	width: 100%;
+	background: #fff;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-ms-flex-pack: distribute;
+	justify-content: space-around;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.footer-fixed .item {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-line-pack: center;
+	align-content: center;
+}
+
+.footer-fixed .item .icon-nav {
+	height: 0.3rem;
+	width: 0.3rem;
+	display: block;
+	margin-bottom: 0.1rem;
+}
+
+.footer-fixed .item .home {
+	background: url(../img/icon_home.png) no-repeat center;
+	background-size: 0.3rem 0.3rem;
+}
+
+.footer-fixed .item .activity {
+	background: url(../img/icon_hd.png) no-repeat center;
+	background-size: 0.3rem 0.3rem;
+}
+
+.footer-fixed .item .friends {
+	background: url(../img/icon_quan.png) no-repeat center;
+	background-size: 0.3rem 0.3rem;
+}
+
+.footer-fixed .item .my {
+	background: url(../img/icon_my.png) no-repeat center;
+	background-size: 0.3rem 0.3rem;
+}
+
+.footer-fixed .item.active div {
+	color: #C40000;
+}
+
+
+/*详细信息*/
+
+.personage-info {
+	background: #FFFFFF;
+	padding: 0.1rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin: 0.1rem 0;
+}
+
+.personage-info .head {
+	height: 0.7rem;
+	widows: 0.7rem;
+	border-radius: 3px;
+	margin-right: 0.1rem;
+}
+
+.personage-info .info {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+
+.personage-info .info .account {
+	color: #ccc;
+	margin-top: 0.1rem;
+}
+
+.row {
+	background: #FFFFFF;
+	padding: 0.15rem 0.1rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+
+.card-wrap {
+	margin-top: 0.1rem;
+}
+
+.card-wrap .row {
+	border-bottom: 1px solid #F0F0F0;
+}
+
+.row .hook {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	color: #888;
+}
+
+.row .lable {
+	min-width: 0.8rem;
+}
+
+.row .address {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+}
+
+.row .album {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 1.8rem;
+	overflow: hidden;
+}
+
+.row .album .item {
+	width: 0.8rem;
+	height: 0.8rem;
+	margin-right: 0.1rem;
+	display: block;
+}
+
+.icon-right {
+	display: block;
+	height: 0.12rem;
+	width: 0.12rem;
+	background: url(../img/icon_right.png) no-repeat center;
+	background-size: 0.12rem 0.12rem;
+}
+
+.fixed-bot {
+	margin-bottom: 1rem;
+}
+
+
+/*朋友圈*/
+
+.dynamic-list {
+	margin-top: 0.1rem;
+	background: #FFFFFF;
+}
+
+.dynamic-list .item {
+	border-bottom: 1px solid #f0f0f0;
+	padding: 0.2rem 0.1rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+}
+
+.dynamic-list .item .head {
+	width: .5rem;
+	height: .5rem;
+	margin-right: 0.1rem;
+}
+
+.dynamic-list .item .dynamic .name {
+	margin-bottom: 0.05rem;
+}
+
+.dynamic-list .item .dynamic .dynamic-details {
+	line-height: 1.2;
+	text-align: justify;
+	color: #666;
+}
+
+.dynamic-list .item .dynamic img {
+	max-width: 2rem;
+	margin: 0.05rem 0;
+}
+
+.dynamic-list .item .dynamic .dynamic-marking {
+	color: #666;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.dynamic-list .item .dynamic .like {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.dynamic-list .item .dynamic .icon-like {
+	display: block;
+	height: 0.23rem;
+	width: 0.23rem;
+	background: url(../img/icon_like.png) no-repeat center;
+	background-size: 0.23rem 0.23rem;
+}

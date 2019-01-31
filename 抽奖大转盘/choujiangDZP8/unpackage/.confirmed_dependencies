@@ -1,0 +1,8 @@
+{
+	"index.html": {
+		"refer": [
+			"rakingList.html",
+			"myPrize.html"
+		]
+	}
+}

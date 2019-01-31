@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta content="telephone=no" name="format-detection">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
+		<title>朋友圈</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script type="text/javascript">
+			(function() {
+				function w() {
+					var r = document.documentElement;
+					var a = r.getBoundingClientRect().width;
+					if(a > 750) {
+						a = 750;
+					}
+					rem = 20 * (a / 375);
+					r.style.fontSize = rem + "px"
+				}
+				var t;
+				w();
+				window.addEventListener("resize", function() {
+					clearTimeout(t);
+					t = setTimeout(w, 300)
+				}, false);
+			})();
+		</script>
+	</head>
+
+	<body>
+		<!--选项卡-->
+		<nav class="top-nav">
+			<div class="item">通信录</div>
+			<div class="item active">朋友圈</div>
+		</nav>
+		<article class="dynamic-list fixed-bot">
+			<div class="item">
+				<img class="head" src="img/gsjj.png"/>
+				<div class="dynamic">
+					<div class="name">王成博</div>
+					<div class="dynamic-details">
+						唐诗的题材非常广泛，从自然现象政治动态(dynamics)到社会风俗、个人感受，几乎包括生活的方方面面。
+						<img src="img/gsjj.png"/>
+					</div>
+					<div class="dynamic-marking">
+						<span class="time">33分钟前</span>
+						<div class="like">
+							<i class="icon-like"></i>
+							<text>5</text>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img class="head" src="img/gsjj.png"/>
+				<div class="dynamic">
+					<div class="name">王成博</div>
+					<div class="dynamic-details">
+						唐诗的题材非常广泛，从自然现象政治动态(dynamics)到社会风俗、个人感受，几乎包括生活的方方面面。
+						<img src="img/gsjj.png"/>
+					</div>
+					<div class="dynamic-marking">
+						<span class="time">33分钟前</span>
+						<div class="like">
+							<i class="icon-like"></i>
+							<text>5</text>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article>
+	    <!--底部固定导航-->
+		<footer class="footer-fixed fix-auto">
+			<div class="item">
+				<i class="icon-nav home"></i>
+				<div>首页</div>
+			</div>
+			<div class="item">
+				<i class="icon-nav activity"></i>
+				<div>活动会</div>
+			</div>
+			<div class="item active">
+				<i class="icon-nav friends"></i>
+				<div>朋友圈</div>
+			</div>
+			<div class="item">
+				<i class="icon-nav my"></i>
+				<div>我的</div>
+			</div>
+		</footer>
+			
+	</body>
+
+</html>

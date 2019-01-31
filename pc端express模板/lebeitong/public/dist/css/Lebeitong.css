@@ -1,0 +1,54 @@
+@charset "UTF-8";
+body {
+  font-family: Helvetica Neue, Helvetica, PingFang SC, 微软雅黑, Tahoma, Arial, sans-serif; }
+
+article, aside, blockquote, body, button, dd, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, input, legend, li, menu, nav, ol, p, pre, section, select, td, textarea, th, ul {
+  margin: 0;
+  padding: 0; }
+
+a {
+  text-decoration: none; }
+  a:hover, a:focus {
+    color: #00CC99;
+    text-decoration: none; }
+
+.tc {
+  text-align: center !important; }
+
+.tl {
+  text-align: left !important; }
+
+.tr {
+  text-align: right !important; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.clearfix:after {
+  content: "";
+  clear: both;
+  display: block;
+  visibility: hidden;
+  height: 0; }
+
+.clearfix {
+  zoom: 1; }
+
+.ellipsis {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.hide {
+  display: none; }
+
+.main-wrap {
+  height: 80px;
+  width: 50px;
+  background: red; }
+
+/*# sourceMappingURL=Lebeitong.css.map */
