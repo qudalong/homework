@@ -1,0 +1,28 @@
+page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  box-sizing: border-box;
+}
+
+.body-bg{
+  background-color: #fff;
+}
+button {
+  background-color: #fff;
+  border-radius: 0;
+}
+
+button::after {
+  border: none;
+}
+
+.clearfix {
+  overflow: hidden;
+  _zoom: 1;
+}
+
+.rich-text {
+  overflow: hidden;
+}

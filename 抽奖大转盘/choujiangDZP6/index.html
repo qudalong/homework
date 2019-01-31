@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta content="telephone=no" name="format-detection">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0,user-scalable=no">
+		<title>抽奖大转盘</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<script type="text/javascript">
+			(function() {
+				function w() {
+					var r = document.documentElement;
+					var a = r.getBoundingClientRect().width;
+					if (a > 750) {
+						a = 750;
+					}
+					//750/w = 100/font-size
+					rem = 100 * (a / 375);
+					r.style.fontSize = rem + "px"
+				}
+				var t;
+				w();
+				window.addEventListener("resize", function() {
+					clearTimeout(t);
+					t = setTimeout(w, 300)
+				}, false);
+			})();
+		</script>
+		<style type="text/css">
+			.active {
+				transform: rotate(855deg);
+				transition: all 2s;
+			}
+		</style>
+	</head>
+	<body class="bg">
+		<marquee class="marquee" direction="left" scrollamount="5">
+			<div class="viewpager">恭喜"张平*"抽中了充电宝</div>
+			<div class="viewpager">恭喜"哓丽*"抽中了全场卷</div>
+			<div class="viewpager">恭喜"王晓*"抽中了苹果X</div>
+		</marquee>
+
+		<div class="surplus">今日剩余苹果X次数：<span>3</span></div>
+		<div class="core">
+			<div id="circle">
+				<div class="circle-box">
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>充电宝</span>
+							<div class="number">1个</div>
+						</div>
+					</div>
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>全场劵</span>
+							<div class="number">8张</div>
+						</div>
+					</div>
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>手机</span>
+							<div class="number">6个</div>
+						</div>
+					</div>
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>苹果X</span>
+							<div class="number">2部</div>
+						</div>
+					</div>
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>电脑啊</span>
+							<div class="number">5台</div>
+						</div>
+					</div>
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>电脑啊</span>
+							<div class="number">5台</div>
+						</div>
+					</div>
+					<!-- <div class="prize">
+						<div class="prize-dialog">
+							<span>电脑啊</span>
+							<div class="number">5台</div>
+						</div>
+					</div>
+					<div class="prize">
+						<div class="prize-dialog">
+							<span>未中奖</span>
+							<div class="number">谢谢参与</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+			<div id="start">
+				<span>点我抽奖</span>
+				<div>10朵红花/次</div>
+			</div>
+			<div class="pedestal"></div>
+			<div class="child"></div>
+		</div>
+		<div class="btn-wrap">
+			<a href="rakingList.html" class="btn">抽奖卡兑换次数1</a>
+			<a href="myPrize.html" class="btn prize">我的奖品</a>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		var start = document.getElementById('start');
+		var circle = document.getElementById('circle');
+		start.onclick = function() {
+			circle.classList.add('active')
+		}
+	</script>
+</html>

@@ -1,0 +1,6 @@
+<view wx:if="{{coverList.length}}" class="card-list clearfix">
+  <view bindtap='toCardItem' wx:for="{{coverList}}" wx:key="unique" class='item' data-index="{{index}}" >
+    <image src="{{item.v_coverimage_path}}" mode='aspectFill' class='cover' />
+  </view>
+</view>
+ 

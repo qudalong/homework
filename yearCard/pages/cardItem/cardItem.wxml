@@ -1,0 +1,136 @@
+<view class='card-cover'>
+  <image class='bgImg' mode='aspectFill' src="{{v_coverimage_path}}" />
+</view>
+<!-- 头像信息 -->
+<view class='userinfo'>
+  <image class="userAvatarUrl" src="{{avatarUrl}}" />
+  <view class="userNickName">{{nickName}}</view>
+</view>
+<!-- 音乐 -->
+<view wx:if="{{autoplay}}" bindtap='stopMusic' class='music'>
+  <image class='music-start' src='../../image/music_btn.png'></image>
+</view>
+<view wx:if="{{!autoplay}}" bindtap='startMusic' class='music'>
+  <image src='../../image/stop_music-btn.png'></image>
+</view>
+<!-- 滚动文字 -->
+<view class='pageword'>
+  <view class='scrollarea'>{{cardContent}}</view>
+</view>
+<view id="leaves">
+  <block wx:if="{{list.length}}" wx:for="{{list}}" wx:key="unique">
+    <view class="item" style="top:-50px; left:{{item.left}}; animation-name:{{item.vAnimationName}}; animation-duration:{{item.vAnimationDuration}}; animation-delay:{{item.vAnimationDelay}};">
+      <image src="{{item.src}}" mode="center" style="animation-name:{{item.iAnimationName}}; animation-duration:{{item.iAnimationDuration}};" />
+    </view>
+  </block>
+</view>
+
+<!-- 操作按钮 -->
+<view class='operation'>
+  <button wx:if="{{!showbtns}}" class='item edit' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
+    <image src='../../image/floating_editor_btn.png'></image>
+  </button>
+  <button wx:if="{{!showbtns}}" open-type="getUserInfo" bindgetuserinfo="userInfoHandler_heka" class='item pengyouquan'>
+    <image src='../../image/floating_generate_btn.png'></image>
+  </button>
+  <view wx:if="{{showbtns}}">
+    <button class='item weixin' open-type='share'>
+      <image src='../../image/floating_wechat_btn.png'></image>
+    </button>
+    <!-- <view catchtap='showDialogHaib' class='item pengyouquan'>
+      <image src='../../image/floating_friends_btn.png'></image>
+    </view> -->
+    <!-- <view class='item pengyouquan flower'>
+      <image src='../../image/floating_flow_btn.png'></image>
+    </view> -->
+  </view>
+</view>
+<!-- 选择模式 -->
+<view wx:if="{{showDialogClassify}}" catchtouchmove="true" class='global-cover'>
+  <view class='classify-wrap'>
+    <view class='list'>
+      <view catchtap='changeAnimation' class='item list-item'>
+        <image src='../../image/release_animationl_btn.png'></image>
+        <view>换动画</view>
+      </view>
+      <view catchtap='showDialogMusic' class='item list-item'>
+        <image src='../../image/release_music_btn.png'></image>
+        <view>换音乐</view>
+      </view>
+      <view catchtap='chageWord' class='item list-item'>
+        <image src='../../image/release_text_btn.png'></image>
+        <view>换文字</view>
+      </view>
+      <view catchtap='uploadImg' class='item list-item'>
+        <image src='../../image/release_img_btn.png'></image>
+        <view>传照片</view>
+      </view>
+    </view>
+    <image src='../../image/shutdown_btn.png' bindtap='closeDialogClassify' class='icon-guanbia'></image>
+  </view>
+</view>
+
+<!--换动画 -->
+<view wx:if="{{showDialogType}}" bindtap='closeDialogType' class='global-cover'>
+  <view class='change-type'>
+    <view class='title'>
+      <view>更换动画</view>
+      <view class='btn-closed'>关闭</view>
+    </view>
+    <view class='scroll-y'>
+      <view wx:if="{{animateData.length}}" wx:for="{{animateData}}" wx:key="unique" catchtap='selectType' class="item {{num==index?'active':''}}" data-type="{{index}}">
+        <icon class='iconfont icon-ai03'></icon>
+        <view>{{item.v_flash_name}}</view>
+        <icon class="iconfont icon-baocun"></icon>
+      </view>
+    </view>
+  </view>
+</view>
+<!--换音乐 -->
+<view wx:if="{{showDialogMusic}}" bindtap='closeDialogMusic' class='global-cover'>
+  <view class='change-type'>
+    <view class='title'>
+      <view>更换音乐</view>
+      <view class='btn-closed'>关闭</view>
+    </view>
+    <view class='scroll-y'>
+      <view wx:if="{{musicList.length}}" wx:for="{{musicList}}" wx:key="unique" catchtap='selectMusic' class="item {{mindex==index?'active':''}}" data-mindex="{{index}}">
+        <icon class='iconfont icon-ai03'></icon>
+        <view>{{item.v_music_name}}</view>
+        <icon class="iconfont icon-baocun"></icon>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 海报 -->
+<view wx:if="{{showDialogHaib}}" class='global-cover shadow'>
+  <view class='generate-poster'>
+    <canvas class='myCanvas' canvas-id="myCanvas" />
+    <view bindtap="closeDialogHaib" class='save'>保存图片</view>
+  </view>
+</view>
+<!-- <web-view src="http://u9442687.viewer.maka.im/k/CUU690PN?from=singlemessage&isappinstalled=0"> -->
+<!-- </web-view> -->
+<!-- 广告 -->
+<view id='outPage' style="background:{{itemInfo.v_bg_color}}">
+  <view class='banner-wrap' >
+    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
+      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
+        <image mode='aspectFit' src="/image/delete_btn.png" />
+      </view>
+      <image mode='widthFix' src="{{item.resultPath}}" />
+    </view>
+    <view wx:if="{{gardenInfo}}" class='garden-info'>
+      <view class='intro-bg intro-bg-top'>
+        <image mode='aspectFit' src="/image/box_on.png" />
+      </view>
+      <view class='intro-content'>{{gardenInfo}}</view>
+      <view class='intro-bg intro-bg-bottom'>
+        <image mode='aspectFit' src="/image/box_underthe.png" />
+      </view>
+    </view>
+  </view>
+  <view class='ad-wrap'>
+    <image class='tyy_banner' mode='aspectFit' src="/image/img/tyy_banner.png" />
+  </view>
+</view>

@@ -1,0 +1,37 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/creatCard/creatCard",
+    "pages/myCardItem/myCardItem",
+    "pages/my/my",
+    "pages/changeWord/changeWord",
+    "pages/cardItem/cardItem"
+  ],
+  "window": {
+    "backgroundColor":"#fff",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "童忆贺卡",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#666",
+    "selectedColor": "#D33333",
+    "borderStyle": "black",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "image/tab_home_gray.png",
+        "selectedIconPath": "image/tab_home_red.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "image/tab_my_gray.png",
+        "selectedIconPath": "image/tab_my_red.png",
+        "text": "我的"
+      }
+    ]
+  }
+}

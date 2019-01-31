@@ -1,0 +1,202 @@
+<view class='card-cover'>
+  <image class='bgImg' mode='aspectFill' src="{{v_coverimage_path}}" />
+</view>
+<!-- 头像信息 -->
+
+<view class='userinfo'>
+  <image class="userAvatarUrl" src="{{avatarUrl}}" />
+  <view class="userNickName">{{nickName}}</view>
+
+</view>
+<!-- 音乐 -->
+<view wx:if="{{autoplay}}" bindtap='stopMusic' class='music'>
+  <image class='music-start' src='../../image/music_btn.png'></image>
+</view>
+<view wx:if="{{!autoplay}}" bindtap='startMusic' class='music'>
+  <image src='../../image/stop_music-btn.png'></image>
+</view>
+<!-- 滚动文字 -->
+<view class='pageword'>
+  <view class='scrollarea'>{{cardContent}}</view>
+</view>
+<view id="leaves">
+  <block wx:if="{{list.length}}" wx:for="{{list}}" wx:key="unique">
+    <view class="item" style="top:-50px; left:{{item.left}}; animation-name:{{item.vAnimationName}}; animation-duration:{{item.vAnimationDuration}}; animation-delay:{{item.vAnimationDelay}};">
+      <image src="{{item.src}}" mode="center" style="animation-name:{{item.iAnimationName}}; animation-duration:{{item.iAnimationDuration}};" />
+    </view>
+  </block>
+</view>
+
+<!-- 操作按钮 -->
+<view class='operation'>
+  <view>
+    <button class='item weixin' open-type='share'>
+      <image src='../../image/floating_wechat_btn.png'></image>
+    </button>
+    <!-- <view catchtap='showDialogHaib' class='item pengyouquan'>
+      <image src='../../image/floating_friends_btn.png'></image>
+    </view> -->
+    <view wx:if="{{!bangding}}"  class='item pengyouquan flower' bindtap='sendFlow'>
+      <image src='../../image/floating_flow_btn.png'></image>
+    </view>
+    <button wx:if="{{bangding}}"  class='item pengyouquan flower' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
+      <image src='../../image/floating_flow_btn.png'></image>
+    </button>
+    <!-- <view wx:if="{{sendOready}}" class='item pengyouquan flower'>
+      <image src='../../image/floating_flow_btn.png'></image>
+    </view> -->
+  </view>
+</view>
+<input bindtap='sendZF' class='read-wish' type='text' value='请留下您的祝福...' disabled />
+
+<!-- 选择模式 -->
+<view wx:if="{{showDialogClassify}}" catchtouchmove="true" class='global-cover'>
+  <view class='classify-wrap'>
+    <view class='list'>
+      <view catchtap='changeAnimation' class='item list-item'>
+        <image src='../../image/release_animationl_btn.png'></image>
+        <view>换动画</view>
+      </view>
+      <view catchtap='showDialogMusic' class='item list-item'>
+        <image src='../../image/release_music_btn.png'></image>
+        <view>换音乐</view>
+      </view>
+      <view catchtap='chageWord' class='item list-item'>
+        <image src='../../image/release_text_btn.png'></image>
+        <view>换文字</view>
+      </view>
+      <view catchtap='uploadImg' class='item list-item'>
+        <image src='../../image/release_img_btn.png'></image>
+        <view>传照片</view>
+      </view>
+    </view>
+    <image src='../../image/shutdown_btn.png' bindtap='closeDialogClassify' class='icon-guanbia'></image>
+  </view>
+</view>
+
+<!--换动画 -->
+<view wx:if="{{showDialogType}}" bindtap='closeDialogType' class='global-cover'>
+  <view class='change-type'>
+    <view class='title'>
+      <view>更换动画</view>
+      <view class='btn-closed'>关闭</view>
+    </view>
+    <view class='scroll-y'>
+      <view wx:if="{{animateData.length}}" wx:for="{{animateData}}" wx:key="unique" catchtap='selectType' class="item {{num==index?'active':''}}" data-type="{{index}}">
+        <icon class='iconfont icon-ai03'></icon>
+        <view>{{item.v_flash_name}}</view>
+        <icon class="iconfont icon-baocun"></icon>
+      </view>
+    </view>
+  </view>
+</view>
+<!--换音乐 -->
+<view wx:if="{{showDialogMusic}}" bindtap='closeDialogMusic' class='global-cover'>
+  <view class='change-type'>
+    <view class='title'>
+      <view>更换音乐</view>
+      <view class='btn-closed'>关闭</view>
+    </view>
+    <view class='scroll-y'>
+      <view wx:if="{{musicList.length}}" wx:for="{{musicList}}" wx:key="unique" catchtap='selectMusic' class="item {{mindex==index?'active':''}}" data-mindex="{{index}}">
+        <icon class='iconfont icon-ai03'></icon>
+        <view>{{item.v_music_name}}</view>
+        <icon class="iconfont icon-baocun"></icon>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 海报 -->
+<view wx:if="{{showDialogHaib}}" class='global-cover shadow'>
+  <view class='generate-poster'>
+    <view class='poster'>
+      <image src='{{v_coverimage_path}}' mode='center' />
+      <view class='look'>
+        <image src='/image/img/code.jpg' />
+        <text>扫描或长按查看贺卡</text>
+      </view>
+    </view>
+    <view bindtap="closeDialogHaib" class='save'>保存图片</view>
+  </view>
+</view>
+<!-- 广告 -->
+<!-- <view wx:if="{{!showDialog}}" id='outPage'>
+  <view class='banner-wrap' style="background:{{itemInfo.v_bg_color}}">
+    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
+      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>删除</view>
+      <image class='banner' src="{{item}}" />
+    </view>
+    <view wx:if="{{gardenInfo}}" class='garden-info'>{{gardenInfo}}</view>
+  </view>
+</view> -->
+<view wx:if="{{!showDialog}}" id='outPage' style="background:#C82920;">
+  <view class='banner-wrap'>
+    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
+      <!-- <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
+        <image mode='aspectFit' src="/image/delete_btn.png" />
+      </view> -->
+      <image mode='widthFix' src="{{item}}" />
+    </view>
+    <view wx:if="{{gardenInfo}}" class='garden-info'>
+      <view class='intro-bg intro-bg-top'>
+        <image mode='aspectFit' src="/image/box_on.png" />
+      </view>
+      <view class='intro-content'>{{gardenInfo}}</view>
+      <view class='intro-bg intro-bg-bottom'>
+        <image mode='aspectFit' src="/image/box_underthe.png" />
+      </view>
+    </view>
+  </view>
+  <view class='ad-wrap'>
+    <image class='tyy_banner' bindtap='toHome' mode='aspectFit' src="/image/img/heka_banner.png" />
+  </view>
+  <view class='ad-wrap'>
+    <image class='tyy_banner' mode='aspectFit' src="/image/img/tyy_banner.png" />
+  </view>
+</view>
+
+<!-- 送花 -->
+<view wx:if="{{flowerDialog}}" class='global-cover shadow' bindtap='closeFloweDalog'>
+  <view class='send-flower' catchtap='returnF'>
+    <view class='title2'>你的祝福</view>
+    <view class='item'>
+      <!-- <view class='lable'>称呼:</view> -->
+      <input bindinput='chInput' placeholder='请输入您的昵称'></input>
+    </view>
+    <view class='item'>
+      <!-- <view class='lable'>
+        <i>*</i>
+        祝福:</view> -->
+      <textarea bindinput='zhInput' maxlength='10' class='textarea' placeholder='请输入您的祝福（必填）'></textarea>
+    </view>
+    <view catchtap='sendMessage' class='btn-ok'>确定</view>
+  </view>
+</view>
+
+<!-- 评论的内容 -->
+<view class='userinfo-fix pageword pageword2'>
+  <view class='scrollarea'>
+    <view class='item' wx:for="{{messageList}}" wx:key="unique">
+      <view>
+        <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
+      </view>
+      <view class='message-info'>
+        <view class="userNickName">
+          <text class='nametx'>{{item.vncname}}</text>
+        </view>
+        <view class="userNickName">{{item.v_content}}</view>
+      </view>
+    </view>
+    <view class='item' wx:for="{{flowerList}}" wx:key="unique">
+      <view>
+        <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
+      </view>
+      <view class='message-info'>
+        <view class="userNickName">
+          <text class='nametx'>{{item.vncname}}</text>
+        </view>
+        <view class="userNickName">送了一朵花</view>
+      </view>
+    </view>
+  </view>
+</view>
