@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    i:0,
     headLow: '',
     wishList: [],
     v_phone: '',
@@ -37,6 +38,17 @@ Page({
       this.setData({ txtRealContent })
     }
     this.setData({ showMoreWish: !this.data.showMoreWish })
+  },
+  // 换一句
+  changeWishItem(){
+   let {wishList}=this.data;
+    if (this.data.i>wishList.length){
+      this.data.i=0;
+   }
+   this.data.i++;
+   this.setData({
+     cardContent: wishList[this.data.i].v_content
+   });
   },
 
   /**
@@ -120,7 +132,6 @@ Page({
       name: `banner`,
       success: (e) => {
         successUp++;
-        console.log(e.data)
         let headFull = JSON.parse(e.data).resultPath;
         let headLow = JSON.parse(e.data).resultPathLow;
         this.setData({

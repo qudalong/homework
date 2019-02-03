@@ -13,7 +13,7 @@
 		"uglifyFileName": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.5.1",
+	"libVersion": "2.5.2",
 	"appid": "wx1aeeb8788f19f297",
 	"projectname": "yearcard",
 	"debugOptions": {

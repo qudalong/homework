@@ -440,7 +440,6 @@ Page({
         this.setData({
           bannerList
         });
-        console.log(bannerList)
       },
       fail: (e) => {
         failUp++;

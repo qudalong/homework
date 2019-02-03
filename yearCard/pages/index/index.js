@@ -1,9 +1,8 @@
 import { request } from '../../utils/request.js'
 
 Page({
-
   data: {
-    coverList: ['/image/img/year2.jpg', '/image/img/year.jpg'],
+    coverList: []
   },
 
   /**
@@ -11,7 +10,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showLoading({
-      title: '加载中...',
+      title: '加载中...'
     })
     this.setData({
       openId: wx.getStorageSync('openid'),
@@ -90,9 +89,6 @@ Page({
     wx.navigateTo({
       url: `/pages/cardItem/cardItem?itemIndex=${index}`
     })
-    // wx.navigateTo({
-    //   url: `/pages/creatCard/creatCard?getById=62`
-    // })
   },
 
   /**

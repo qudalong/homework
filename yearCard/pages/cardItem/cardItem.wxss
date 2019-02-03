@@ -513,12 +513,13 @@
 
 .change-word {
   position: absolute;
-  bottom: 20rpx;
-  right: 20rpx;
+  bottom: 10rpx;
+  right: 10rpx;
   display: block;
-  padding: 4rpx 10rpx;
+  padding: 6rpx 10rpx;
   color: #57be4e;
-  z-index: 1000;
+  z-index: 200;
+  font-size: 30rpx;
   background: #dedede;
   border-radius: 4rpx;
 }
