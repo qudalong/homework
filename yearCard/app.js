@@ -18,7 +18,6 @@ App({
               'content-type': 'application/x-www-form-urlencoded'
             },
             success: function(res) {
-              console.log(res)
               if (res.data.rtnCode == 10000) {
                 wx.setStorageSync('openid', res.data.rtnData[0].openid);
                 wx.setStorageSync('sessionid', res.data.rtnData[0].sessionid);

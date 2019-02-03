@@ -15,7 +15,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.5.1",
 	"appid": "wx1aeeb8788f19f297",
-	"projectname": "snow",
+	"projectname": "yearcard",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

@@ -422,6 +422,10 @@ Page({
 
   //采用递归的方式上传
   uploadOneByOne(imgPaths, successUp, failUp, count, length) {
+    wx.showLoading({
+      title: '上传中...',
+      icon:'none'
+    })
     wx.uploadFile({
       url: `${app.globalData.url}system/Greetingcard/uploadImages.do`,
       filePath: imgPaths[count],
@@ -429,10 +433,14 @@ Page({
       success: (e) => {
         let bannerList = this.data.bannerList || [];
         successUp++;
-        bannerList.push(JSON.parse(e.data))
+        bannerList.push(JSON.parse(e.data));
+        if (bannerList.length>3){
+          bannerList.splice(0, bannerList.length-3);
+        }
         this.setData({
           bannerList
         });
+        console.log(bannerList)
       },
       fail: (e) => {
         failUp++;
@@ -440,6 +448,7 @@ Page({
       complete: (e) => {
         count++;
         if (count == length) {
+          wx.hideLoading();
           wx.showToast({
             title: '上传成功',
             icon: 'success',

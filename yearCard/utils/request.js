@@ -24,7 +24,6 @@ const _request = (url, resolve, reject, data = {}, method = 'GET') => {
       reject('接口请求失败')
     },
     complete: () => {
-      wx.hideLoading();
     }
   })
 }

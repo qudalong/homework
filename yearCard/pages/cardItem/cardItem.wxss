@@ -620,6 +620,8 @@
 }
 .banner-wrap .item{
   position: relative;
+  height: 300rpx;
+  overflow: hidden;
 }
 .banner-wrap .item image{
   width: 100%;

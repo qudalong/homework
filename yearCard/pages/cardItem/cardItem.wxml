@@ -116,9 +116,9 @@
   <view class='banner-wrap' >
     <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
-        <image mode='aspectFit' src="/image/delete_btn.png" />
+        <image mode='widthFix' src="/image/delete_btn.png" />
       </view>
-      <image mode='widthFix' src="{{item.resultPath}}" />
+      <image mode='aspectFit' src="{{item.resultPath}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
       <view class='intro-bg intro-bg-top'>
