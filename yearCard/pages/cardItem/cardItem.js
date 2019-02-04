@@ -7,9 +7,9 @@ import {
 } from '../../utils/util.js'
 Page({
   data: {
+    templateId:0,
     getById: 0, //保存后返回的模板id
     headLow: '',
-    itemIndex: 0, //当前模板下表
     v_music_path_low: '', //音乐
     bannerUrl: '',
     itemInfo: null,
@@ -36,65 +36,82 @@ Page({
     musicList: [],
     animateData: []
   },
- 
+
   onLoad: function(option) {
     wx.showLoading({
       title: '加载中...',
     })
+    const id = option.id;
+    const openId = wx.getStorageSync('openid');
     const userInfo = wx.getStorageSync('userInfo');
-    let itemIndex = option.itemIndex || ''; //从首页跳过来传的模板下标
-    const templateid = option.templateid || ''; //从我的贺卡跳过来传的模板id
-    const seachTempCard = this.seachTempCard();
-    const seachMusic = this.seachMusic();
-    const seachfalsh = this.seachfalsh();
-    const seachzf = this.seachzf();
-    this.setData({
-      itemIndex
-    });
-    Promise.all([seachTempCard, seachfalsh, seachMusic, seachzf])
-      .then(res => {
-        const allData = res[0].data;
-        // 根据id查找下表
-        if (templateid) {
+    const templateId = option.templateId || '';
+
+    if (!templateId) {
+      console.log("no templateId")
+      const seachTempCard = this.seachTempCard();
+      const seachMusic = this.seachMusic();
+      const seachfalsh = this.seachfalsh();
+      const seachzf = this.seachzf();
+      Promise.all([seachTempCard, seachfalsh, seachMusic, seachzf])
+        .then(res => {
+          const allData = res[0].data;
           for (let i in allData) {
-            if (allData[i].id == templateid) {
+            if (allData[i].id == id) {
               this.setData({
-                itemIndex: i
+                itemInfo: allData[i],
+                animateData: res[1].data,
+                musicList: res[2].data,
+                wishList: res[3].data,
+                userInfo,
+                openId,
+                // 页面数据
+                v_coverimage_path: allData[i].v_coverimage_path,
+                cardTitle: allData[i].v_template_name,
+                nickName: userInfo.nickName,
+                avatarUrl: userInfo.avatarUrl,
+                cardContent: allData[i].v_blessing_content,
+                v_music_path_low: allData[i].v_music_path_low,
+                v_music_path: allData[i].v_music_path
               })
+              wx.setNavigationBarTitle({
+                title: this.data.cardTitle
+              });
             }
           }
-        }
-        let cardTitle = res[0].data[this.data.itemIndex].v_template_name || '';
-        this.setData({
-          itemInfo: res[0].data[this.data.itemIndex],
-          animateData: res[1].data,
-          musicList: res[2].data,
-          wishList: res[3].data,
-          userInfo,
-          itemIndex,
-          // 页面数据
-          cardTitle,
-          nickName: userInfo.nickName || '',
-          avatarUrl: userInfo.avatarUrl || '',
-          cardContent: res[0].data[this.data.itemIndex].v_blessing_content,
-          v_coverimage_path: res[0].data[this.data.itemIndex].v_coverimage_path,
-
-          openId: wx.getStorageSync('openid'),
-          v_nc_name: wx.getStorageSync('userInfo').nickName,
-          filePath: wx.getStorageSync('userInfo').avatarUrl
+          this.init();
+          this.initStartMusic();
+          wx.hideLoading();
         });
-        // 初始化数据
-        this.init();
-        // this.initStartMusic();
-        this.initStartMusic();
-        wx.setNavigationBarTitle({
-          title: cardTitle
-        });
-        wx.hideLoading();
+    } else {
+      console.log("have templateId")
+      console.log(templateId)
+      this.setData({
+        templateId
       });
+      this.getAllUserCard(templateId);
+    }
   },
 
-  // 获取模板
+  // 生成贺卡
+  userInfoHandler_heka(e) {
+    if (e.detail.userInfo) {
+      wx.setStorageSync('userInfo', e.detail.userInfo);
+      this.setData({
+        userInfo: e.detail.userInfo,
+        showbtns: true,
+      });
+      this.loginTag();
+      if (this.data.templateId) {
+        console.log('templateId=' + this.data.templateId)
+        this.updateCard();
+      } else {
+        console.log('saveCard=')
+        this.saveCard();
+      }
+    }
+  },
+
+  // 保存模板
   saveCard() {
     let {
       nickName,
@@ -108,9 +125,9 @@ Page({
       itemIndex,
       a_false_images
     } = this.data;
-    let v_user_images = [];
+    let bannerLista = [];
     for (let i in bannerList) {
-      v_user_images.push(bannerList[i].resultPathLow)
+      bannerLista.push(bannerList[i].resultPathLow)
     }
     request({
       url: 'system/Greetingcard/saveCard.do',
@@ -139,7 +156,7 @@ Page({
         v_wechar_path: headLow || wx.getStorageSync('userInfo').avatarUrl,
         // v_wechar_path: headLow,
         //用户自定义上传的照片 多个已逗号隔开
-        v_user_images: v_user_images.join(',') || '',
+        v_user_images: bannerLista.join(',') || '',
         v_false_images: a_false_images.join(',') || ''
       }
     }).then(res => {
@@ -155,28 +172,71 @@ Page({
       }
     });
   },
-
-  chageWord() {
+  // 保存模板
+  updateCard() {
     let {
-      avatarUrl,
       nickName,
+      headLow,
+      itemInfo,
       cardTitle,
       cardContent,
+      v_music_path_low,
+      gardenInfo,
+      bannerList,
       itemIndex,
-      gardenInfo
+      a_false_images,
+      templateid,
+      tempData
     } = this.data;
-    let itemInfo = {
-      avatarUrl,
-      nickName,
-      cardTitle,
-      cardContent,
-      itemIndex,
-      gardenInfo
+    let v_user_images = [];
+    for (let i in bannerList) {
+      v_user_images.push(bannerList[i].resultPathLow)
     }
-    wx.navigateTo({
-      url: `/pages/changeWord/changeWord?itemInfo=${JSON.stringify(itemInfo)}`
-    })
+    request({
+      url: 'system/Greetingcard/updateCard.do',
+      method: 'POST',
+      data: {
+        id: templateid,
+        //模板id 也就是首页模板中的id
+        i_template_id: tempData.id,
+        //模板模板背景
+        v_coverimage_path: tempData.v_coverimage_path_low,
+        //用户电话
+        v_phone: '18768871893',
+        //昵称
+        v_nc_name: nickName,
+        //卡片标题
+        v_card_name: cardTitle,
+        //祝福语
+        v_blessing_content: cardContent,
+        //园所简介
+        v_yc_schema: gardenInfo || '',
+        //音乐路径
+        v_music_path: v_music_path_low,
+        //微信唯一标识
+        v_wechar_id: wx.getStorageSync('openid'),
+        //微信头像 路径
+        v_wechar_path: headLow || wx.getStorageSync('userInfo').avatarUrl,
+        //广告
+        v_user_images: v_user_images.join(',') || '',
+        // //下落的图片
+        // v_false_images: a_false_images.join(',') || ''
+        //下落的图片
+        v_false_images:''
+      }
+    }).then(res => {
+      if (res.data.flag) {
+        wx.setStorageSync('getById', res.data.id);
+        this.setData({
+          getById: res.data.id
+        })
+        wx.showToast({
+          title: '修改成功',
+        });
+      }
+    });
   },
+  
 
   // 获取模板
   seachTempCard() {
@@ -206,6 +266,51 @@ Page({
     });
   },
 
+  //我的保存模板
+  getAllUserCard(templateId) {
+    request({
+      url: 'system/Greetingcard/getAllUserCard.do',
+      method: 'POST',
+      data: {
+        openId: wx.getStorageSync('openid')
+      }
+    }).then(res => {
+      if (res.statusCode == 200) {
+        for (let i in res.data) {
+          if (res.data[i].id == templateId) {
+            const tempData = res.data[i];
+            console.log(tempData)
+            this.setData({
+              tempData,
+              // 页面数据
+              v_coverimage_path: tempData.v_coverimage_path,
+              cardTitle: tempData.v_card_name,
+              nickName: tempData.v_nc_name,
+              avatarUrl: tempData.v_wechar_path,
+              cardContent: tempData.v_blessing_content,
+              v_music_path: tempData.v_music_path
+            })
+            wx.setNavigationBarTitle({
+              title: this.data.cardTitle
+            });
+            this.initStartMusic();
+          }
+        }
+
+        // let bannerList = [];
+        // const userimages = tempData.userimages;
+        // if (userimages.length) {
+        //   for (let i in userimages) {
+        //     bannerList.push(userimages[i].v_path)
+        //   }
+        // }
+      
+        // this.init();
+        // this.initMusic()
+      }
+      wx.hideLoading();
+    });
+  },
 
   // 模板使用人数
   greetingcardUseScan() {
@@ -214,27 +319,44 @@ Page({
       method: 'POST',
       data: {
         i_template_id: this.data.itemInfo.id,
-        v_wechar_id: wx.getStorageSync('openid')
+        v_wechar_id: this.data.openId
       }
     }).then(res => {
 
     });
   },
 
+  chageWord() {
+    let {
+      avatarUrl,
+      nickName,
+      cardTitle,
+      cardContent,
+      itemIndex,
+      gardenInfo
+    } = this.data;
+    let itemInfo = {
+      avatarUrl,
+      nickName,
+      cardTitle,
+      cardContent,
+      itemIndex,
+      gardenInfo
+    }
+    wx.navigateTo({
+      url: `/pages/changeWord/changeWord?itemInfo=${JSON.stringify(itemInfo)}`
+    })
+  },
+
   //音乐
   initStartMusic() {
-    let {
-      v_music_path_low,
-    } = this.data;
-
+    let {v_music_path} = this.data;
     var innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;
     innerAudioContext.loop = true;
-    innerAudioContext.src = this.data.itemInfo.v_music_path;
-    //console.log(this.data.itemInfo.v_music_path)
+    innerAudioContext.src = v_music_path;
     this.setData({
-      innerAudioContext,
-      v_music_path_low: v_music_path_low
+      innerAudioContext
     });
   },
 
@@ -244,7 +366,6 @@ Page({
       musicList,
       mindex,
     } = this.data;
-
     let innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;
     innerAudioContext.loop = true;
@@ -259,7 +380,6 @@ Page({
   selectMusic(e) {
     this.data.innerAudioContext.destroy();
     let mindex = e.currentTarget.dataset.mindex;
-    //console.log('mindex=' + mindex)
     this.setData({
       mindex
     });
@@ -320,26 +440,16 @@ Page({
       wx.setStorageSync('userInfo', e.detail.userInfo);
       this.setData({
         userInfo: e.detail.userInfo,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        nickName: e.detail.userInfo.nickName
+        avatarUrl: this.data.avatarUrl||e.detail.userInfo.avatarUrl,
+        nickName: this.data.nickName||e.detail.userInfo.nickName
       });
       this.loginTag();
       this.selectEdit();
     }
   },
-  userInfoHandler_heka(e) {
-    if (e.detail.userInfo) {
-      wx.setStorageSync('userInfo', e.detail.userInfo);
-      this.setData({
-        userInfo: e.detail.userInfo,
-        // avatarUrl: e.detail.userInfo.avatarUrl,
-        // nickName: e.detail.userInfo.nickName,
-      showbtns: true,
-      });
-      this.loginTag();
-      this.saveCard();
-    }
-  },
+ 
+
+
 
 
   // 删除广告图片
@@ -419,12 +529,11 @@ Page({
     })
   },
 
-
   //采用递归的方式上传
   uploadOneByOne(imgPaths, successUp, failUp, count, length) {
     wx.showLoading({
       title: '上传中...',
-      icon:'none'
+      icon: 'none'
     })
     wx.uploadFile({
       url: `${app.globalData.url}system/Greetingcard/uploadImages.do`,
@@ -434,8 +543,8 @@ Page({
         let bannerList = this.data.bannerList || [];
         successUp++;
         bannerList.push(JSON.parse(e.data));
-        if (bannerList.length>3){
-          bannerList.splice(0, bannerList.length-3);
+        if (bannerList.length > 3) {
+          bannerList.splice(0, bannerList.length - 3);
         }
         this.setData({
           bannerList
@@ -516,7 +625,6 @@ Page({
     })
   },
 
-
   showDialogHaib() {
     this.setData({
       showDialogHaib: true
@@ -524,17 +632,13 @@ Page({
     const context = wx.createCanvasContext('myCanvas');
     const path = this.data.itemInfo.v_coverimage_path;
     const code = this.data.itemInfo.v_coverimage_path;
-    context.drawImage(path, 25, 15, 250, 300);
-    context.drawImage(code, 25, 325, 100, 100);
+    context.drawImage(path, 25, 15, 250, 270);
+    context.drawImage(code, 25, 295, 80, 80);
     context.setFontSize(14);
     context.setFillStyle('gray');
-    context.fillText('扫描或长按查看贺卡', 140, 375);
+    context.fillText('扫描或长按查看贺卡', 110, 345);
     context.draw();
   },
-
-
-  //海报s
-
 
   closeDialogHaib() {
     wx.canvasToTempFilePath({
@@ -557,7 +661,7 @@ Page({
       url: 'system/Greetingcard/loginTag.do',
       method: 'POST',
       data: {
-        openId: this.data.openId
+        openId: wx.getStorageSync('openid')
       }
     }).then(res => {
       if (!res.data.flag) {
@@ -576,7 +680,7 @@ Page({
       url: 'system/Greetingcard/bingwecharUser.do',
       method: 'POST',
       data: {
-        openId: this.data.openId,
+        openId: wx.getStorageSync('openid'),
         v_nc_name: this.data.nickName,
         filePath: this.data.avatarUrl
       }
@@ -584,9 +688,6 @@ Page({
       console.log(res)
     });
   },
-
-
-
 
   onUnload: function() {
     this.data.innerAudioContext.destroy();
@@ -598,7 +699,6 @@ Page({
   },
   onShareAppMessage: function(res) {
     let getById = wx.getStorageSync('getById');
-    //console.log(getById)
     if (res.from === 'button') {}
     return {
       title: '送您一张新年祝福贺卡',

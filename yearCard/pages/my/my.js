@@ -38,6 +38,7 @@ Page({
       }
     }).then(res => {
       if (res.statusCode == 200) {
+       res.data.splice(0,res.data.length-1);
         this.setData({
           coverList: res.data
         });
@@ -92,9 +93,9 @@ Page({
   },
 
   toMyCardItem(e) {
-    const index = e.currentTarget.dataset.index;
+    const id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: `/pages/myCardItem/myCardItem?index=${index}`
+      url: `/pages/myCardItem/myCardItem?id=${id}`
     })
   },
 
@@ -109,7 +110,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getAllUserCard();
   },
 
   /**

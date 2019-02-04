@@ -33,9 +33,9 @@
     <button class='item weixin' open-type='share'>
       <image src='../../image/floating_wechat_btn.png'></image>
     </button>
-    <!-- <view catchtap='showDialogHaib' class='item pengyouquan'>
+    <view catchtap='showDialogHaib' class='item pengyouquan'>
       <image src='../../image/floating_friends_btn.png'></image>
-    </view> -->
+    </view>
     <view wx:if="{{!bangding}}"  class='item pengyouquan flower' bindtap='sendFlow'>
       <image src='../../image/floating_flow_btn.png'></image>
     </view>
@@ -109,13 +109,7 @@
 <!-- 海报 -->
 <view wx:if="{{showDialogHaib}}" class='global-cover shadow'>
   <view class='generate-poster'>
-    <view class='poster'>
-      <image src='{{v_coverimage_path}}' mode='center' />
-      <view class='look'>
-        <image src='/image/img/code.jpg' />
-        <text>扫描或长按查看贺卡</text>
-      </view>
-    </view>
+    <canvas class='myCanvas' canvas-id="myCanvas" />
     <view bindtap="closeDialogHaib" class='save'>保存图片</view>
   </view>
 </view>

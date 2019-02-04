@@ -1,6 +1,9 @@
 import {
   request
 } from '../../utils/request.js'
+import {
+  savePicToAlbum
+} from '../../utils/util.js'
 Page({
   data: {
     sendOready:false,
@@ -39,7 +42,6 @@ Page({
       title: '加载中...'
     })
     const userInfo = wx.getStorageSync('userInfo');
-    const tempId = option.tempId || ''; //从我的贺卡跳过来传的模板id
     const itemIndex = option.itemIndex || ''; //
     const getById = option.getById || ''; //获取数据的id
     const seachTempCard = this.seachTempCard();
@@ -459,30 +461,35 @@ Page({
     })
   },
 
-
   showDialogHaib() {
     this.setData({
       showDialogHaib: true
     });
+    const context = wx.createCanvasContext('myCanvas');
+    const path = this.data.itemInfo.v_coverimage_path;
+    const code = this.data.itemInfo.v_coverimage_path;
+    context.drawImage(path, 25, 15, 250, 270);
+    context.drawImage(code, 25, 295, 80, 80);
+    context.setFontSize(14);
+    context.setFillStyle('gray');
+    context.fillText('扫描或长按查看贺卡', 110, 345);
+    context.draw();
   },
   closeDialogHaib() {
-
-    // var context = wx.createCanvasContext('myCanvas');
-    // var path = '/image/img/banner.jpg';
-    // var code = '/image/img/code.jpg';
-    // //这个地方的图片是需要注意，图片需要下载不然，手机上不能正常显示
-    // context.drawImage(path, 25, 15, 250, 350);
-    // context.drawImage(code, 25, 375, 100, 100);
-    // context.setFontSize(14);
-    // context.setFillStyle('gray');
-    // context.fillText('扫描或长按查看贺卡', 140, 435);
-
-
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 50,
+      width: this.data.windowWidth,
+      height: this.data.contentHeight,
+      canvasId: 'myCanvas',
+      success: function (res) {
+        savePicToAlbum(res.tempFilePath)
+      }
+    });
     this.setData({
       showDialogHaib: false
     });
   },
-
 
   onUnload: function() {
     this.data.innerAudioContext.destroy();
@@ -493,7 +500,6 @@ Page({
       title: this.data.cardTitle
     });
   },
-
 
   toHome(){
     wx.switchTab({
@@ -527,7 +533,6 @@ Page({
     })
   },
 
-
   // 获取小红花消息
   getFlowBycardId() {
     request({
@@ -558,9 +563,6 @@ Page({
     });
   },
 
-
-
-
   // 送花
   sendFlow() {
     request({
@@ -580,7 +582,6 @@ Page({
     });
   },
 
-
   // 模板查看人数
   greetingcardScanU() {
     request({
@@ -594,7 +595,6 @@ Page({
       
     });
   },
-
 
    initsendButton:function(){
      request({
@@ -616,7 +616,6 @@ Page({
        }
      });
    },
-
 
   // 验证有无绑定
   loginTag() {
@@ -657,7 +656,6 @@ Page({
       console.log(res)
     });
   },
-
 
   userInfoHandler(e) {
     if (e.detail.userInfo) {

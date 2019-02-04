@@ -1,11 +1,10 @@
 <view class='card-cover'>
-  <image class='bgImg' mode='aspectFill' src="{{cardInfo.v_coverimage_path}}" />
+  <image class='bgImg' mode='aspectFill' src="{{v_coverimage_path}}" />
 </view>
 <!-- 头像信息 -->
 <view class='userinfo'>
-  <image wx:if="{{cardInfo.v_wechar_path}}" class="userAvatarUrl" src="{{cardInfo.v_wechar_path}}" />
-  <image wx:if="{{!cardInfo.v_wechar_path}}" class="userAvatarUrl" src="{{userInfo.avatarUrl}}" />
-  <view class="userNickName">{{cardInfo.v_nc_name}}</view>
+  <image class="userAvatarUrl" src="{{avatarUrl}}" />
+  <view class="userNickName">{{nickName}}</view>
 </view>
 <!-- 音乐 -->
 <view wx:if="{{autoplay}}" bindtap='stopMusic' class='music'>
@@ -16,7 +15,7 @@
 </view>
 <!-- 滚动文字 -->
 <view class='pageword'>
-  <view class='scrollarea'>{{cardInfo.v_blessing_content}}</view>
+  <view class='scrollarea'>{{cardContent}}</view>
 </view>
 <view id="leaves">
   <block wx:if="{{list.length}}" wx:for="{{list}}" wx:key="unique">
@@ -26,79 +25,22 @@
   </block>
 </view>
 
-<!-- 选择模式 -->
-<view wx:if="{{showDialogClassify}}" catchtouchmove="true" class='global-cover'>
-  <view class='classify-wrap'>
-    <view class='list'>
-      <view catchtap='changeAnimation' class='item list-item'>
-        <image src='../../image/release_animationl_btn.png'></image>
-        <view>换动画</view>
-      </view>
-      <view catchtap='showDialogMusic' class='item list-item'>
-        <image src='../../image/release_music_btn.png'></image>
-        <view>换音乐</view>
-      </view>
-      <view catchtap='chageWord' class='item list-item'>
-        <image src='../../image/release_text_btn.png'></image>
-        <view>换文字</view>
-      </view>
-      <view catchtap='uploadImg' class='item list-item'>
-        <image src='../../image/release_img_btn.png'></image>
-        <view>传照片</view>
-      </view>
-    </view>
-    <image src='../../image/shutdown_btn.png' bindtap='closeDialogClassify' class='icon-guanbia'></image>
-  </view>
-</view>
-
 <!-- 操作按钮 -->
 <view class='operation'>
-  <!-- <button bindtap='toEdit' class='item edit' data-templateid="{{cardInfo.i_template_id}}">
+  <button bindtap='toEdit' class='item edit' data-templateid="{{tempData.id}}">
     <image src='../../image/floating_editor_btn.png'></image>
-  </button> -->
+  </button>
   <button class='item weixin' open-type='share'>
     <image src='../../image/floating_wechat_btn.png'></image>
   </button>
-  <!-- <view catchtap='createHaiB' class='item pengyouquan'>
+  <view catchtap='createHaiB' class='item pengyouquan'>
     <image src='../../image/floating_friends_btn.png'></image>
-  </view> -->
-  <!-- <view class='item pengyouquan flower'>
+  </view>
+  <view class='item pengyouquan flower'>
     <image src='../../image/floating_flow_btn.png'></image>
-  </view> -->
-</view>
-<!-- <input class='read-wish' type='text' value='请留下您的祝福...' disabled /> -->
-<!--换动画 -->
-<view wx:if="{{showDialogType}}" bindtap='closeDialogType' class='global-cover'>
-  <view class='change-type'>
-    <view class='title'>
-      <view>更换动画</view>
-      <view class='btn-closed'>关闭</view>
-    </view>
-    <view class='scroll-y'>
-      <view wx:if="{{animateData.length}}" wx:for="{{animateData}}" wx:key="unique" catchtap='selectType' class="item {{num==index?'active':''}}" data-type="{{index}}">
-        <icon class='iconfont icon-ai03'></icon>
-        <view>{{item.v_flash_name}}</view>
-        <icon class="iconfont icon-baocun"></icon>
-      </view>
-    </view>
   </view>
 </view>
-<!--换音乐 -->
-<view wx:if="{{showDialogMusic}}" bindtap='closeDialogMusic' class='global-cover'>
-  <view class='change-type'>
-    <view class='title'>
-      <view>更换音乐</view>
-      <view class='btn-closed'>关闭</view>
-    </view>
-    <view class='scroll-y'>
-      <view wx:if="{{musicList.length}}" wx:for="{{musicList}}" wx:key="unique" catchtap='selectMusic' class="item {{mindex==index?'active':''}}" data-mindex="{{index}}">
-        <icon class='iconfont icon-ai03'></icon>
-        <view>{{item.v_music_name}}</view>
-        <icon class="iconfont icon-baocun"></icon>
-      </view>
-    </view>
-  </view>
-</view>
+
 <!-- 海报 -->
 <view wx:if="{{showDialogHaib}}" class='global-cover shadow' bindtap='closeDialogHaib'>
   <view class='generate-poster'>

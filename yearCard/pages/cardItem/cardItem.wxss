@@ -582,7 +582,6 @@
 }
 /* 海报*/
 .generate-poster{
-  width: 77%;
   margin: 120rpx auto 0;
 }
 .poster{
@@ -611,7 +610,8 @@
   color: #999999;
 }
 .save{
-  width: 100%;
+  width: 95%;
+  margin: 20rpx auto;
   background-color: #FB283B;
   margin-top: 30rpx;
   color: #fff;
@@ -678,8 +678,8 @@
   width: 50%;
 }
 .myCanvas{
-  height:870rpx;
-  margin: 50rpx auto;
+  height:920rpx;
+  margin: 30rpx auto;
   border-radius: 20rpx;
   background-color: #fff;
   font-size: 40rpx;

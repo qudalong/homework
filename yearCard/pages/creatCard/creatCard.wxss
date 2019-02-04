@@ -145,5 +145,5 @@
 }
 .pageword2{
   top:700rpx;
-  z-index: 5000;
+  z-index: 30;
 }

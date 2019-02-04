@@ -21,26 +21,7 @@ Page({
     this.seachTempCard();
     // this.getWecharToken();
     // this.getwxacode();
-    // this.getUserCardById();
   },
-
-
-
-  getUserCardById() {
-    request({
-      url: 'system/Greetingcard/getUserCardById.do',
-      method: 'POST',
-      data: {
-        id: 71
-      }
-    }).then(res => {
-      console.log('res.data');
-      console.log(res.data);
-    });
-  },
-
-
-
 
   // 获取手机号
   // getwxacode() {
@@ -77,6 +58,7 @@ Page({
     request({
       url: 'system/Greetingcard/seachTempCard.do',
     }).then(res => {
+      res.data.splice(0, res.data.length - 1);
       this.setData({
         coverList: res.data
       })
@@ -85,9 +67,9 @@ Page({
   },
 
   toCardItem(e){
-    const index = e.currentTarget.dataset.index;
+    const id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: `/pages/cardItem/cardItem?itemIndex=${index}`
+      url: `/pages/cardItem/cardItem?id=${id}`
     })
   },
 
