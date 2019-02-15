@@ -53,9 +53,6 @@
 <view id='outPage' style="background:#C82920;">
   <view class='banner-wrap'>
     <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
-      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
-        <image mode='aspectFit' src="/image/delete_btn.png" />
-      </view>
       <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>

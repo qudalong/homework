@@ -181,32 +181,34 @@ Page({
       count,
       flashimages
     } = this.data;
-    let spicLenght = flashimages.length;
-    let a_false_images = [];
-    for (let i in flashimages) {
-      a_false_images.push(flashimages.v_path_low)
-    }
+    if (flashimages.length) {
+      let spicLenght = flashimages.length;
+      let a_false_images = [];
+      for (let i in flashimages) {
+        a_false_images.push(flashimages.v_path_low)
+      }
 
-    for (let i = 0; i < count; i++) {
-      let spicImgSrc = flashimages[this.randomInteger(1, spicLenght)].v_path;
-      let spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
-      let leafDelay = this.durationValue(this.randomFloat(0, 8));
-      let fadeAndDropDuration = this.durationValue(this.randomFloat(5, 11));
-      let spinDuration = this.durationValue(this.randomFloat(4, 8));
-      list.push({
-        src: spicImgSrc,
-        left: this.pixelValue(this.randomInteger(0, 360)),
-        vAnimationName: `fade, drop`,
-        vAnimationDuration: `${fadeAndDropDuration}, ${fadeAndDropDuration}`,
-        vAnimationDelay: `${leafDelay}, ${leafDelay}`,
-        iAnimationName: spinAnimationName,
-        iAnimationDuration: `${spinDuration}`
+      for (let i = 0; i < count; i++) {
+        let spicImgSrc = flashimages[this.randomInteger(1, spicLenght)].v_path;
+        let spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
+        let leafDelay = this.durationValue(this.randomFloat(0, 8));
+        let fadeAndDropDuration = this.durationValue(this.randomFloat(5, 11));
+        let spinDuration = this.durationValue(this.randomFloat(4, 8));
+        list.push({
+          src: spicImgSrc,
+          left: this.pixelValue(this.randomInteger(0, 360)),
+          vAnimationName: `fade, drop`,
+          vAnimationDuration: `${fadeAndDropDuration}, ${fadeAndDropDuration}`,
+          vAnimationDelay: `${leafDelay}, ${leafDelay}`,
+          iAnimationName: spinAnimationName,
+          iAnimationDuration: `${spinDuration}`
+        })
+      }
+      this.setData({
+        list,
+        a_false_images
       })
     }
-    this.setData({
-      list,
-      a_false_images
-    })
   },
   randomInteger(low, high) {
     return low + Math.floor(Math.random() * (high - low))

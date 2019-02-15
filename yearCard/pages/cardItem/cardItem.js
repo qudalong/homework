@@ -46,7 +46,8 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const templateId = option.templateId || '';
     this.setData({
-      id
+      id,
+      templateId
     })
     if (!templateId) {
       console.log("no templateId")
@@ -69,6 +70,7 @@ Page({
               openId,
               // 页面数据
               v_coverimage_path: res[0].data.v_coverimage_path,
+              v_coverimage_path_low: res[0].data.v_coverimage_path_low,
               cardTitle: res[0].data.v_template_name,
               nickName: userInfo.nickName || '',
               avatarUrl: userInfo.avatarUrl || '',
@@ -86,8 +88,63 @@ Page({
       this.setData({
         templateId
       });
-      this.getAllUserCard(templateId);
+      //修改时查询接口
+      this.getUserCardById(templateId)
     }
+  },
+
+  //我的贺卡详情(修改时信息数据)
+  getUserCardById(id) {
+    request({
+      url: 'system/Greetingcard/getUserCardById.do',
+      method: 'POST',
+      data: {
+        id: id
+      }
+    }).then(res => {
+      if (res.statusCode == 200) {
+        if (res.data) {
+          const tempData = res.data;
+          wx.setNavigationBarTitle({
+            title: tempData.v_card_name
+          });
+          let bannerList = [];
+          let a_false_images = [];
+          let v_user_images = [];
+          const userimages = tempData.userimages;
+          const flashimages = tempData.flashimages;
+          if (userimages.length) {
+            for (let i in userimages) {
+              bannerList.push(userimages[i].v_path);
+              v_user_images.push(flashimages[i].v_path_low)
+            }
+          }
+          if (flashimages.length) {
+            for (let i in flashimages) {
+              a_false_images.push(flashimages[i].v_path_low)
+            }
+          }
+          this.setData({
+            tempData,
+            v_user_images: v_user_images,
+            a_false_images: a_false_images,
+            // 页面数据
+            v_coverimage_path: tempData.v_coverimage_path,
+            cardTitle: tempData.v_card_name,
+            nickName: tempData.v_nc_name,
+            avatarUrl: tempData.v_wechar_path,
+            cardContent: tempData.v_blessing_content,
+            v_music_path: tempData.v_music_path,
+            gardenInfo: tempData.v_yc_schema,
+            flashimages: tempData.flashimages, //下落的图片
+            bannerList //广告图片
+          })
+        }
+        this.initUpate();
+        this.initStartMusic()
+        wx.hideLoading();
+      }
+    });
   },
 
   // 生成贺卡
@@ -100,9 +157,10 @@ Page({
       });
       this.loginTag();
       if (this.data.templateId) {
-        console.log('templateId=' + this.data.templateId)
+        console.log('这是修改=templateId' + this.data.templateId)
         this.updateCard();
       } else {
+        console.log('这是保存')
         this.saveCard();
       }
     }
@@ -111,12 +169,14 @@ Page({
   // 保存模板
   saveCard() {
     let {
+      id,
       nickName,
       headLow,
       itemInfo,
       cardTitle,
       cardContent,
       v_music_path_low,
+      v_coverimage_path_low,
       gardenInfo,
       bannerList,
       itemIndex,
@@ -131,10 +191,10 @@ Page({
       method: 'POST',
       data: {
         //模板id 也就是首页模板中的id
-        i_template_id: itemInfo.id,
+        i_template_id: id,
         v_template_name: cardTitle,
         //模板模板背景
-        v_coverimage_path: itemInfo.v_coverimage_path_low,
+        v_coverimage_path: v_coverimage_path_low,
         //用户电话
         v_phone: '18768871893',
         //昵称
@@ -150,9 +210,7 @@ Page({
         //微信唯一标识
         v_wechar_id: wx.getStorageSync('openid'),
         //微信头像 路径
-        // v_wechar_path: avatarUrl,
         v_wechar_path: headLow || wx.getStorageSync('userInfo').avatarUrl,
-        // v_wechar_path: headLow,
         //用户自定义上传的照片 多个已逗号隔开
         v_user_images: bannerLista.join(',') || '',
         v_false_images: a_false_images.join(',') || ''
@@ -173,6 +231,7 @@ Page({
   // 保存模板
   updateCard() {
     let {
+      id,
       nickName,
       headLow,
       itemInfo,
@@ -182,45 +241,44 @@ Page({
       gardenInfo,
       bannerList,
       itemIndex,
-      a_false_images,
       templateid,
+      v_user_images,
+      a_false_images,
       tempData
     } = this.data;
-    let v_user_images = [];
-    for (let i in bannerList) {
-      v_user_images.push(bannerList[i].resultPathLow)
-    }
+     
     request({
       url: 'system/Greetingcard/updateCard.do',
       method: 'POST',
       data: {
-        id: templateid,
-        //模板id 也就是首页模板中的id
-        i_template_id: tempData.id,
+        //贺卡唯一标识ID
+        id: tempData.id,
+        //模板id
+        i_template_id: tempData.i_template_id,
+        //模板名称
+        v_template_name: tempData.v_card_name,
         //模板模板背景
         v_coverimage_path: tempData.v_coverimage_path_low,
         //用户电话
         v_phone: '18768871893',
-        //昵称
-        v_nc_name: nickName,
+        //昵称(分改变是和没修改时)
+        v_nc_name: nickName || tempData.v_nc_name,
         //卡片标题
-        v_card_name: cardTitle,
+        v_card_name: cardTitle || tempData.v_card_name,
         //祝福语
-        v_blessing_content: cardContent,
+        v_blessing_content: cardContent || tempData.v_blessing_content,
         //园所简介
-        v_yc_schema: gardenInfo || '',
+        v_yc_schema: gardenInfo || tempData.v_yc_schema,
         //音乐路径
-        v_music_path: v_music_path_low,
+        v_music_path: v_music_path_low || tempData.v_music_path_low,
         //微信唯一标识
         v_wechar_id: wx.getStorageSync('openid'),
         //微信头像 路径
-        v_wechar_path: headLow || wx.getStorageSync('userInfo').avatarUrl,
+        v_wechar_path: headLow||tempData.v_wechar_path_low,
         //广告
-        v_user_images: v_user_images.join(',') || '',
+        v_user_images: v_user_images.join(',')||'',
         // //下落的图片
-        // v_false_images: a_false_images.join(',') || ''
-        //下落的图片
-        v_false_images: ''
+        v_false_images: a_false_images.join(',')
       }
     }).then(res => {
       if (res.data.flag) {
@@ -264,40 +322,6 @@ Page({
   seachzf() {
     return request({
       url: 'system/Greetingcard/seachzf.do',
-    });
-  },
-
-  //我的保存模板
-  getAllUserCard(templateId) {
-    request({
-      url: 'system/Greetingcard/getAllUserCard.do',
-      method: 'POST',
-      data: {
-        openId: wx.getStorageSync('openid')
-      }
-    }).then(res => {
-      if (res.statusCode == 200) {
-        for (let i in res.data) {
-          if (res.data[i].id == templateId) {
-            const tempData = res.data[i];
-            this.setData({
-              tempData,
-              // 页面数据
-              v_coverimage_path: tempData.v_coverimage_path,
-              cardTitle: tempData.v_card_name,
-              nickName: tempData.v_nc_name,
-              avatarUrl: tempData.v_wechar_path,
-              cardContent: tempData.v_blessing_content,
-              v_music_path: tempData.v_music_path
-            })
-            wx.setNavigationBarTitle({
-              title: this.data.cardTitle
-            });
-            this.initStartMusic();
-          }
-        }
-      }
-      wx.hideLoading();
     });
   },
 
@@ -394,31 +418,70 @@ Page({
       count,
       animateData
     } = this.data;
-    let spicLenght = animateData[num].images.length;
-    let a_false_images = [];
-    for (let i in animateData[num].images) {
-      a_false_images.push(animateData[num].images[i].v_path_low)
-    }
-    for (let i = 0; i < count; i++) {
-      let spicImgSrc = animateData[num].images[this.randomInteger(1, spicLenght)].v_path;
-      let spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
-      let leafDelay = this.durationValue(this.randomFloat(0, 8));
-      let fadeAndDropDuration = this.durationValue(this.randomFloat(5, 11));
-      let spinDuration = this.durationValue(this.randomFloat(4, 8));
-      list.push({
-        src: spicImgSrc,
-        left: this.pixelValue(this.randomInteger(0, 360)),
-        vAnimationName: `fade, drop`,
-        vAnimationDuration: `${fadeAndDropDuration}, ${fadeAndDropDuration}`,
-        vAnimationDelay: `${leafDelay}, ${leafDelay}`,
-        iAnimationName: spinAnimationName,
-        iAnimationDuration: `${spinDuration}`
+    if (animateData[num].images.length) {
+      let spicLenght = animateData[num].images.length;
+      let a_false_images = [];
+      for (let i in animateData[num].images) {
+        a_false_images.push(animateData[num].images[i].v_path_low)
+      }
+      for (let i = 0; i < count; i++) {
+        let spicImgSrc = animateData[num].images[this.randomInteger(1, spicLenght)].v_path;
+        let spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
+        let leafDelay = this.durationValue(this.randomFloat(0, 8));
+        let fadeAndDropDuration = this.durationValue(this.randomFloat(5, 11));
+        let spinDuration = this.durationValue(this.randomFloat(4, 8));
+        list.push({
+          src: spicImgSrc,
+          left: this.pixelValue(this.randomInteger(0, 360)),
+          vAnimationName: `fade, drop`,
+          vAnimationDuration: `${fadeAndDropDuration}, ${fadeAndDropDuration}`,
+          vAnimationDelay: `${leafDelay}, ${leafDelay}`,
+          iAnimationName: spinAnimationName,
+          iAnimationDuration: `${spinDuration}`
+        })
+      }
+      this.setData({
+        list,
+        a_false_images
       })
     }
-    this.setData({
+  },
+
+  // 落叶s
+  initUpate() {
+    let {
+      num,
       list,
-      a_false_images
-    })
+      count,
+      flashimages
+    } = this.data;
+    if (flashimages.length) {
+      let spicLenght = flashimages.length;
+      let a_false_images = [];
+      for (let i in flashimages) {
+        a_false_images.push(flashimages.v_path_low)
+      }
+
+      for (let i = 0; i < count; i++) {
+        let spicImgSrc = flashimages[this.randomInteger(1, spicLenght)].v_path;
+        let spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
+        let leafDelay = this.durationValue(this.randomFloat(0, 8));
+        let fadeAndDropDuration = this.durationValue(this.randomFloat(5, 11));
+        let spinDuration = this.durationValue(this.randomFloat(4, 8));
+        list.push({
+          src: spicImgSrc,
+          left: this.pixelValue(this.randomInteger(0, 360)),
+          vAnimationName: `fade, drop`,
+          vAnimationDuration: `${fadeAndDropDuration}, ${fadeAndDropDuration}`,
+          vAnimationDelay: `${leafDelay}, ${leafDelay}`,
+          iAnimationName: spinAnimationName,
+          iAnimationDuration: `${spinDuration}`
+        })
+      }
+      this.setData({
+        list
+      })
+    }
   },
 
   selectEdit() {
@@ -439,6 +502,12 @@ Page({
     }
   },
 
+  toOutpage() {
+    wx.navigateTo({
+      url: '/pages/outpage/outpage',
+    })
+  },
+
 
 
 
@@ -447,11 +516,16 @@ Page({
   deleteBannerImg(e) {
     const curBannerIndex = e.currentTarget.dataset.index;
     let {
-      bannerList
+      bannerList,
+      v_user_images
     } = this.data;
     bannerList.splice(curBannerIndex, 1);
+    if (v_user_images.length){
+      v_user_images.splice(curBannerIndex, 1);
+    }
     this.setData({
-      bannerList
+      bannerList,
+      v_user_images
     });
   },
 
@@ -532,13 +606,19 @@ Page({
       name: `banner`,
       success: (e) => {
         let bannerList = this.data.bannerList || [];
+        let v_user_images = this.data.v_user_images || [];
         successUp++;
         bannerList.push(JSON.parse(e.data));
+        v_user_images.push(JSON.parse(e.data).resultPathLow);
         if (bannerList.length > 3) {
           bannerList.splice(0, bannerList.length - 3);
         }
+        if (v_user_images.length > 3) {
+          v_user_images.splice(0, v_user_images.length - 3);
+        }
         this.setData({
-          bannerList
+          bannerList,
+          v_user_images
         });
       },
       fail: (e) => {
@@ -635,6 +715,8 @@ Page({
         const context = wx.createCanvasContext('myCanvas');
         const path = this.data.itemInfo.v_coverimage_path;
         const code = res.data.filePath;
+        console.log('path=' + path)
+        console.log('code=' + code)
         context.drawImage(path, 25, 25, 250, 270);
         context.drawImage(code, 25, 305, 120, 120);
         context.setFontSize(14);
@@ -649,7 +731,7 @@ Page({
   closeDialogHaib() {
     wx.canvasToTempFilePath({
       canvasId: 'myCanvas',
-      fileType:'jpg',
+      fileType: 'jpg',
       x: 0,
       y: 50,
       width: this.data.windowWidth,
@@ -693,7 +775,7 @@ Page({
         filePath: this.data.avatarUrl
       }
     }).then(res => {
-      if(res.data.flag){
+      if (res.data.flag) {
         this.setData({
           //绑定时返回的头像短路径
           headLow: res.data.v_wechar_image_low
@@ -704,24 +786,45 @@ Page({
 
   onUnload: function() {
     this.data.innerAudioContext.destroy();
+    if (this.data.templateId){
+      wx.navigateBack({
+        delta:2
+      })
+    }
   },
   onShow() {
     wx.setNavigationBarTitle({
       title: this.data.cardTitle
     });
+    const seachMusic = this.seachMusic();
+    const seachfalsh = this.seachfalsh();
+    const seachzf = this.seachzf();
+    Promise.all([seachfalsh, seachMusic, seachzf])
+      .then(res => {
+        if (res.length) {
+          this.setData({
+            animateData: res[0].data,
+            musicList: res[1].data,
+            wishList: res[2].data,
+            //为生成朋友圈图片用
+            itemInfo: { v_coverimage_path: this.data.v_coverimage_path}
+          })
+        }
+        wx.hideLoading();
+      });
   },
 
-  onShareAppMessage: function (res) {
-    let  getById = wx.getStorageSync('getById'),
-          nickName = this.data.nickName || '',
-          coverImg;
+  onShareAppMessage: function(res) {
+    let getById = wx.getStorageSync('getById'),
+      nickName = this.data.nickName || '',
+      coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
-    if (res.from === 'button') { }
+    if (res.from === 'button') {}
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
       path: `/pages/creatCard/creatCard?getById=${getById}`,
-      success: function (res) { }
+      success: function(res) {}
     }
   }
 })
