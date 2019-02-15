@@ -7,21 +7,23 @@ Page({
    * 页面的初始数据
    */
   data: {
+    page: 0,
+    more: true,
     coverList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     wx.showLoading({
       title: '加载中...',
     })
     this.setData({
       openId: wx.getStorageSync('openid'),
       userInfo: wx.getStorageSync('userInfo'),
-      avatarUrl: wx.getStorageSync('userInfo').avatarUrl||'',
-      nickName: wx.getStorageSync('userInfo').nickName||'',
+      avatarUrl: wx.getStorageSync('userInfo').avatarUrl || '',
+      nickName: wx.getStorageSync('userInfo').nickName || '',
     });
     this.loginTag();
     this.getAllUserCard();
@@ -34,13 +36,15 @@ Page({
       url: 'system/Greetingcard/getAllUserCard.do',
       method: 'POST',
       data: {
-        openId: this.data.openId||'aa'
+        openId: this.data.openId || '',
+        page: this.data.page
       }
     }).then(res => {
       if (res.statusCode == 200) {
-       res.data.splice(0,res.data.length-1);
+        // res.data.datalist.splice(0, res.data.datalist.length-1);
         this.setData({
-          coverList: res.data
+          coverList: res.data.datalist,
+          page: res.data.page
         });
       }
       wx.hideLoading();
@@ -60,7 +64,8 @@ Page({
         this.bingwecharUser();
       } else {
         this.setData({
-          infos: res.data.info
+          infos: res.data.info,
+          headLow: res.data.info.v_wechar_image_low
         });
       }
     });
@@ -77,8 +82,22 @@ Page({
         filePath: this.data.avatarUrl
       }
     }).then(res => {
-      console.log(res)
+      if (res.data.flag) {
+        this.setData({
+          //绑定时返回的头像短路径
+          headLow: res.data.v_wechar_image_low
+        })
+      }
     });
+  },
+
+  toTycz() {
+    wx.navigateToMiniProgram({
+      appId: 'wxa9e3302fab960815',
+      path: 'pages/login/userLogin/userLogin',
+      extraData: {},
+      success(res) {}
+    })
   },
 
   userInfoHandler(e) {
@@ -102,49 +121,101 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     this.getAllUserCard();
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+  onPullDownRefresh: function() {
+    if (this.data.more) {
+      wx.showLoading({
+        title: '刷新中...'
+      })
+      request({
+        url: 'system/Greetingcard/getAllUserCard.do',
+        method: 'POST',
+        data: {
+          openId: this.data.openId || '',
+          page: this.data.page
+        }
+      }).then(res => {
+        if (res.statusCode == 200) {
+          this.setData({
+            coverList: this.data.coverList.concat(res.data.datalist),
+            page: res.data.page,
+            more: res.data.more
+          });
+        }
+        wx.hideLoading();
+      });
+    } else {
+      wx.showToast({
+        title: '没有更多数据',
+        icon: 'none'
+      });
+    }
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-
+  onReachBottom: function() {
+    if (this.data.more) {
+      wx.showLoading({
+        title: '加载更多...'
+      })
+      request({
+        url: 'system/Greetingcard/getAllUserCard.do',
+        method: 'POST',
+        data: {
+          openId: this.data.openId || '',
+          page: this.data.page
+        }
+      }).then(res => {
+        if (res.statusCode == 200) {
+          this.setData({
+            coverList: this.data.coverList.concat(res.data.datalist),
+            page: res.data.page,
+            more: res.data.more
+          });
+        }
+        wx.hideLoading();
+      });
+    } else {
+      wx.showToast({
+        title: '没有更多数据',
+        icon: 'none'
+      });
+    }
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

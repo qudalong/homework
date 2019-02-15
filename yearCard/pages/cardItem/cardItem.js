@@ -7,7 +7,7 @@ import {
 } from '../../utils/util.js'
 Page({
   data: {
-    templateId:0,
+    templateId: 0,
     getById: 0, //保存后返回的模板id
     headLow: '',
     v_music_path_low: '', //音乐
@@ -41,50 +41,48 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    const id = option.id;
+    const id = option.id || '';
     const openId = wx.getStorageSync('openid');
     const userInfo = wx.getStorageSync('userInfo');
     const templateId = option.templateId || '';
-
+    this.setData({
+      id
+    })
     if (!templateId) {
       console.log("no templateId")
-      const seachTempCard = this.seachTempCard();
+      const seachTempCardDetailById = this.seachTempCardDetailById(id);
       const seachMusic = this.seachMusic();
       const seachfalsh = this.seachfalsh();
       const seachzf = this.seachzf();
-      Promise.all([seachTempCard, seachfalsh, seachMusic, seachzf])
+      Promise.all([seachTempCardDetailById, seachfalsh, seachMusic, seachzf])
         .then(res => {
-          const allData = res[0].data;
-          for (let i in allData) {
-            if (allData[i].id == id) {
-              this.setData({
-                itemInfo: allData[i],
-                animateData: res[1].data,
-                musicList: res[2].data,
-                wishList: res[3].data,
-                userInfo,
-                openId,
-                // 页面数据
-                v_coverimage_path: allData[i].v_coverimage_path,
-                cardTitle: allData[i].v_template_name,
-                nickName: userInfo.nickName,
-                avatarUrl: userInfo.avatarUrl,
-                cardContent: allData[i].v_blessing_content,
-                v_music_path_low: allData[i].v_music_path_low,
-                v_music_path: allData[i].v_music_path
-              })
-              wx.setNavigationBarTitle({
-                title: this.data.cardTitle
-              });
-            }
+          if (res.length) {
+            wx.setNavigationBarTitle({
+              title: res[0].data.v_template_name
+            });
+            this.setData({
+              itemInfo: res[0].data,
+              animateData: res[1].data,
+              musicList: res[2].data,
+              wishList: res[3].data,
+              userInfo,
+              openId,
+              // 页面数据
+              v_coverimage_path: res[0].data.v_coverimage_path,
+              cardTitle: res[0].data.v_template_name,
+              nickName: userInfo.nickName || '',
+              avatarUrl: userInfo.avatarUrl || '',
+              cardContent: res[0].data.v_blessing_content,
+              v_music_path_low: res[0].data.v_music_path_low,
+              v_music_path: res[0].data.v_music_path
+            })
           }
           this.init();
           this.initStartMusic();
           wx.hideLoading();
         });
     } else {
-      console.log("have templateId")
-      console.log(templateId)
+      console.log("have templateId=" + templateId)
       this.setData({
         templateId
       });
@@ -105,7 +103,6 @@ Page({
         console.log('templateId=' + this.data.templateId)
         this.updateCard();
       } else {
-        console.log('saveCard=')
         this.saveCard();
       }
     }
@@ -135,6 +132,7 @@ Page({
       data: {
         //模板id 也就是首页模板中的id
         i_template_id: itemInfo.id,
+        v_template_name: cardTitle,
         //模板模板背景
         v_coverimage_path: itemInfo.v_coverimage_path_low,
         //用户电话
@@ -222,7 +220,7 @@ Page({
         // //下落的图片
         // v_false_images: a_false_images.join(',') || ''
         //下落的图片
-        v_false_images:''
+        v_false_images: ''
       }
     }).then(res => {
       if (res.data.flag) {
@@ -236,12 +234,15 @@ Page({
       }
     });
   },
-  
 
-  // 获取模板
-  seachTempCard() {
+  // 获取详情页
+  seachTempCardDetailById(id) {
     return request({
-      url: 'system/Greetingcard/seachTempCard.do',
+      url: 'system/Greetingcard/seachTempCardDetailById.do',
+      method: 'POST',
+      data: {
+        id: id
+      }
     });
   },
 
@@ -279,7 +280,6 @@ Page({
         for (let i in res.data) {
           if (res.data[i].id == templateId) {
             const tempData = res.data[i];
-            console.log(tempData)
             this.setData({
               tempData,
               // 页面数据
@@ -296,17 +296,6 @@ Page({
             this.initStartMusic();
           }
         }
-
-        // let bannerList = [];
-        // const userimages = tempData.userimages;
-        // if (userimages.length) {
-        //   for (let i in userimages) {
-        //     bannerList.push(userimages[i].v_path)
-        //   }
-        // }
-      
-        // this.init();
-        // this.initMusic()
       }
       wx.hideLoading();
     });
@@ -350,7 +339,9 @@ Page({
 
   //音乐
   initStartMusic() {
-    let {v_music_path} = this.data;
+    let {
+      v_music_path
+    } = this.data;
     var innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;
     innerAudioContext.loop = true;
@@ -440,14 +431,14 @@ Page({
       wx.setStorageSync('userInfo', e.detail.userInfo);
       this.setData({
         userInfo: e.detail.userInfo,
-        avatarUrl: this.data.avatarUrl||e.detail.userInfo.avatarUrl,
-        nickName: this.data.nickName||e.detail.userInfo.nickName
+        avatarUrl: this.data.avatarUrl || e.detail.userInfo.avatarUrl,
+        nickName: this.data.nickName || e.detail.userInfo.nickName
       });
       this.loginTag();
       this.selectEdit();
     }
   },
- 
+
 
 
 
@@ -629,24 +620,40 @@ Page({
     this.setData({
       showDialogHaib: true
     });
-    const context = wx.createCanvasContext('myCanvas');
-    const path = this.data.itemInfo.v_coverimage_path;
-    const code = this.data.itemInfo.v_coverimage_path;
-    context.drawImage(path, 25, 15, 250, 270);
-    context.drawImage(code, 25, 295, 80, 80);
-    context.setFontSize(14);
-    context.setFillStyle('gray');
-    context.fillText('扫描或长按查看贺卡', 110, 345);
-    context.draw();
+    wx.showLoading({
+      title: '努力生成中...'
+    })
+    // 获取二维码
+    return request({
+      url: 'system/Greetingcard/getSunpath.do',
+      method: 'POST',
+      data: {
+        card_id: this.data.id
+      }
+    }).then(res => {
+      if (res.data.filePath) {
+        const context = wx.createCanvasContext('myCanvas');
+        const path = this.data.itemInfo.v_coverimage_path;
+        const code = res.data.filePath;
+        context.drawImage(path, 25, 25, 250, 270);
+        context.drawImage(code, 25, 305, 120, 120);
+        context.setFontSize(14);
+        context.setFillStyle('gray');
+        context.fillText('扫描或长按查看贺卡', 150, 375);
+        context.draw();
+      }
+      wx.hideLoading();
+    });
   },
 
   closeDialogHaib() {
     wx.canvasToTempFilePath({
+      canvasId: 'myCanvas',
+      fileType:'jpg',
       x: 0,
       y: 50,
       width: this.data.windowWidth,
       height: this.data.contentHeight,
-      canvasId: 'myCanvas',
       success: function(res) {
         savePicToAlbum(res.tempFilePath)
       }
@@ -668,7 +675,8 @@ Page({
         this.bingwecharUser();
       } else {
         this.setData({
-          infos: res.data.info
+          infos: res.data.info,
+          headLow: res.data.info.v_wechar_image_low
         });
       }
     });
@@ -685,7 +693,12 @@ Page({
         filePath: this.data.avatarUrl
       }
     }).then(res => {
-      console.log(res)
+      if(res.data.flag){
+        this.setData({
+          //绑定时返回的头像短路径
+          headLow: res.data.v_wechar_image_low
+        })
+      }
     });
   },
 
@@ -697,13 +710,18 @@ Page({
       title: this.data.cardTitle
     });
   },
-  onShareAppMessage: function(res) {
-    let getById = wx.getStorageSync('getById');
-    if (res.from === 'button') {}
+
+  onShareAppMessage: function (res) {
+    let  getById = wx.getStorageSync('getById'),
+          nickName = this.data.nickName || '',
+          coverImg;
+    this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
+    if (res.from === 'button') { }
     return {
-      title: '送您一张新年祝福贺卡',
-      path: '/pages/creatCard/creatCard?getById=' + getById,
-      success: function(res) {}
+      title: `【${nickName}】送您一张新年祝福贺卡`,
+      imageUrl: coverImg,
+      path: `/pages/creatCard/creatCard?getById=${getById}`,
+      success: function (res) { }
     }
   }
 })

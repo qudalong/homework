@@ -1,14 +1,18 @@
-import { request } from '../../utils/request.js'
+import {
+  request
+} from '../../utils/request.js'
 
 Page({
   data: {
+    page: 0,
+    more: true,
     coverList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     wx.showLoading({
       title: '加载中...'
     })
@@ -19,54 +23,28 @@ Page({
       nickName: wx.getStorageSync('userInfo').nickName || ''
     });
     this.seachTempCard();
-    // this.getWecharToken();
-    // this.getwxacode();
-  },
-
-  // 获取手机号
-  // getwxacode() {
-  //   request({
-  //     url: 'https://api.weixin.qq.com/wxa/getwxacode?access_token=18_pDAtHpaXyUaB6F4QuD7apvEHPtgMwgk7YE7emMlhaV-sxwglnNQAVAxFiw3gzrVnGBz9uapw5dQNJ5qLxLE-jLsPHajJCgc9bf0xIhVHGasSwIiUOtWAo6WDm3hJG9Z5vRfvb-kSI-BMhjSCUBLdAEAYFP',
-  //   }).then(res => {
-     
-  //   })
-  // },
-  // 获取手机号
-  getPhoneeInes() {
-    request({
-      url: 'system/Greetingcard/getPhoneeInes.do',
-    }).then(res => {
-      this.setData({
-        coverList: res.data
-      })
-    })
-  },
-
-  //获取token
-  getWecharToken() {
-    request({
-      url: 'system/Greetingcard/getWecharToken.do',
-      method: 'POST',
-      data: {}
-    }).then(res => {
-      console.log(res)
-    })
   },
 
   //获取模板
   seachTempCard() {
     request({
       url: 'system/Greetingcard/seachTempCard.do',
+      method: 'POST',
+      data: {
+        page: this.data.page
+      }
     }).then(res => {
-      res.data.splice(0, res.data.length - 1);
+      // console.log(res.data.datalist)
+      res.data.datalist.splice(0, res.data.datalist.length - 1);
       this.setData({
-        coverList: res.data
+        coverList: res.data.datalist,
+        page: res.data.page
       })
       wx.hideLoading();
     })
   },
 
-  toCardItem(e){
+  toCardItem(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: `/pages/cardItem/cardItem?id=${id}`
@@ -76,14 +54,14 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     this.setData({
       userInfo: wx.getStorageSync('userInfo')
     });
@@ -92,35 +70,81 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+  onPullDownRefresh: function() {
+    if (this.data.more) {
+      wx.showLoading({
+        title: '刷新中...'
+      })
+      request({
+        url: 'system/Greetingcard/seachTempCard.do',
+        method: 'POST',
+        data: {
+          page: this.data.page
+        }
+      }).then(res => {
+        this.setData({
+          coverList: this.data.coverList.concat(res.data.datalist),
+          page: res.data.page,
+          more: res.data.more
+        })
+        wx.hideLoading();
+      })
+    }else{
+      wx.showToast({
+        title: '没有更多数据',
+        icon:'none'
+      });
+    }
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-
+  onReachBottom: function() {
+    if (this.data.more) {
+      wx.showLoading({
+        title: '加载更多...'
+      });
+      request({
+        url: 'system/Greetingcard/seachTempCard.do',
+        method: 'POST',
+        data: {
+          page: this.data.page
+        }
+      }).then(res => {
+        this.setData({
+          coverList: this.data.coverList.concat(res.data.datalist),
+          page: res.data.page,
+          more: res.data.more
+        })
+        wx.hideLoading();
+      })
+    } else {
+      wx.showToast({
+        title: '没有更多数据',
+        icon: 'none'
+      });
+    }
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

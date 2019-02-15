@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/creatCard/creatCard",
+    "pages/outpage/outpage",
     "pages/my/my",
     "pages/myCardItem/myCardItem",
     "pages/changeWord/changeWord",
@@ -14,6 +15,10 @@
     "navigationBarTitleText": "童忆贺卡",
     "navigationBarTextStyle": "black"
   },
+  "navigateToMiniProgramAppIdList": [
+    "wxa9e3302fab960815"
+  ],
+ 
   "tabBar": {
     "color": "#666",
     "selectedColor": "#D33333",

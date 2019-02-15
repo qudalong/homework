@@ -45,4 +45,22 @@
 .icon-morentouxiangtubiao{
   font-size: 140rpx;
 }
-
+.link-tycz{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.link-tycz .txt{
+  flex: 1;
+  font-size: 30rpx;
+  font-weight: normal;
+}
+.star{
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 10rpx;
+}
+.icon-right{
+  width: 50rpx;
+  height: 50rpx;
+}

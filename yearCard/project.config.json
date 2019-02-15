@@ -13,9 +13,9 @@
 		"uglifyFileName": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.5.2",
+	"libVersion": "2.6.0",
 	"appid": "wx1aeeb8788f19f297",
-	"projectname": "yearcard",
+	"projectname": "yearcard_v2.0",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

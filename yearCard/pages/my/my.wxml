@@ -7,6 +7,11 @@
     <view class="userNickName">{{nickName}}</view>
   </view>
 </view>
+<view class='hd link-tycz' bindtap='toTycz'>
+<image src="/image/my_dynamic_icon.png" mode='aspectFill' class='star' />
+<view class='txt'>了解孩子动态</view>
+<image src="/image/icon_right.png" mode='aspectFill' class='icon-right' />
+</view>
 <view class='hd'>我的贺卡</view>
 <view wx:if="{{coverList.length}}" class="card-list clearfix body-bg">
   <view bindtap='toMyCardItem' wx:for="{{coverList}}" wx:key="unique" class='item' data-id="{{item.id}}">

@@ -2,11 +2,9 @@
   <image class='bgImg' mode='aspectFill' src="{{v_coverimage_path}}" />
 </view>
 <!-- 头像信息 -->
-
 <view class='userinfo'>
   <image class="userAvatarUrl" src="{{avatarUrl}}" />
   <view class="userNickName">{{nickName}}</view>
-
 </view>
 <!-- 音乐 -->
 <view wx:if="{{autoplay}}" bindtap='stopMusic' class='music'>
@@ -36,10 +34,10 @@
     <view catchtap='showDialogHaib' class='item pengyouquan'>
       <image src='../../image/floating_friends_btn.png'></image>
     </view>
-    <view wx:if="{{!bangding}}"  class='item pengyouquan flower' bindtap='sendFlow'>
+    <view wx:if="{{!bangding}}" class='item pengyouquan flower' bindtap='sendFlow'>
       <image src='../../image/floating_flow_btn.png'></image>
     </view>
-    <button wx:if="{{bangding}}"  class='item pengyouquan flower' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
+    <button wx:if="{{bangding}}" class='item pengyouquan flower' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
       <image src='../../image/floating_flow_btn.png'></image>
     </button>
     <!-- <view wx:if="{{sendOready}}" class='item pengyouquan flower'>
@@ -114,21 +112,12 @@
   </view>
 </view>
 <!-- 广告 -->
-<!-- <view wx:if="{{!showDialog}}" id='outPage'>
-  <view class='banner-wrap' style="background:{{itemInfo.v_bg_color}}">
-    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
-      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>删除</view>
-      <image class='banner' src="{{item}}" />
-    </view>
-    <view wx:if="{{gardenInfo}}" class='garden-info'>{{gardenInfo}}</view>
-  </view>
-</view> -->
 <view wx:if="{{!showDialog}}" id='outPage' style="background:#C82920;">
   <view class='banner-wrap'>
     <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
-      <!-- <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
+      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
         <image mode='aspectFit' src="/image/delete_btn.png" />
-      </view> -->
+      </view>
       <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
@@ -142,10 +131,13 @@
     </view>
   </view>
   <view class='ad-wrap'>
-    <image class='tyy_banner' bindtap='toHome' mode='aspectFit' src="/image/img/heka_banner.png" />
+    <image class='tyy_banner' mode='aspectFit' bindtap='toOutpage' src="/image/img/tyy_banner.png" />
   </view>
   <view class='ad-wrap'>
-    <image class='tyy_banner' mode='aspectFit' src="/image/img/tyy_banner.png" />
+    <image class='tyy_banner' bindtap='toTycz' mode='aspectFit' src="/image/img/tycz_banner.jpg" />
+  </view>
+  <view class='ad-wrap'>
+    <image class='tyy_banner' bindtap='toHome' mode='aspectFit' src="/image/img/heka_banner.png" />
   </view>
 </view>
 
@@ -154,13 +146,9 @@
   <view class='send-flower' catchtap='returnF'>
     <view class='title2'>你的祝福</view>
     <view class='item'>
-      <!-- <view class='lable'>称呼:</view> -->
       <input bindinput='chInput' placeholder='请输入您的昵称'></input>
     </view>
     <view class='item'>
-      <!-- <view class='lable'>
-        <i>*</i>
-        祝福:</view> -->
       <textarea bindinput='zhInput' maxlength='10' class='textarea' placeholder='请输入您的祝福（必填）'></textarea>
     </view>
     <view catchtap='sendMessage' class='btn-ok'>确定</view>
@@ -176,7 +164,7 @@
       </view>
       <view class='message-info'>
         <view class="userNickName">
-          <text class='nametx'>{{item.vncname}}</text>
+          <text class='nametx'>{{item.v_nc_name}}</text>
         </view>
         <view class="userNickName">{{item.v_content}}</view>
       </view>

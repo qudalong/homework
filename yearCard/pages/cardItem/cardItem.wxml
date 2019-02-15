@@ -24,7 +24,6 @@
     </view>
   </block>
 </view>
-
 <!-- 操作按钮 -->
 <view class='operation'>
   <button wx:if="{{!showbtns}}" class='item edit' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
@@ -37,12 +36,9 @@
     <button class='item weixin' open-type='share'>
       <image src='../../image/floating_wechat_btn.png'></image>
     </button>
-    <!-- <view catchtap='showDialogHaib' class='item pengyouquan'>
+    <view catchtap='showDialogHaib' class='item pengyouquan'>
       <image src='../../image/floating_friends_btn.png'></image>
-    </view> -->
-    <!-- <view class='item pengyouquan flower'>
-      <image src='../../image/floating_flow_btn.png'></image>
-    </view> -->
+    </view>
   </view>
 </view>
 <!-- 选择模式 -->
@@ -113,7 +109,7 @@
 <!-- </web-view> -->
 <!-- 广告 -->
 <view id='outPage' style="background:{{itemInfo.v_bg_color}}">
-  <view class='banner-wrap' >
+  <view class='banner-wrap'>
     <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
         <image mode='widthFix' src="/image/delete_btn.png" />

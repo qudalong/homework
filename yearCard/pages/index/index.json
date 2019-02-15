@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "童忆贺卡",
+  "enablePullDownRefresh": true,
   "usingComponents": {}
 }

@@ -8,7 +8,7 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         if (res.code) {
           wx.request({
-            url:'https://xcx.lebeitong.com/mobile/loginWeiXin.do',
+            url:this.globalData.url+'mobile/loginWeiXin.do',
             method: 'POST',
             data: {
               platform: 4,
@@ -18,6 +18,7 @@ App({
               'content-type': 'application/x-www-form-urlencoded'
             },
             success: function(res) {
+              // console.log(res)
               if (res.data.rtnCode == 10000) {
                 wx.setStorageSync('openid', res.data.rtnData[0].openid);
                 wx.setStorageSync('sessionid', res.data.rtnData[0].sessionid);
@@ -53,7 +54,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    // url: 'http://192.168.2.146:8080/lbt-xcx-server/',
-    url: 'https://xcx.lebeitong.com/'
+    url: 'http://192.168.2.208:8080/lbt-xcx-server/',
+    // url: 'https://xcx.lebeitong.com/'
   }
 })

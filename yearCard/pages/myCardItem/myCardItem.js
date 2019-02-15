@@ -11,8 +11,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    showDialogHaib:false,
-    cardInfo:null,
+    id: 0,
+    showDialogHaib: false,
+    cardInfo: null,
     getById: 0, //保存后返回的模板id
     headLow: '',
     v_music_path_low: '', //音乐
@@ -39,96 +40,113 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     wx.showLoading({
       title: '加载中..',
     });
-    this.getAllUserCard(options.id)
-   },
+    this.setData({
+      id: options.id
+    })
+    this.getUserCardById(options.id)
+  },
 
-  //我的贺
-  getAllUserCard(templateId) {
+  //我的贺卡详情
+  getUserCardById(id) {
     request({
-      url: 'system/Greetingcard/getAllUserCard.do',
+      url: 'system/Greetingcard/getUserCardById.do',
       method: 'POST',
       data: {
-        openId: wx.getStorageSync('openid')
+        id: id
       }
     }).then(res => {
       if (res.statusCode == 200) {
-        for (let i in res.data) {
-          if (res.data[i].id == templateId) {
-            const tempData = res.data[i];
-            console.log(tempData)
-            this.setData({
-              tempData,
-              // 页面数据
-              v_coverimage_path: tempData.v_coverimage_path,
-              cardTitle: tempData.v_card_name,
-              nickName: tempData.v_nc_name,
-              avatarUrl: tempData.v_wechar_path,
-              cardContent: tempData.v_blessing_content,
-              v_music_path: tempData.v_music_path
-            })
-            wx.setNavigationBarTitle({
-              title: this.data.cardTitle
-            });
+        console.log(res)
+        if (res.data) {
+          const tempData = res.data;
+          wx.setNavigationBarTitle({
+            title: tempData.v_card_name
+          });
+          let bannerList = [];
+          const userimages = tempData.userimages;
+          if (userimages.length) {
+            for (let i in userimages) {
+              bannerList.push(userimages[i].v_path)
+            }
           }
+          this.setData({
+            tempData,
+            // 页面数据
+            v_coverimage_path: tempData.v_coverimage_path,
+            cardTitle: tempData.v_card_name,
+            nickName: tempData.v_nc_name,
+            avatarUrl: tempData.v_wechar_path,
+            cardContent: tempData.v_blessing_content,
+            v_music_path: tempData.v_music_path,
+            gardenInfo: tempData.v_yc_schema,
+            flashimages: tempData.flashimages, //下落的图片
+            bannerList //广告图片
+          })
         }
-
-        // let bannerList = [];
-        // const userimages = tempData.userimages;
-        // if (userimages.length) {
-        //   for (let i in userimages) {
-        //     bannerList.push(userimages[i].v_path)
-        //   }
-        // }
-
-        // this.init();
+        this.init();
         this.initStartMusic()
         wx.hideLoading();
       }
     });
   },
 
-
- 
-
-  //海报s
-  createHaiB(){
+  createHaiB() {
     this.setData({
       showDialogHaib: true
     });
-    const context = wx.createCanvasContext('myCanvas');
-    const path = this.data.cardInfo.v_coverimage_path;
-    const code = this.data.cardInfo.v_coverimage_path;
-    context.drawImage(path, 25, 15, 250, 270);
-    context.drawImage(code, 25, 295, 80, 80);
-    context.setFontSize(14);
-    context.setFillStyle('gray');
-    context.fillText('扫描或长按查看贺卡', 110, 345);
-    context.draw();
+    wx.showLoading({
+      title: '努力生成中...'
+    })
+    // 获取二维码
+    return request({
+      url: 'system/Greetingcard/getSunpath.do',
+      method: 'POST',
+      data: {
+        card_id: this.data.id
+      }
+    }).then(res => {
+      if (res.data.filePath) {
+        const context = wx.createCanvasContext('myCanvas');
+        const path = this.data.v_coverimage_path;
+        const code = res.data.filePath;
+        context.drawImage(path, 25, 25, 250, 270);
+        context.drawImage(code, 25, 305, 120, 120);
+        context.setFontSize(14);
+        context.setFillStyle('gray');
+        context.fillText('扫描或长按查看贺卡', 150, 375);
+        context.draw();
+      }
+      wx.hideLoading();
+    });
   },
-  closeDialogHaib(){
-      wx.canvasToTempFilePath({
-        x: 0,
-        y: 50,
-        width: this.data.windowWidth,
-        height: this.data.contentHeight,
-        canvasId: 'myCanvas',
-        success: function (res) {
-         savePicToAlbum(res.tempFilePath)
-        }
-      })
+
+
+  closeDialogHaib() {
+    wx.canvasToTempFilePath({
+      canvasId: 'myCanvas',
+      fileType: 'jpg',
+      x: 0,
+      y: 50,
+      width: this.data.windowWidth,
+      height: this.data.contentHeight,
+      success: function(res) {
+        savePicToAlbum(res.tempFilePath)
+      }
+    })
     this.setData({
       showDialogHaib: false
     });
   },
 
-
   //音乐
   initStartMusic() {
-    let { v_music_path } = this.data;
+    let {
+      v_music_path
+    } = this.data;
     var innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;
     innerAudioContext.loop = true;
@@ -151,7 +169,7 @@ Page({
     });
   },
 
-  onUnload: function () {
+  onUnload: function() {
     this.data.innerAudioContext.destroy();
   },
 
@@ -161,16 +179,16 @@ Page({
       num,
       list,
       count,
-      animateData
+      flashimages
     } = this.data;
-    let spicLenght = animateData[num].images.length;
+    let spicLenght = flashimages.length;
     let a_false_images = [];
-    for (let i in animateData[num].images) {
-      a_false_images.push(animateData[num].images[i].v_path_low)
+    for (let i in flashimages) {
+      a_false_images.push(flashimages.v_path_low)
     }
 
     for (let i = 0; i < count; i++) {
-      let spicImgSrc = animateData[num].images[this.randomInteger(1, spicLenght)].v_path;
+      let spicImgSrc = flashimages[this.randomInteger(1, spicLenght)].v_path;
       let spinAnimationName = (Math.random() < 0.5) ? 'clockwiseSpin' : 'counterclockwiseSpinAndFlip';
       let leafDelay = this.durationValue(this.randomFloat(0, 8));
       let fadeAndDropDuration = this.durationValue(this.randomFloat(5, 11));
@@ -207,7 +225,7 @@ Page({
   },
 
   //去编辑
-  toEdit(e){
+  toEdit(e) {
     this.data.innerAudioContext.destroy();
     const templateId = e.currentTarget.dataset.templateid;
     wx.navigateTo({
@@ -218,21 +236,19 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    // this.getAllUserCard(this.data.index);
-  },
+  onShow: function() {},
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
@@ -246,27 +262,35 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
-
+  toHome() {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
+  },
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function (res) {
-    var getById = wx.getStorageSync('getById');
+  onShareAppMessage: function(res) {
+    let getById = wx.getStorageSync('getById'),
+      nickName = this.data.nickName || '',
+      coverImg;
+    this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
     if (res.from === 'button') {}
     return {
-      title: '送您一张新年祝福贺卡',
-      path: '/pages/creatCard/creatCard?getById=' + getById,
-      success: function (res) { }
+      title: `【${nickName}】送您一张新年祝福贺卡`,
+      imageUrl: coverImg,
+      path: `/pages/creatCard/creatCard?getById=${getById}`,
+      success: function(res) {}
     }
   }
 })

@@ -146,4 +146,5 @@
 .pageword2{
   top:700rpx;
   z-index: 30;
+  position: absolute;
 }

@@ -155,7 +155,7 @@
 .read-wish {
   position: fixed;
   left: 50rpx;
-  bottom: 70rpx;
+  bottom: 45rpx;
   width: 60%;
   border-radius: 40rpx;
   background: rgba(0, 0, 0, 0.4);
@@ -623,6 +623,8 @@
   position: relative;
   height: 300rpx;
   overflow: hidden;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
 }
 .banner-wrap .item image{
   width: 100%;

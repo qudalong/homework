@@ -6,7 +6,7 @@ import {
 } from '../../utils/util.js'
 Page({
   data: {
-    sendOready:false,
+    sendOready: false,
     getById: 0, //保存后返回的模板id
     headLow: '',
     itemIndex: 0, //当前模板下表
@@ -43,8 +43,7 @@ Page({
     })
     const userInfo = wx.getStorageSync('userInfo');
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || ''; //获取数据的id
-    const seachTempCard = this.seachTempCard();
+    const getById = option.getById || '75'; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
@@ -52,10 +51,15 @@ Page({
     this.setData({
       getById: getById
     })
-    this.greetingcardScanU();
 
+    // 模板查看人数
+    this.greetingcardScanU();
     //获取保存后的模板数据
     this.getUserCardById();
+    //获取评论消息列表
+    this.getMessageBycardId();
+    //获取送花列表
+    this.getFlowBycardId();
   },
 
   getUserCardById() {
@@ -66,38 +70,44 @@ Page({
         id: this.data.getById
       }
     }).then(res => {
+      let innerAudioContext = wx.createInnerAudioContext();
+      innerAudioContext.autoplay = true;
+      innerAudioContext.loop = true;
+      innerAudioContext.src = res.data.v_music_path;
+
       let bannerList = []
       const userimages = res.data.userimages;
       for (let i in userimages) {
         bannerList.push(userimages[i].v_path)
       }
       var avatarUrl = res.data.v_wechar_path;
-      if (avatarUrl){
-        if (avatarUrl.indexOf('greetcard')==-1) {
+      if (avatarUrl) {
+        if (avatarUrl.indexOf('greetcard') == -1) {
           avatarUrl = res.data.v_wechar_path_low;
         }
       }
-
       this.setData({
         cardInfo: res.data,
         itemInfo: res.data,
         v_coverimage_path: res.data.v_coverimage_path,
         v_music_path: res.data.v_music_path,
         cardTitle: res.data.v_card_name,
-        avatarUrl: avatarUrl,
-        nickName: res.data.v_nc_name,
+        avatarUrl: res.data.v_wechar_path || avatarUrl,
+        nickName: res.data.v_nc_name || nickName,
         cardContent: res.data.v_blessing_content,
         bannerList,
         gardenInfo: res.data.v_yc_schema,
+        innerAudioContext
       })
       this.init();
-      this.initMusic();
       wx.setNavigationBarTitle({
         title: res.data.v_card_name
       });
       wx.hideLoading();
     });
   },
+
+
 
 
   toCreateCard: function() {
@@ -149,7 +159,7 @@ Page({
         v_wechar_id: wx.getStorageSync('openid'),
         //微信头像 路径
         // v_wechar_path: avatarUrl,
-        v_wechar_path: headLow,
+        v_wechar_path: headLow || wx.getStorageSync('userInfo').avatarUrl,
         //用户自定义上传的照片 多个已逗号隔开
         v_user_images: v_user_images.join(',') || '',
         v_false_images: a_false_images.join(',') || ''
@@ -189,13 +199,6 @@ Page({
     })
   },
 
-  // 获取模板
-  seachTempCard() {
-    return request({
-      url: 'system/Greetingcard/seachTempCard.do',
-    });
-  },
-
   // 获取音乐
   seachMusic() {
     return request({
@@ -217,22 +220,7 @@ Page({
     });
   },
 
-  //音乐
-  initMusic() {
-    let {
-      itemInfo,
-      musicList,
-      mindex
-    } = this.data;
 
-    const innerAudioContext = wx.createInnerAudioContext();
-    innerAudioContext.autoplay = true;
-    innerAudioContext.loop = true;
-    innerAudioContext.src = itemInfo.v_music_path;
-    this.setData({
-      innerAudioContext
-    });
-  },
 
   //切换音乐
   selectMusic(e) {
@@ -482,7 +470,7 @@ Page({
       width: this.data.windowWidth,
       height: this.data.contentHeight,
       canvasId: 'myCanvas',
-      success: function (res) {
+      success: function(res) {
         savePicToAlbum(res.tempFilePath)
       }
     });
@@ -501,7 +489,7 @@ Page({
     });
   },
 
-  toHome(){
+  toHome() {
     wx.switchTab({
       url: '/pages/index/index'
     })
@@ -542,12 +530,12 @@ Page({
         id: this.data.getById //卡片id
       }
     }).then(res => {
-        this.setData({
-          flowerList: res.data
-        })
+      this.setData({
+        flowerList: res.data
+      })
     });
   },
-  
+
   // 获取消息
   getMessageBycardId() {
     request({
@@ -557,9 +545,9 @@ Page({
         id: this.data.getById //卡片id
       }
     }).then(res => {
-        this.setData({
-          messageList: res.data
-        })
+      this.setData({
+        messageList: res.data
+      })
     });
   },
 
@@ -592,30 +580,30 @@ Page({
         v_wechar_id: wx.getStorageSync('openid') || ''
       }
     }).then(res => {
-      
+
     });
   },
 
-   initsendButton:function(){
-     request({
-       url: 'system/Greetingcard/loginTag.do',
-       method: 'POST',
-       data: {
-         openId: wx.getStorageSync('openid')
-       }
-     }).then(res => {
-       if (!res.data.flag) {
-         this.setData({
-           bangding: true
-         })
+  initsendButton: function() {
+    request({
+      url: 'system/Greetingcard/loginTag.do',
+      method: 'POST',
+      data: {
+        openId: wx.getStorageSync('openid')
+      }
+    }).then(res => {
+      if (!res.data.flag) {
+        this.setData({
+          bangding: true
+        })
 
-       } else {
-         this.setData({
-           bangding: false
-         })
-       }
-     });
-   },
+      } else {
+        this.setData({
+          bangding: false
+        })
+      }
+    });
+  },
 
   // 验证有无绑定
   loginTag() {
@@ -628,12 +616,13 @@ Page({
     }).then(res => {
       if (!res.data.flag) {
         this.setData({
-          bangding:true
+          bangding: true
         })
         this.bingwecharUser();
-      }else{
+      } else {
         this.setData({
-          bangding:false
+          bangding: false,
+          headLow: res.data.info.v_wechar_image_low
         })
       }
     });
@@ -653,7 +642,12 @@ Page({
         filePath: this.data.avatarUrl
       }
     }).then(res => {
-      console.log(res)
+      if (res.data.flag) {
+        this.setData({
+          //绑定时返回的头像短路径
+          headLow: res.data.v_wechar_image_low
+        })
+      }
     });
   },
 
@@ -671,10 +665,10 @@ Page({
 
   //发祝福
   sendMessage() {
-    if (!this.data.zufu){
+    if (!this.data.zufu) {
       wx.showToast({
         title: '祝福不能为空',
-        icon:'none'
+        icon: 'none'
       })
       return
     }
@@ -684,7 +678,7 @@ Page({
       data: {
         id: this.data.getById, //卡片id
         v_wechar_id: wx.getStorageSync('openid'), // 谁送的
-        v_nc: this.data.nicheng || wx.getStorageSync('userInfo').nickName||'',
+        v_nc: this.data.nicheng || wx.getStorageSync('userInfo').nickName || '',
         v_content: this.data.zufu
       }
     }).then(res => {
@@ -694,15 +688,31 @@ Page({
       flowerDialog: false
     })
   },
+  toTycz() {
+    wx.navigateToMiniProgram({
+      appId: 'wxa9e3302fab960815',
+      path: 'pages/login/userLogin/userLogin',
+      extraData: {},
+      success(res) { }
+    })
+  },
+  toOutpage(){
+    wx.navigateTo({
+      url: '/pages/outpage/outpage',
+    })
+  },
 
-  onShareAppMessage: function (res) {
-    let getById = this.data.getById;
-    if (res.from === 'button') {
-    }
+  onShareAppMessage: function(res) {
+    let getById = wx.getStorageSync('getById'),
+      nickName = this.data.nickName || '',
+      coverImg;
+    this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
+    if (res.from === 'button') {}
     return {
-      title: '送您一张新年祝福贺卡',
+      title: `【${nickName}】送您一张新年祝福贺卡`,
+      imageUrl: coverImg,
       path: '/pages/creatCard/creatCard?getById=' + getById,
-      success: function (res) { }
+      success: function(res) {}
     }
   }
 })

@@ -1,6 +1,6 @@
 const app = getApp();
-const host = 'https://xcx.lebeitong.com/';
-// const host = 'http://192.168.2.146:8080/lbt-xcx-server/';
+// const host = 'https://xcx.lebeitong.com/';
+const host = 'http://192.168.2.208:8080/lbt-xcx-server/';
 
 const request = ({url,data = {},method = 'GET'}) => {
   return new Promise(function(resolve, reject) {
@@ -11,7 +11,6 @@ const request = ({url,data = {},method = 'GET'}) => {
 const _request = (url, resolve, reject, data = {}, method = 'GET') => {
   wx.request({
     url: host + url,
-    // url: url,
     header: {
       "content-type": "application/json"
     },

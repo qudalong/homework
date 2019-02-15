@@ -56,7 +56,7 @@
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
         <image mode='aspectFit' src="/image/delete_btn.png" />
       </view>
-      <image mode='widthFix' src="{{item.resultPath}}" />
+      <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
       <view class='intro-bg intro-bg-top'>
@@ -69,9 +69,9 @@
     </view>
   </view>
   <view class='ad-wrap'>
-    <image class='tyy_banner' mode='aspectFit' src="/image/img/heka_banner.png" />
+    <image class='tyy_banner' mode='aspectFit' src="/image/img/tyy_banner.png" />
   </view>
   <view class='ad-wrap'>
-    <image class='tyy_banner' mode='aspectFit' src="/image/img/tyy_banner.png" />
+    <image bindtap='toHome' class='tyy_banner' mode='aspectFit' src="/image/img/heka_banner.png" />
   </view>
 </view>
