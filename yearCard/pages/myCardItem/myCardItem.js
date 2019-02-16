@@ -41,13 +41,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    const id = options.id || decodeURIComponent(options.scene);
     wx.showLoading({
       title: '加载中..',
     });
-    this.setData({
-      id: options.id
-    })
-    this.getUserCardById(options.id)
+    this.setData({id})
+    this.getUserCardById(id)
   },
 
   //我的贺卡详情
@@ -115,6 +114,8 @@ Page({
         const code = res.data.filePath;
         context.drawImage(path, 25, 25, 250, 270);
         context.drawImage(code, 25, 305, 120, 120);
+        console.log(path)
+        console.log(code)
         context.setFontSize(14);
         context.setFillStyle('gray');
         context.fillText('扫描或长按查看贺卡', 150, 375);
@@ -124,7 +125,11 @@ Page({
     });
   },
 
-
+  toOutpage() {
+    wx.navigateTo({
+      url: '/pages/outpage/outpage',
+    })
+  },
   closeDialogHaib() {
     wx.canvasToTempFilePath({
       canvasId: 'myCanvas',

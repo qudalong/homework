@@ -18,7 +18,6 @@ App({
               'content-type': 'application/x-www-form-urlencoded'
             },
             success: function(res) {
-              // console.log(res)
               if (res.data.rtnCode == 10000) {
                 wx.setStorageSync('openid', res.data.rtnData[0].openid);
                 wx.setStorageSync('sessionid', res.data.rtnData[0].sessionid);
@@ -54,7 +53,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    url: 'http://192.168.2.208:8080/lbt-xcx-server/',
-    // url: 'https://xcx.lebeitong.com/'
+    // url: 'http://192.168.2.236:8080/lbt-xcx-server/',
+    url: 'https://xcx.lebeitong.com/'
   }
 })

@@ -15,7 +15,7 @@ Page({
   onLoad: function(options) {
     wx.showLoading({
       title: '加载中...'
-    })
+    });
     this.setData({
       openId: wx.getStorageSync('openid'),
       userInfo: wx.getStorageSync('userInfo'),
@@ -85,7 +85,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-    if (this.data.more) {
       wx.showLoading({
         title: '刷新中...'
       })
@@ -93,7 +92,7 @@ Page({
         url: 'system/Greetingcard/seachTempCard.do',
         method: 'POST',
         data: {
-          page: this.data.page
+          page: 0
         }
       }).then(res => {
         this.setData({
@@ -103,12 +102,6 @@ Page({
         })
         wx.hideLoading();
       })
-    }else{
-      wx.showToast({
-        title: '没有更多数据',
-        icon:'none'
-      });
-    }
   },
 
   /**

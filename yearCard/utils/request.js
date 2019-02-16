@@ -1,6 +1,5 @@
 const app = getApp();
-// const host = 'https://xcx.lebeitong.com/';
-const host = 'http://192.168.2.208:8080/lbt-xcx-server/';
+const host = app.globalData.url;
 
 const request = ({url,data = {},method = 'GET'}) => {
   return new Promise(function(resolve, reject) {

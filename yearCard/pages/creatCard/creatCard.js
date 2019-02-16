@@ -43,7 +43,7 @@ Page({
     })
     const userInfo = wx.getStorageSync('userInfo');
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || '75'; //获取数据的id
+    const getById = option.getById || '105'; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
@@ -51,15 +51,39 @@ Page({
     this.setData({
       getById: getById
     })
-
-    // 模板查看人数
-    this.greetingcardScanU();
+  
     //获取保存后的模板数据
     this.getUserCardById();
     //获取评论消息列表
     this.getMessageBycardId();
     //获取送花列表
     this.getFlowBycardId();
+    //贺卡浏览人/次
+    this.greetingcardScanU();
+  },
+
+  //贺卡浏览人/次
+  greetingcardScanU() {
+    request({
+      url: 'system/Greetingcard/GreetingcardScanU.do',
+      method: 'POST',
+      data: {
+        i_card_id: this.data.getById,
+        v_wechar_id: wx.getStorageSync('openid')
+      }
+    }).then(res => { });
+  },
+
+  //贺卡分享人
+  greetingcardScanShareU() {
+    request({
+      url: 'system/Greetingcard/GreetingcardScanShareU.do',
+      method: 'POST',
+      data: {
+        i_card_id: this.data.getById,
+        v_wechar_id: wx.getStorageSync('openid')
+      }
+    }).then(res => { });
   },
 
   getUserCardById() {
@@ -106,10 +130,6 @@ Page({
       wx.hideLoading();
     });
   },
-
-
-
-
   toCreateCard: function() {
     this.saveCard();
     this.setData({
@@ -220,8 +240,6 @@ Page({
     });
   },
 
-
-
   //切换音乐
   selectMusic(e) {
     this.data.innerAudioContext.destroy();
@@ -252,9 +270,6 @@ Page({
     } = this.data;
     let spicLenght = itemInfo.flashimages.length;
     let a_false_images = [];
-    // for (let i in animateData[num].images) {
-    //   a_false_images.push(animateData[num].images[i].v_path_low)
-    // }
     let spicImgSrc = itemInfo.flashimages[this.randomInteger(1, spicLenght)].v_path;
     for (let i = 0; i < count; i++) {
       let spicImgSrc = itemInfo.flashimages[this.randomInteger(1, spicLenght)].v_path;
@@ -281,7 +296,6 @@ Page({
   selectEdit() {
     this.showDialogClassify();
   },
-
 
   // 删除广告图片
   deleteBannerImg(e) {
@@ -453,15 +467,29 @@ Page({
     this.setData({
       showDialogHaib: true
     });
-    const context = wx.createCanvasContext('myCanvas');
-    const path = this.data.itemInfo.v_coverimage_path;
-    const code = this.data.itemInfo.v_coverimage_path;
-    context.drawImage(path, 25, 15, 250, 270);
-    context.drawImage(code, 25, 295, 80, 80);
-    context.setFontSize(14);
-    context.setFillStyle('gray');
-    context.fillText('扫描或长按查看贺卡', 110, 345);
-    context.draw();
+    // 获取二维码
+    return request({
+      url: 'system/Greetingcard/getSunpath.do',
+      method: 'POST',
+      data: {
+        card_id: this.data.getById
+      }
+    }).then(res => {
+      if (res.data.filePath) {
+        const context = wx.createCanvasContext('myCanvas');
+        const path = this.data.v_coverimage_path;
+        const code = res.data.filePath;
+        context.drawImage(path, 25, 25, 250, 270);
+        context.drawImage(code, 25, 305, 120, 120);
+        console.log(path)
+        console.log(code)
+        context.setFontSize(14);
+        context.setFillStyle('gray');
+        context.fillText('扫描或长按查看贺卡', 150, 375);
+        context.draw();
+      }
+      wx.hideLoading();
+    });
   },
   closeDialogHaib() {
     wx.canvasToTempFilePath({
@@ -570,19 +598,6 @@ Page({
     });
   },
 
-  // 模板查看人数
-  greetingcardScanU() {
-    request({
-      url: 'system/Greetingcard/GreetingcardScanU.do',
-      method: 'POST',
-      data: {
-        i_card_id: this.data.getById,
-        v_wechar_id: wx.getStorageSync('openid') || ''
-      }
-    }).then(res => {
-
-    });
-  },
 
   initsendButton: function() {
     request({
@@ -707,12 +722,16 @@ Page({
       nickName = this.data.nickName || '',
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
-    if (res.from === 'button') {}
+    if (res.from === 'button') {
+      this.greetingcardScanShareU();
+    }
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
       path: '/pages/creatCard/creatCard?getById=' + getById,
-      success: function(res) {}
+      success: function(res) {
+        console.log('右上角分享')
+      }
     }
   }
 })

@@ -130,7 +130,7 @@ Page({
    */
   onShow: function() {
     this.setData({
-      page:0
+      page: 0
     })
     this.getAllUserCard();
   },
@@ -153,33 +153,26 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-    if (this.data.more) {
-      wx.showLoading({
-        title: '刷新中...'
-      })
-      request({
-        url: 'system/Greetingcard/getAllUserCard.do',
-        method: 'POST',
-        data: {
-          openId: this.data.openId || '',
-          page: this.data.page
-        }
-      }).then(res => {
-        if (res.statusCode == 200) {
-          this.setData({
-            coverList: this.data.coverList.concat(res.data.datalist),
-            page: res.data.page,
-            more: res.data.more
-          });
-        }
-        wx.hideLoading();
-      });
-    } else {
-      wx.showToast({
-        title: '没有更多数据',
-        icon: 'none'
-      });
-    }
+    wx.showLoading({
+      title: '刷新中...'
+    })
+    request({
+      url: 'system/Greetingcard/getAllUserCard.do',
+      method: 'POST',
+      data: {
+        openId: this.data.openId || '',
+        page: 0
+      }
+    }).then(res => {
+      if (res.statusCode == 200) {
+        this.setData({
+          coverList: this.data.coverList.concat(res.data.datalist),
+          page: res.data.page,
+          more: res.data.more
+        });
+      }
+      wx.hideLoading();
+    });
   },
 
   /**

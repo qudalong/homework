@@ -41,10 +41,10 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    const id = option.id || '';
+    const id = option.id || '';//模板id
     const openId = wx.getStorageSync('openid');
     const userInfo = wx.getStorageSync('userInfo');
-    const templateId = option.templateId || '';
+    const templateId = option.templateId || '';//卡片id
     this.setData({
       id,
       templateId
@@ -89,9 +89,25 @@ Page({
         templateId
       });
       //修改时查询接口
-      this.getUserCardById(templateId)
+      this.getUserCardById(templateId);
     }
+      //模板浏览次(进入详情时)
+      this.greetcardScanScan();
   },
+
+  //模板浏览次
+  greetcardScanScan() {
+   request({
+      url: 'system/Greetingcard/GreetcardScanScan.do',
+      method: 'POST',
+      data: {
+        i_template_id: this.data.id,
+        v_wechar_id: wx.getStorageSync('openid')
+      }
+    }).then(res=>{});
+  },
+
+
 
   //我的贺卡详情(修改时信息数据)
   getUserCardById(id) {
@@ -157,14 +173,14 @@ Page({
       });
       this.loginTag();
       if (this.data.templateId) {
-        console.log('这是修改=templateId' + this.data.templateId)
         this.updateCard();
       } else {
-        console.log('这是保存')
         this.saveCard();
       }
     }
   },
+
+
 
   // 保存模板
   saveCard() {
@@ -228,6 +244,19 @@ Page({
       }
     });
   },
+
+  //保存模板(点击生成贺卡时)
+  greetingcardUseScan() {
+    request({
+      url: 'system/Greetingcard/GreetingcardUseScan.do',
+      method: 'POST',
+      data: {
+        i_template_id: this.data.id,
+        v_wechar_id: wx.getStorageSync('openid')
+      }
+    }).then(res => { });
+  },
+
   // 保存模板
   updateCard() {
     let {
@@ -322,20 +351,6 @@ Page({
   seachzf() {
     return request({
       url: 'system/Greetingcard/seachzf.do',
-    });
-  },
-
-  // 模板使用人数
-  greetingcardUseScan() {
-    request({
-      url: 'system/Greetingcard/GreetingcardUseScan.do',
-      method: 'POST',
-      data: {
-        i_template_id: this.data.itemInfo.id,
-        v_wechar_id: this.data.openId
-      }
-    }).then(res => {
-
     });
   },
 
@@ -507,10 +522,6 @@ Page({
       url: '/pages/outpage/outpage',
     })
   },
-
-
-
-
 
   // 删除广告图片
   deleteBannerImg(e) {
@@ -814,17 +825,33 @@ Page({
       });
   },
 
+  //模板分享
+  greetcardShareScan() {
+    request({
+      url: 'system/Greetingcard/GreetcardShareScan.do',
+      method: 'POST',
+      data: {
+        i_template_id: this.data.id,
+        v_wechar_id: wx.getStorageSync('openid')
+      }
+    }).then(res => { });
+  },
+
   onShareAppMessage: function(res) {
     let getById = wx.getStorageSync('getById'),
       nickName = this.data.nickName || '',
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
-    if (res.from === 'button') {}
+    if (res.from === 'button') {
+      //模板分享人数统计
+      this.greetcardShareScan();
+    }
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
       path: `/pages/creatCard/creatCard?getById=${getById}`,
-      success: function(res) {}
+      success: function(res) {
+      }
     }
   }
 })
