@@ -91,7 +91,6 @@ Page({
       }
     }).then(res => {
       if (res.statusCode == 200) {
-        console.log(res)
         if (res.data) {
           const tempData = res.data;
           wx.setNavigationBarTitle({
@@ -132,6 +131,15 @@ Page({
     wx.showLoading({
       title: '努力生成中...'
     })
+
+  //  wx.downloadFile({
+  //    url: `${app.globalData.url}system/Greetingcard/getSunpath.do?card_id=${this.data.id}`,
+  //    success:(res)=>{
+  //     console.log(res)
+  //   }
+  //  })
+
+
     // 获取二维码
     return request({
       url: 'system/Greetingcard/getSunpath.do',
@@ -146,6 +154,8 @@ Page({
         const code = res.data.filePath;
         context.drawImage(path, 25, 25, 250, 270);
         context.drawImage(code, 25, 305, 120, 120);
+        // context.drawImage('/image/img/tyy_banner.png', 25, 25, 250, 270);
+        // context.drawImage('/image/img/tyy_banner.png', 25, 305, 120, 120);
         console.log(path)
         console.log(code)
         context.setFontSize(14);

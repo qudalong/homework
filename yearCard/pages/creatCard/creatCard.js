@@ -44,13 +44,11 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = option.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || '269'; //获取数据的id
+    const getById = option.getById || '281'; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
     this.initsendButton();
-    console.log('传过来的openid=' + openid)
-    console.log('自己的openid=' + wx.getStorageSync('openid'))
     this.setData({
       getById: getById,
       openid
@@ -737,12 +735,13 @@ Page({
     })
   },
 
+ 
   onShareAppMessage: function(res) {
     let getById = wx.getStorageSync('getById'),
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
-    this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
+    this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = '';
     if (res.from === 'button') {
       this.greetingcardScanShareU();
     }

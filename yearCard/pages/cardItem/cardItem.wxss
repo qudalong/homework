@@ -369,7 +369,6 @@
   width: 100%;
   height: 300rpx;
   overflow: hidden;
-  padding-top: 10rpx;
 }
 .ad-wrap .tyy_banner{
   width: 100%;
@@ -582,7 +581,7 @@
 }
 /* 海报*/
 .generate-poster{
-  margin: 120rpx auto 0;
+  margin: 30rpx auto 0;
 }
 .poster{
   padding: 50rpx;
@@ -626,8 +625,12 @@
   border-radius: 8rpx;
   margin-bottom: 10rpx;
 }
+.banner-wrap .item:last-child{
+  margin-bottom: 0;
+}
 .banner-wrap .item image{
   width: 100%;
+  height: 300rpx;
 }
 .banner-wrap .item .delete{
   position: absolute;
@@ -680,8 +683,8 @@
   width: 50%;
 }
 .myCanvas{
-  height:920rpx;
-  margin: 30rpx auto;
+  height:1020rpx;
+  margin: 20rpx auto;
   border-radius: 20rpx;
   background-color: #fff;
   font-size: 40rpx;

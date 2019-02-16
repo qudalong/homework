@@ -69,6 +69,7 @@ Page({
               userInfo,
               openId,
               // 页面数据
+              v_bg_color: res[0].data.v_bg_color||'#fff',
               v_coverimage_path: res[0].data.v_coverimage_path,
               v_coverimage_path_low: res[0].data.v_coverimage_path_low,
               cardTitle: res[0].data.v_template_name,

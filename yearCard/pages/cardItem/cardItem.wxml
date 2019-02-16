@@ -99,14 +99,14 @@
   </view>
 </view>
 <!-- 海报 -->
-<view wx:if="{{showDialogHaib}}" class='global-cover shadow'>
+<view wx:if="{{showDialogHaib}}" class='global-cover shadow'  catchtouchmove="true">
   <view class='generate-poster'>
     <canvas class='myCanvas' canvas-id="myCanvas" />
     <view bindtap="closeDialogHaib" class='save'>保存图片</view>
   </view>
 </view>
 <!-- 广告 -->
-<view id='outPage' style="background:{{itemInfo.v_bg_color}}">
+<view id='outPage' style="background:{{v_bg_color}}">
   <view class='banner-wrap'>
     <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
