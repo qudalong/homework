@@ -45,8 +45,40 @@ Page({
     wx.showLoading({
       title: '加载中..',
     });
-    this.setData({id})
-    this.getUserCardById(id)
+    this.setData({id});
+    this.getUserCardById(id);
+    this.getFlowBycardId();
+    this.getMessageBycardId();
+  },
+
+  // 获取小红花消息
+  getFlowBycardId() {
+    request({
+      url: 'system/Greetingcard/getFlowBycardId.do',
+      method: 'POST',
+      data: {
+        id: this.data.id //卡片id
+      }
+    }).then(res => {
+      this.setData({
+        flowerList: res.data
+      })
+    });
+  },
+
+  // 获取消息
+  getMessageBycardId() {
+    request({
+      url: 'system/Greetingcard/getMessageBycardId.do',
+      method: 'POST',
+      data: {
+        id: this.data.id //卡片id
+      }
+    }).then(res => {
+      this.setData({
+        messageList: res.data
+      })
+    });
   },
 
   //我的贺卡详情
@@ -284,19 +316,33 @@ Page({
       url: '/pages/index/index'
     })
   },
+  //贺卡分享人
+  greetingcardScanShareU() {
+    request({
+      url: 'system/Greetingcard/GreetingcardScanShareU.do',
+      method: 'POST',
+      data: {
+        i_card_id: this.data.id,
+        v_wechar_id: wx.getStorageSync('openid')
+      }
+    }).then(res => { });
+  },
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function(res) {
     let getById = wx.getStorageSync('getById'),
+      openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
-    if (res.from === 'button') {}
+    if (res.from === 'button') {
+      this.greetingcardScanShareU();
+    }
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
-      path: `/pages/creatCard/creatCard?getById=${getById}`,
+      path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
       success: function(res) {}
     }
   }

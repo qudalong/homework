@@ -42,14 +42,18 @@ Page({
       title: '加载中...'
     })
     const userInfo = wx.getStorageSync('userInfo');
+    const openid = option.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || '105'; //获取数据的id
+    const getById = option.getById || '269'; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
     this.initsendButton();
+    console.log('传过来的openid=' + openid)
+    console.log('自己的openid=' + wx.getStorageSync('openid'))
     this.setData({
-      getById: getById
+      getById: getById,
+      openid
     })
   
     //获取保存后的模板数据
@@ -581,6 +585,22 @@ Page({
 
   // 送花
   sendFlow() {
+    console.log('传过来的openid=' + this.data.openid)
+    console.log('自己的openid=' + wx.getStorageSync('openid'))
+    if (this.data.openid == wx.getStorageSync('openid')){
+      wx.showToast({
+        title: '自己不能给自己送花哦',
+        icon: 'none'
+      });
+      return;
+    }
+    if (this.data.sendOready){
+      wx.showToast({
+        title: '您已经送过了哦！',
+        icon:'none'
+      });
+      return;
+    }
     request({
       url: 'system/Greetingcard/sendFlow.do',
       method: 'POST',
@@ -719,6 +739,7 @@ Page({
 
   onShareAppMessage: function(res) {
     let getById = wx.getStorageSync('getById'),
+      openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
@@ -728,9 +749,8 @@ Page({
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
-      path: '/pages/creatCard/creatCard?getById=' + getById,
+      path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
       success: function(res) {
-        console.log('右上角分享')
       }
     }
   }

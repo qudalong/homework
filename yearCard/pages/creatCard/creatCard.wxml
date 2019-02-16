@@ -28,16 +28,16 @@
 <!-- 操作按钮 -->
 <view class='operation'>
   <view>
-    <button class='item weixin' open-type='share'>
+    <button class='item weixin' open-type='share' hover-class='hover'>
       <image src='../../image/floating_wechat_btn.png'></image>
     </button>
-    <view catchtap='showDialogHaib' class='item pengyouquan'>
+    <view catchtap='showDialogHaib' class='item pengyouquan' hover-class='hover'>
       <image src='../../image/floating_friends_btn.png'></image>
     </view>
-    <view wx:if="{{!bangding}}" class='item pengyouquan flower' bindtap='sendFlow'>
+    <view wx:if="{{!bangding}}" class='item pengyouquan flower' bindtap='sendFlow' hover-class='hover'>
       <image src='../../image/floating_flow_btn.png'></image>
     </view>
-    <button wx:if="{{bangding}}" class='item pengyouquan flower' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
+    <button wx:if="{{bangding}}" class='item pengyouquan flower' open-type="getUserInfo" bindgetuserinfo="userInfoHandler" hover-class='hover'>
       <image src='../../image/floating_flow_btn.png'></image>
     </button>
     <!-- <view wx:if="{{sendOready}}" class='item pengyouquan flower'>

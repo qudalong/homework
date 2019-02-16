@@ -13,6 +13,9 @@ button {
   background-color: #fff;
   border-radius: 0;
 }
+.hover{
+  opacity: 0.9;
+}
 
 button::after {
   border: none;

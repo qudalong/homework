@@ -26,17 +26,17 @@
 </view>
 <!-- 操作按钮 -->
 <view class='operation'>
-  <button wx:if="{{!showbtns}}" class='item edit' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
+  <button wx:if="{{!showbtns}}" hover-class='hover' class='item edit' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">
     <image src='../../image/floating_editor_btn.png'></image>
   </button>
-  <button wx:if="{{!showbtns}}" open-type="getUserInfo" bindgetuserinfo="userInfoHandler_heka" class='item pengyouquan'>
+  <button wx:if="{{!showbtns}}" hover-class='hover' open-type="getUserInfo" bindgetuserinfo="userInfoHandler_heka" class='item pengyouquan'>
     <image src='../../image/floating_generate_btn.png'></image>
   </button>
   <view wx:if="{{showbtns}}">
-    <button class='item weixin' open-type='share'>
+    <button class='item weixin' open-type='share' hover-class='hover'>
       <image src='../../image/floating_wechat_btn.png'></image>
     </button>
-    <view catchtap='showDialogHaib' class='item pengyouquan'>
+    <view catchtap='showDialogHaib' class='item pengyouquan' hover-class='hover'>
       <image src='../../image/floating_friends_btn.png'></image>
     </view>
   </view>

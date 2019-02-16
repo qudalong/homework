@@ -839,19 +839,24 @@ Page({
 
   onShareAppMessage: function(res) {
     let getById = wx.getStorageSync('getById'),
+      openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
     if (res.from === 'button') {
+    // wx.navigateTo({
+    //   url:`/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`
+    // })
       //模板分享人数统计
       this.greetcardShareScan();
     }
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
-      path: `/pages/creatCard/creatCard?getById=${getById}`,
+      path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
       success: function(res) {
       }
     }
+
   }
 })

@@ -27,17 +27,14 @@
 
 <!-- 操作按钮 -->
 <view class='operation'>
-  <button bindtap='toEdit' class='item edit' data-templateid="{{tempData.id}}">
+  <button bindtap='toEdit' class='item edit' data-templateid="{{tempData.id}}" hover-class='hover'>
     <image src='../../image/floating_editor_btn.png'></image>
   </button>
-  <button class='item weixin' open-type='share'>
+  <button class='item weixin' open-type='share' hover-class='hover'>
     <image src='../../image/floating_wechat_btn.png'></image>
   </button>
-  <view catchtap='createHaiB' class='item pengyouquan'>
+  <view catchtap='createHaiB' class='item pengyouquan' hover-class='hover'>
     <image src='../../image/floating_friends_btn.png'></image>
-  </view>
-  <view class='item pengyouquan flower'>
-    <image src='../../image/floating_flow_btn.png'></image>
   </view>
 </view>
 
@@ -49,7 +46,6 @@
   </view>
 </view>
 <!-- 广告 -->
-<!-- <view id='outPage' style="background:{{itemInfo.v_bg_color}}"> -->
 <view id='outPage' style="background:#C82920;">
   <view class='banner-wrap'>
     <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
@@ -70,5 +66,34 @@
   </view>
   <view class='ad-wrap'>
     <image bindtap='toHome' class='tyy_banner' mode='aspectFit' src="/image/img/heka_banner.png" />
+  </view>
+</view>
+
+<!-- 滚动评论 -->
+<!-- 评论的内容 -->
+<view class='userinfo-fix pageword pageword2'>
+  <view class='scrollarea'>
+    <view class='item' wx:for="{{messageList}}" wx:key="unique">
+      <view>
+        <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
+      </view>
+      <view class='message-info'>
+        <view class="userNickName">
+          <text class='nametx'>{{item.v_nc_name}}</text>
+        </view>
+        <view class="userNickName">{{item.v_content}}</view>
+      </view>
+    </view>
+    <view class='item' wx:for="{{flowerList}}" wx:key="unique">
+      <view>
+        <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
+      </view>
+      <view class='message-info'>
+        <view class="userNickName">
+          <text class='nametx'>{{item.vncname}}</text>
+        </view>
+        <view class="userNickName">送了一朵花</view>
+      </view>
+    </view>
   </view>
 </view>
