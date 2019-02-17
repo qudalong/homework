@@ -583,8 +583,6 @@ Page({
 
   // 送花
   sendFlow() {
-    console.log('传过来的openid=' + this.data.openid)
-    console.log('自己的openid=' + wx.getStorageSync('openid'))
     if (this.data.openid == wx.getStorageSync('openid')){
       wx.showToast({
         title: '自己不能给自己送花哦',

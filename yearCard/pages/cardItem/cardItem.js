@@ -50,7 +50,6 @@ Page({
       templateId
     })
     if (!templateId) {
-      console.log("no templateId")
       const seachTempCardDetailById = this.seachTempCardDetailById(id);
       const seachMusic = this.seachMusic();
       const seachfalsh = this.seachfalsh();
