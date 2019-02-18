@@ -577,7 +577,7 @@ Page({
       success: (res) => {
         if (res.tapIndex == 0) {
           wx.chooseImage({
-            count: 3,
+            count: 9,
             sizeType: ['original', 'compressed'],
             sourceType: ['camera'],
             success: (res) => {
@@ -590,7 +590,7 @@ Page({
           })
         } else if (res.tapIndex == 1) { //相册
           wx.chooseImage({
-            count: 3,
+            count: 9,
             sizeType: ['original', 'compressed'],
             sourceType: ['album'],
             success: (res) => {
@@ -622,11 +622,11 @@ Page({
         successUp++;
         bannerList.push(JSON.parse(e.data));
         v_user_images.push(JSON.parse(e.data).resultPathLow);
-        if (bannerList.length > 3) {
-          bannerList.splice(0, bannerList.length - 3);
+        if (bannerList.length > 9) {
+          bannerList.splice(0, bannerList.length - 9);
         }
-        if (v_user_images.length > 3) {
-          v_user_images.splice(0, v_user_images.length - 3);
+        if (v_user_images.length > 9) {
+          v_user_images.splice(0, v_user_images.length - 9);
         }
         this.setData({
           bannerList,

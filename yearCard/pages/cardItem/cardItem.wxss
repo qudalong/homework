@@ -350,6 +350,16 @@
   font-size: 30rpx;
   line-height: 1.8;
 }
+.scrollarea_pinglun {
+  animation-name: autoscroll;
+  animation-duration:20s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  text-align: justify;
+  font-size: 30rpx;
+  line-height: 1.8;
+}
 
 @keyframes autoscroll {
   0% {

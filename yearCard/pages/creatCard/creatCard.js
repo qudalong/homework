@@ -34,17 +34,20 @@ Page({
     wishList: [], //祝福语
     bannerList: [], //广告图片集合
     musicList: [],
-    animateData: []
+    animateData: [],
+    timer:null
   },
 
   onLoad: function(option) {
+
+   
     wx.showLoading({
       title: '加载中...'
     })
     const userInfo = wx.getStorageSync('userInfo');
     const openid = option.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || '269'; //获取数据的id
+    const getById = option.getById||'302'; //获取数据的id
     console.log('获取分享id' + getById)
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
@@ -63,6 +66,13 @@ Page({
     this.getFlowBycardId();
     //贺卡浏览人/次
     this.greetingcardScanU();
+    let timer = setInterval(()=> {
+      this.getMessageBycardId();
+      this.getFlowBycardId();
+    }, 10000);
+    this.setData({
+      timer
+    })
   },
 
   //贺卡浏览人/次
@@ -121,7 +131,7 @@ Page({
         v_music_path: res.data.v_music_path,
         cardTitle: res.data.v_card_name,
         avatarUrl: res.data.v_wechar_path || avatarUrl,
-        nickName: res.data.v_nc_name || nickName,
+        nickName: res.data.v_nc || res.data.v_nc_name || nickName,
         cardContent: res.data.v_blessing_content,
         bannerList,
         gardenInfo: res.data.v_yc_schema,
@@ -301,17 +311,7 @@ Page({
     this.showDialogClassify();
   },
 
-  // 删除广告图片
-  deleteBannerImg(e) {
-    const curBannerIndex = e.currentTarget.dataset.index;
-    let {
-      bannerList
-    } = this.data;
-    bannerList.splice(curBannerIndex, 1);
-    this.setData({
-      bannerList
-    });
-  },
+
 
   stopMusic() {
     this.data.innerAudioContext.pause();
@@ -349,7 +349,7 @@ Page({
       success: (res) => {
         if (res.tapIndex == 0) {
           wx.chooseImage({
-            count: 3,
+            count: 9,
             sizeType: ['original', 'compressed'],
             sourceType: ['camera'],
             success: (res) => {
@@ -362,7 +362,7 @@ Page({
           })
         } else if (res.tapIndex == 1) { //相册
           wx.chooseImage({
-            count: 3,
+            count: 9,
             sizeType: ['original', 'compressed'],
             sourceType: ['album'],
             success: (res) => {
@@ -519,6 +519,7 @@ Page({
 
   onUnload: function() {
     this.data.innerAudioContext.destroy();
+    clearInterval(this.data.timer);
   },
 
   onShow() {
@@ -584,7 +585,7 @@ Page({
       }
     }).then(res => {
       this.setData({
-        messageList: res.data
+        messageList: res.data,
       })
     });
   },
@@ -620,7 +621,7 @@ Page({
           sendOready: true
         })
         wx.showToast({
-          title: '您已经送过了哦！',
+          title: '送花成功！',
           icon: 'none'
         });
       }

@@ -49,6 +49,9 @@
 <view id='outPage' style="background:#C82920;">
   <view wx:if="{{bannerList.length}}" class='banner-wrap'>
     <view wx:for="{{bannerList}}" wx:key="unique" class='item'>
+      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
+        <image mode='aspectFit' src="/image/delete_btn.png" />
+      </view>
       <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
@@ -72,7 +75,7 @@
 <!-- 滚动评论 -->
 <!-- 评论的内容 -->
 <view wx:if="{{messageList.length}}" class='userinfo-fix pageword pageword2'>
-  <view class='scrollarea'>
+  <view class='scrollarea_pinglun'>
     <view class='item' wx:for="{{messageList}}" wx:key="unique">
       <view>
         <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />

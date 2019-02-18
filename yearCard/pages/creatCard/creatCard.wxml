@@ -102,7 +102,7 @@
   </view>
 </view>
 <!-- 海报 -->
-<view wx:if="{{showDialogHaib}}" class='global-cover shadow'  catchtouchmove="true">
+<view wx:if="{{showDialogHaib}}" class='global-cover shadow' catchtouchmove="true">
   <view class='generate-poster'>
     <canvas class='myCanvas' canvas-id="myCanvas" />
     <view bindtap="closeDialogHaib" class='save'>保存图片</view>
@@ -111,10 +111,8 @@
 <!-- 广告 -->
 <view wx:if="{{!showDialog}}" id='outPage' style="background:#C82920;">
   <view wx:if="{{bannerList.length}}" class='banner-wrap'>
-    <view  wx:for="{{bannerList}}" wx:key="unique" class='item'>
-      <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
-        <image mode='aspectFit' src="/image/delete_btn.png" />
-      </view>
+    <view wx:for="{{bannerList}}" wx:key="unique" class='item'>
+
       <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
@@ -153,15 +151,15 @@
 </view>
 
 <!-- 评论的内容 -->
-<view  class='userinfo-fix pageword pageword2'>
-  <view class='scrollarea'>
+<view class='userinfo-fix pageword pageword2'>
+  <view class='scrollarea_pinglun'>
     <view wx:if="{{messageList.length}}" class='item' wx:for="{{messageList}}" wx:key="unique">
       <view>
         <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
       </view>
       <view class='message-info'>
         <view class="userNickName">
-          <text class='nametx'>{{item.v_nc_name}}</text>
+          <text class='nametx'>{{item.v_nc}}</text>
         </view>
         <view class="userNickName">{{item.v_content}}</view>
       </view>
@@ -179,4 +177,3 @@
     </view>
   </view>
 </view>
-

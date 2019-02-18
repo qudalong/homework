@@ -41,7 +41,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const id = options.id || decodeURIComponent;(options.scene);
+    const id = options.id || decodeURIComponent(options.scene);
     wx.showLoading({
       title: '加载中..',
     });
@@ -303,6 +303,18 @@ Page({
    */
   onUnload: function() {
     this.data.innerAudioContext.destroy();
+  },
+
+  // 删除广告图片
+  deleteBannerImg(e) {
+    const curBannerIndex = e.currentTarget.dataset.index;
+    let {
+      bannerList
+    } = this.data;
+    bannerList.splice(curBannerIndex, 1);
+    this.setData({
+      bannerList
+    });
   },
 
   /**
