@@ -127,9 +127,9 @@
       </view>
     </view>
   </view>
-  <view class='ad-wrap'>
+  <!-- <view class='ad-wrap'>
     <image class='tyy_banner' mode='aspectFit' bindtap='toOutpage' src="/image/img/tyy_banner.png" />
-  </view>
+  </view> -->
   <view class='ad-wrap'>
     <image class='tyy_banner' bindtap='toTycz' mode='aspectFit' src="/image/img/tycz_banner.jpg" />
   </view>

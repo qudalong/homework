@@ -61,9 +61,9 @@
       </view>
     </view>
   </view>
-  <view class='ad-wrap'>
+  <!-- <view class='ad-wrap'>
     <image class='tyy_banner'  bindtap='toOutpage' mode='aspectFit' src="/image/img/tyy_banner.png" />
-  </view>
+  </view> -->
   <view class='ad-wrap'>
     <image bindtap='toHome' class='tyy_banner' mode='aspectFit' src="/image/img/heka_banner.png" />
   </view>
