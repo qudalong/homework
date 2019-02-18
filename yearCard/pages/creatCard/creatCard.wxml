@@ -14,7 +14,7 @@
   <image src='../../image/stop_music-btn.png'></image>
 </view>
 <!-- 滚动文字 -->
-<view class='pageword'>
+<view wx:if="{{cardContent}}" class='pageword'>
   <view class='scrollarea'>{{cardContent}}</view>
 </view>
 <view id="leaves">
@@ -40,9 +40,6 @@
     <button wx:if="{{bangding}}" class='item pengyouquan flower' open-type="getUserInfo" bindgetuserinfo="userInfoHandler" hover-class='hover'>
       <image src='../../image/floating_flow_btn.png'></image>
     </button>
-    <!-- <view wx:if="{{sendOready}}" class='item pengyouquan flower'>
-      <image src='../../image/floating_flow_btn.png'></image>
-    </view> -->
   </view>
 </view>
 <input bindtap='sendZF' class='read-wish' type='text' value='请留下您的祝福...' disabled />
@@ -113,8 +110,8 @@
 </view>
 <!-- 广告 -->
 <view wx:if="{{!showDialog}}" id='outPage' style="background:#C82920;">
-  <view class='banner-wrap'>
-    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
+  <view wx:if="{{bannerList.length}}" class='banner-wrap'>
+    <view  wx:for="{{bannerList}}" wx:key="unique" class='item'>
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
         <image mode='aspectFit' src="/image/delete_btn.png" />
       </view>
@@ -156,7 +153,7 @@
 </view>
 
 <!-- 评论的内容 -->
-<view class='userinfo-fix pageword pageword2'>
+<view wx:if="{{messageList.length||flowerList.length}}" class='userinfo-fix pageword pageword2'>
   <view class='scrollarea'>
     <view class='item' wx:for="{{messageList}}" wx:key="unique">
       <view>

@@ -2,7 +2,7 @@ import {
   request
 } from '../../utils/request.js'
 import {
-  savePicToAlbum
+  savePicToAlbum, drawImage
 } from '../../utils/util.js'
 const app = getApp();
 Page({
@@ -41,11 +41,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const id = options.id || decodeURIComponent(options.scene);
+    const id = options.id || decodeURIComponent;(options.scene);
     wx.showLoading({
       title: '加载中..',
     });
-    this.setData({id});
+    console.log('准备分享的id='+id)
+    wx.setStorageSync('getById', id)
+    this.setData({
+      id
+    });
     this.getUserCardById(id);
     this.getFlowBycardId();
     this.getMessageBycardId();
@@ -130,15 +134,7 @@ Page({
     });
     wx.showLoading({
       title: '努力生成中...'
-    })
-
-  //  wx.downloadFile({
-  //    url: `${app.globalData.url}system/Greetingcard/getSunpath.do?card_id=${this.data.id}`,
-  //    success:(res)=>{
-  //     console.log(res)
-  //   }
-  //  })
-
+    });
 
     // 获取二维码
     return request({
@@ -149,21 +145,22 @@ Page({
       }
     }).then(res => {
       if (res.data.filePath) {
-        const context = wx.createCanvasContext('myCanvas');
-        const path = this.data.v_coverimage_path;
-        const code = res.data.filePath;
-        context.drawImage(path, 25, 25, 250, 270);
-        context.drawImage(code, 25, 305, 120, 120);
-        // context.drawImage('/image/img/tyy_banner.png', 25, 25, 250, 270);
-        // context.drawImage('/image/img/tyy_banner.png', 25, 305, 120, 120);
-        console.log(path)
-        console.log(code)
-        context.setFontSize(14);
-        context.setFillStyle('gray');
-        context.fillText('扫描或长按查看贺卡', 150, 375);
-        context.draw();
+        const coverPath = this.data.v_coverimage_path;
+        const codePath = res.data.filePath;
+        wx.downloadFile({
+          url: coverPath,
+          success: (res) => {
+            const coverPath_canvas = res.tempFilePath
+            wx.downloadFile({
+              url: codePath,
+              success: (res) => {
+                const codePath_canvas = res.tempFilePath
+                drawImage(coverPath_canvas, codePath_canvas)
+              }
+            });
+          }
+        });
       }
-      wx.hideLoading();
     });
   },
 
@@ -335,7 +332,7 @@ Page({
         i_card_id: this.data.id,
         v_wechar_id: wx.getStorageSync('openid')
       }
-    }).then(res => { });
+    }).then(res => {});
   },
   /**
    * 用户点击右上角分享
@@ -348,6 +345,7 @@ Page({
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
     if (res.from === 'button') {
       this.greetingcardScanShareU();
+      console.log('分享id' + getById)
     }
     return {
       title: `【${nickName}】送您一张新年祝福贺卡`,

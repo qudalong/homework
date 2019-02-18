@@ -107,8 +107,8 @@
 </view>
 <!-- 广告 -->
 <view id='outPage' style="background:{{v_bg_color}}">
-  <view class='banner-wrap'>
-    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
+  <view wx:if="{{bannerList.length}}" class='banner-wrap'>
+    <view  wx:for="{{bannerList}}" wx:key="unique" class='item'>
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
         <image mode='widthFix' src="/image/delete_btn.png" />
       </view>

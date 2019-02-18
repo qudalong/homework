@@ -14,8 +14,18 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const drawImage=(coverPath_canvas = '', codePath_canvas = '')=>{
+  const context = wx.createCanvasContext('myCanvas');
+  context.drawImage(coverPath_canvas, 25, 25, 250, 320);
+  context.drawImage(codePath_canvas, 25, 355, 120, 120);
+  context.setFontSize(14);
+  context.setFillStyle('gray');
+  context.fillText('扫描或长按查看贺卡', 150, 425);
+  context.draw();
+  wx.hideLoading();
+}
+
 const savePicToAlbum = tempFilePath => {
-  let that = this;
   wx.getSetting({
     success(res) {
       if (!res.authSetting['scope.writePhotosAlbum']) {
@@ -68,5 +78,6 @@ const savePicToAlbum = tempFilePath => {
 
 module.exports = {
   formatTime,
+  drawImage,
   savePicToAlbum
 }

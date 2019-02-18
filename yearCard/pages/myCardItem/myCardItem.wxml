@@ -47,8 +47,8 @@
 </view>
 <!-- 广告 -->
 <view id='outPage' style="background:#C82920;">
-  <view class='banner-wrap'>
-    <view wx:if="{{bannerList}}" wx:for="{{bannerList}}" wx:key="unique" class='item'>
+  <view wx:if="{{bannerList.length}}" class='banner-wrap'>
+    <view wx:for="{{bannerList}}" wx:key="unique" class='item'>
       <image mode='aspectFit' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
@@ -71,7 +71,7 @@
 
 <!-- 滚动评论 -->
 <!-- 评论的内容 -->
-<view class='userinfo-fix pageword pageword2'>
+<view wx:if="{{messageList.length}}" class='userinfo-fix pageword pageword2'>
   <view class='scrollarea'>
     <view class='item' wx:for="{{messageList}}" wx:key="unique">
       <view>

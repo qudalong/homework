@@ -3,7 +3,8 @@ import {
   request
 } from '../../utils/request.js'
 import {
-  savePicToAlbum
+  savePicToAlbum,
+  drawImage
 } from '../../utils/util.js'
 Page({
   data: {
@@ -41,10 +42,10 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    const id = option.id || '';//模板id
+    const id = option.id || ''; //模板id
     const openId = wx.getStorageSync('openid');
     const userInfo = wx.getStorageSync('userInfo');
-    const templateId = option.templateId || '';//卡片id
+    const templateId = option.templateId || ''; //卡片id
     this.setData({
       id,
       templateId
@@ -68,7 +69,7 @@ Page({
               userInfo,
               openId,
               // 页面数据
-              v_bg_color: res[0].data.v_bg_color||'#fff',
+              v_bg_color: res[0].data.v_bg_color || '#fff',
               v_coverimage_path: res[0].data.v_coverimage_path,
               v_coverimage_path_low: res[0].data.v_coverimage_path_low,
               cardTitle: res[0].data.v_template_name,
@@ -91,20 +92,20 @@ Page({
       //修改时查询接口
       this.getUserCardById(templateId);
     }
-      //模板浏览次(进入详情时)
-      this.greetcardScanScan();
+    //模板浏览次(进入详情时)
+    this.greetcardScanScan();
   },
 
   //模板浏览次
   greetcardScanScan() {
-   request({
+    request({
       url: 'system/Greetingcard/GreetcardScanScan.do',
       method: 'POST',
       data: {
         i_template_id: this.data.id,
         v_wechar_id: wx.getStorageSync('openid')
       }
-    }).then(res=>{});
+    }).then(res => {});
   },
 
 
@@ -254,7 +255,7 @@ Page({
         i_template_id: this.data.id,
         v_wechar_id: wx.getStorageSync('openid')
       }
-    }).then(res => { });
+    }).then(res => {});
   },
 
   // 保存模板
@@ -275,7 +276,7 @@ Page({
       a_false_images,
       tempData
     } = this.data;
-     
+
     request({
       url: 'system/Greetingcard/updateCard.do',
       method: 'POST',
@@ -303,9 +304,9 @@ Page({
         //微信唯一标识
         v_wechar_id: wx.getStorageSync('openid'),
         //微信头像 路径
-        v_wechar_path: headLow||tempData.v_wechar_path_low,
+        v_wechar_path: headLow || tempData.v_wechar_path_low,
         //广告
-        v_user_images: v_user_images.join(',')||'',
+        v_user_images: v_user_images.join(',') || '',
         // //下落的图片
         v_false_images: a_false_images.join(',')
       }
@@ -531,7 +532,7 @@ Page({
       v_user_images
     } = this.data;
     bannerList.splice(curBannerIndex, 1);
-    if (v_user_images.length){
+    if (v_user_images.length) {
       v_user_images.splice(curBannerIndex, 1);
     }
     this.setData({
@@ -723,19 +724,22 @@ Page({
       }
     }).then(res => {
       if (res.data.filePath) {
-        const context = wx.createCanvasContext('myCanvas');
-        const path = this.data.itemInfo.v_coverimage_path;
-        const code = res.data.filePath;
-        console.log('path=' + path)
-        console.log('code=' + code)
-        context.drawImage(path, 25, 25, 250, 270);
-        context.drawImage(code, 25, 305, 120, 120);
-        context.setFontSize(14);
-        context.setFillStyle('gray');
-        context.fillText('扫描或长按查看贺卡', 150, 375);
-        context.draw();
+        const coverPath = this.data.v_coverimage_path;
+        const codePath = res.data.filePath;
+        wx.downloadFile({
+          url: coverPath,
+          success: (res) => {
+            const coverPath_canvas = res.tempFilePath
+            wx.downloadFile({
+              url: codePath,
+              success: (res) => {
+                const codePath_canvas = res.tempFilePath
+                drawImage(coverPath_canvas, codePath_canvas)
+              }
+            });
+          }
+        });
       }
-      wx.hideLoading();
     });
   },
 
@@ -797,9 +801,9 @@ Page({
 
   onUnload: function() {
     this.data.innerAudioContext.destroy();
-    if (this.data.templateId){
+    if (this.data.templateId) {
       wx.navigateBack({
-        delta:2
+        delta: 2
       })
     }
   },
@@ -818,7 +822,9 @@ Page({
             musicList: res[1].data,
             wishList: res[2].data,
             //为生成朋友圈图片用
-            itemInfo: { v_coverimage_path: this.data.v_coverimage_path}
+            itemInfo: {
+              v_coverimage_path: this.data.v_coverimage_path
+            }
           })
         }
         wx.hideLoading();
@@ -834,7 +840,7 @@ Page({
         i_template_id: this.data.id,
         v_wechar_id: wx.getStorageSync('openid')
       }
-    }).then(res => { });
+    }).then(res => {});
   },
 
   onShareAppMessage: function(res) {
@@ -844,9 +850,9 @@ Page({
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
     if (res.from === 'button') {
-    // wx.navigateTo({
-    //   url:`/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`
-    // })
+      // wx.navigateTo({
+      //   url:`/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`
+      // })
       //模板分享人数统计
       this.greetcardShareScan();
     }
@@ -854,8 +860,7 @@ Page({
       title: `【${nickName}】送您一张新年祝福贺卡`,
       imageUrl: coverImg,
       path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
-      success: function(res) {
-      }
+      success: function(res) {}
     }
 
   }

@@ -2,7 +2,7 @@ import {
   request
 } from '../../utils/request.js'
 import {
-  savePicToAlbum
+  savePicToAlbum, drawImage
 } from '../../utils/util.js'
 Page({
   data: {
@@ -44,7 +44,8 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = option.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || '284'; //获取数据的id
+    const getById = option.getById || ''; //获取数据的id
+    console.log('获取分享id' + getById)
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
@@ -96,6 +97,7 @@ Page({
         id: this.data.getById
       }
     }).then(res => {
+      console.log('获取模板数据的id=' + this.data.getById)
       let innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = true;
       innerAudioContext.loop = true;
@@ -469,6 +471,9 @@ Page({
     this.setData({
       showDialogHaib: true
     });
+    wx.showLoading({
+      title: '努力生成中...'
+    });
     // 获取二维码
     return request({
       url: 'system/Greetingcard/getSunpath.do',
@@ -478,19 +483,22 @@ Page({
       }
     }).then(res => {
       if (res.data.filePath) {
-        const context = wx.createCanvasContext('myCanvas');
-        const path = this.data.v_coverimage_path;
-        const code = res.data.filePath;
-        context.drawImage(path, 25, 25, 250, 270);
-        context.drawImage(code, 25, 305, 120, 120);
-        console.log(path)
-        console.log(code)
-        context.setFontSize(14);
-        context.setFillStyle('gray');
-        context.fillText('扫描或长按查看贺卡', 150, 375);
-        context.draw();
+        const coverPath = this.data.v_coverimage_path;
+        const codePath = res.data.filePath;
+        wx.downloadFile({
+          url: coverPath,
+          success: (res) => {
+            const coverPath_canvas = res.tempFilePath
+            wx.downloadFile({
+              url: codePath,
+              success: (res) => {
+                const codePath_canvas = res.tempFilePath
+                drawImage(coverPath_canvas, codePath_canvas)
+              }
+            });
+          }
+        });
       }
-      wx.hideLoading();
     });
   },
   closeDialogHaib() {
@@ -590,13 +598,14 @@ Page({
       });
       return;
     }
-    if (this.data.sendOready){
+    if (this.data.sendOready) {
       wx.showToast({
         title: '您已经送过了哦！',
-        icon:'none'
+        icon: 'none'
       });
       return;
     }
+  
     request({
       url: 'system/Greetingcard/sendFlow.do',
       method: 'POST',
@@ -604,12 +613,16 @@ Page({
         id: this.data.getById, //卡片id
         v_wechar_id: wx.getStorageSync('openid'), // 谁送的
       }
-    }).then(res => {
+    }).then(res => { 
+      this.getFlowBycardId();
       if (!res.data.flag) {
         this.setData({
           sendOready: true
         })
-        this.getFlowBycardId();
+        wx.showToast({
+          title: '您已经送过了哦！',
+          icon: 'none'
+        });
       }
     });
   },
