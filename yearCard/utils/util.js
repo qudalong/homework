@@ -14,13 +14,18 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-const drawImage=(coverPath_canvas = '', codePath_canvas = '')=>{
+const drawImage = (coverPath_canvas = '', codePath_canvas = '') => {
   const context = wx.createCanvasContext('myCanvas');
-  context.drawImage(coverPath_canvas, 25, 25, 250, 320);
-  context.drawImage(codePath_canvas, 25, 355, 120, 120);
+  context.rect(0, 0, 320,800);
+  context.setFillStyle('#ffffff');
+  context.fill();
+  context.drawImage(coverPath_canvas,0,420,750,750, 0,0, 320, 320);
+  context.drawImage(codePath_canvas, 20, 335, 100, 100);
   context.setFontSize(14);
-  context.setFillStyle('gray');
-  context.fillText('扫描或长按查看贺卡', 150, 425);
+  context.setFillStyle('#333');
+  context.fillText('长按小程序码', 130, 370);
+  context.fillText('送您一张祝福贺卡', 130, 390);
+  context.fillText('快来看看吧', 130, 410);
   context.draw();
   wx.hideLoading();
 }
@@ -36,7 +41,7 @@ const savePicToAlbum = tempFilePath => {
               filePath: tempFilePath,
               success(res) {
                 wx.showToast({
-                  title: '保存成功'
+                  title: '海报已保存到系统相册'
                 });
               },
               fail(res) {
@@ -47,10 +52,10 @@ const savePicToAlbum = tempFilePath => {
           fail() {
             // 用户拒绝授权,打开设置页面
             wx.openSetting({
-              success: function (data) {
+              success: function(data) {
                 console.log("openSetting: success");
               },
-              fail: function (data) {
+              fail: function(data) {
                 console.log("openSetting: fail");
               }
             });

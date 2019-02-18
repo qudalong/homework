@@ -96,6 +96,7 @@ Page({
           page: 0
         }
       }).then(res => {
+        wx.stopPullDownRefresh();
         this.setData({
           coverList: this.data.coverList.concat(res.data.datalist),
           page: res.data.page,

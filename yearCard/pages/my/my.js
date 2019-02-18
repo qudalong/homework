@@ -165,6 +165,7 @@ Page({
       }
     }).then(res => {
       if (res.statusCode == 200) {
+        wx.stopPullDownRefresh();
         this.setData({
           coverList: this.data.coverList.concat(res.data.datalist),
           page: res.data.page,

@@ -44,7 +44,7 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = option.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById || ''; //获取数据的id
+    const getById = option.getById || '269'; //获取数据的id
     console.log('获取分享id' + getById)
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();

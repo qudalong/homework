@@ -115,7 +115,7 @@
       <view bindtap='deleteBannerImg' class='delete' hover-class='hover' data-index='{{index}}'>
         <image mode='aspectFit' src="/image/delete_btn.png" />
       </view>
-      <image mode='aspectFit' src="{{item}}" />
+      <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
       <view class='intro-bg intro-bg-top'>

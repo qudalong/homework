@@ -49,7 +49,7 @@
 <view id='outPage' style="background:#C82920;">
   <view wx:if="{{bannerList.length}}" class='banner-wrap'>
     <view wx:for="{{bannerList}}" wx:key="unique" class='item'>
-      <image mode='aspectFit' src="{{item}}" />
+      <image mode='widthFix' src="{{item}}" />
     </view>
     <view wx:if="{{gardenInfo}}" class='garden-info'>
       <view class='intro-bg intro-bg-top'>
