@@ -153,9 +153,9 @@
 </view>
 
 <!-- 评论的内容 -->
-<view wx:if="{{messageList.length||flowerList.length}}" class='userinfo-fix pageword pageword2'>
+<view  class='userinfo-fix pageword pageword2'>
   <view class='scrollarea'>
-    <view class='item' wx:for="{{messageList}}" wx:key="unique">
+    <view wx:if="{{messageList.length}}" class='item' wx:for="{{messageList}}" wx:key="unique">
       <view>
         <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
       </view>
@@ -166,7 +166,7 @@
         <view class="userNickName">{{item.v_content}}</view>
       </view>
     </view>
-    <view class='item' wx:for="{{flowerList}}" wx:key="unique">
+    <view wx:if="{{flowerList.length}}" class='item' wx:for="{{flowerList}}" wx:key="unique">
       <view>
         <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />
       </view>
