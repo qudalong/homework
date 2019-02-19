@@ -45,15 +45,14 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = options.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = options.itemIndex || ''; //
-    const getById = options.getById  || decodeURIComponent(options.scene)||'302' ; //获取数据的id
-    // const getById = options.getById  ||'302' ; //获取数据的id
+    const getById = options.getById || decodeURIComponent(options.scene)||'302' ; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
     this.initsendButton();
 
-    console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
-    console.log('获取分享id=' + getById)
+    // console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
+    // console.log('获取分享id=' + getById)
 
     this.setData({
       getById: getById,
@@ -352,7 +351,7 @@ Page({
         if (res.tapIndex == 0) {
           wx.chooseImage({
             count: 9,
-            sizeType: ['original', 'compressed'],
+            sizeType: ['compressed'],
             sourceType: ['camera'],
             success: (res) => {
               let successUp = 0;
@@ -365,7 +364,7 @@ Page({
         } else if (res.tapIndex == 1) { //相册
           wx.chooseImage({
             count: 9,
-            sizeType: ['original', 'compressed'],
+            sizeType: ['compressed'],
             sourceType: ['album'],
             success: (res) => {
               let successUp = 0;
@@ -762,6 +761,7 @@ Page({
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = '';
     if (res.from === 'button') {
       this.greetingcardScanShareU();
+      this.stopMusic();
     }
     return {
       title: `【${nickName}】送您一张祝福贺卡`,

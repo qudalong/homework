@@ -358,6 +358,7 @@ Page({
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = ''
     if (res.from === 'button') {
       this.greetingcardScanShareU();
+      this.stopMusic();
       console.log('分享id' + getById)
     }
     return {

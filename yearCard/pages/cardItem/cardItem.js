@@ -46,22 +46,32 @@ Page({
     const openId = wx.getStorageSync('openid');
     const userInfo = wx.getStorageSync('userInfo');
     const templateId = options.templateId || ''; //卡片id
- 
+
     this.setData({
       id,
       templateId
     })
+    const seachMusic = this.seachMusic();
+    const seachfalsh = this.seachfalsh();
+    const seachzf = this.seachzf();
+   
     if (!templateId) {
+      console.log('-------这将是保存操作-------')
       const seachTempCardDetailById = this.seachTempCardDetailById(id);
-      const seachMusic = this.seachMusic();
-      const seachfalsh = this.seachfalsh();
-      const seachzf = this.seachzf();
       Promise.all([seachTempCardDetailById, seachfalsh, seachMusic, seachzf])
         .then(res => {
           if (res.length) {
             wx.setNavigationBarTitle({
               title: res[0].data.v_template_name
             });
+            // 查找音乐序号
+            for (let i in res[2].data) {
+              if (res[2].data[i].v_music_path_low == res[0].data.v_music_path_low) {
+                this.setData({
+                  mindex: i
+                })
+              }
+            }
             this.setData({
               itemInfo: res[0].data,
               animateData: res[1].data,
@@ -86,10 +96,21 @@ Page({
           wx.hideLoading();
         });
     } else {
-      console.log("have templateId=" + templateId)
+     // this.data.innerAudioContext.destroy();
+      console.log('-------这将是update操作-------')
+      // 修改时
       this.setData({
         templateId
       });
+      Promise.all([seachfalsh, seachMusic, seachzf]).then(res => {
+        if (res.length) {
+          this.setData({
+            animateData: res[0].data,
+            musicList: res[1].data,
+            wishList: res[2].data
+          })
+        }
+      })
       //修改时查询接口
       this.getUserCardById(templateId);
     }
@@ -126,6 +147,7 @@ Page({
           wx.setNavigationBarTitle({
             title: tempData.v_card_name
           });
+
           let bannerList = [];
           let a_false_images = [];
           let v_user_images = [];
@@ -142,6 +164,7 @@ Page({
               a_false_images.push(flashimages[i].v_path_low)
             }
           }
+
           this.setData({
             tempData,
             v_user_images: v_user_images,
@@ -159,9 +182,44 @@ Page({
           })
         }
         this.initUpate();
-        this.initStartMusic()
+        if (this.data.innerAudioContext) {
+          this.data.innerAudioContext.destroy();
+        } 
+        this.initStartMusic();
+        // 查找音乐序号
+        for (let i in this.data.musicList) {
+          if (this.data.musicList[i].v_music_path == this.data.tempData.v_music_path) {
+            this.setData({
+              mindex: i
+            })
+          }
+        }
+        // 查找动画序号
+        for (let i in this.data.animateData) {
+          for (let j in this.data.flashimages) {
+            if (this.data.animateData[i].images[0].v_path_low == this.data.flashimages[j].v_path_low) {
+              this.setData({
+                num: i
+              })
+            }
+          }
+        }
         wx.hideLoading();
       }
+    });
+  },
+
+
+  stopMusic() {
+    this.data.innerAudioContext.pause();
+    this.setData({
+      autoplay: false
+    });
+  },
+  startMusic() {
+    this.data.innerAudioContext.play();
+    this.setData({
+      autoplay: true
     });
   },
 
@@ -270,45 +328,30 @@ Page({
       cardContent,
       v_music_path_low,
       gardenInfo,
-      bannerList,
       itemIndex,
       templateid,
       v_user_images,
+      bannerList,
       a_false_images,
       tempData
     } = this.data;
-
     request({
       url: 'system/Greetingcard/updateCard.do',
       method: 'POST',
       data: {
-        //贺卡唯一标识ID
         id: tempData.id,
-        //模板id
         i_template_id: tempData.i_template_id,
-        //模板名称
         v_template_name: tempData.v_card_name,
-        //模板模板背景
         v_coverimage_path: tempData.v_coverimage_path_low,
-        //用户电话
         v_phone: '18768871893',
-        //昵称(分改变是和没修改时)
         v_nc_name: nickName || tempData.v_nc_name,
-        //卡片标题
         v_card_name: cardTitle || tempData.v_card_name,
-        //祝福语
         v_blessing_content: cardContent || tempData.v_blessing_content,
-        //园所简介
         v_yc_schema: gardenInfo || tempData.v_yc_schema,
-        //音乐路径
         v_music_path: v_music_path_low || tempData.v_music_path_low,
-        //微信唯一标识
         v_wechar_id: wx.getStorageSync('openid'),
-        //微信头像 路径
         v_wechar_path: headLow || tempData.v_wechar_path_low,
-        //广告
-        v_user_images: v_user_images.join(',') || '',
-        // //下落的图片
+        v_user_images: bannerList.join(',') || v_user_images.join(',') || '',
         v_false_images: a_false_images.join(',')
       }
     }).then(res => {
@@ -363,7 +406,8 @@ Page({
       cardTitle,
       cardContent,
       itemIndex,
-      gardenInfo
+      gardenInfo,
+      templateId
     } = this.data;
     let itemInfo = {
       avatarUrl,
@@ -371,7 +415,8 @@ Page({
       cardTitle,
       cardContent,
       itemIndex,
-      gardenInfo
+      gardenInfo,
+      templateId
     }
     wx.navigateTo({
       url: `/pages/changeWord/changeWord?itemInfo=${JSON.stringify(itemInfo)}`
@@ -393,10 +438,11 @@ Page({
   },
 
   initMusic() {
+    this.data.innerAudioContext.destroy();
     let {
       itemInfo,
       musicList,
-      mindex,
+      mindex
     } = this.data;
     let innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;
@@ -542,18 +588,6 @@ Page({
     });
   },
 
-  stopMusic() {
-    this.data.innerAudioContext.pause();
-    this.setData({
-      autoplay: false
-    });
-  },
-  startMusic() {
-    this.data.innerAudioContext.play();
-    this.setData({
-      autoplay: true
-    });
-  },
 
   randomInteger(low, high) {
     return low + Math.floor(Math.random() * (high - low))
@@ -579,7 +613,7 @@ Page({
         if (res.tapIndex == 0) {
           wx.chooseImage({
             count: 9,
-            sizeType: ['original', 'compressed'],
+            sizeType: ['compressed'],
             sourceType: ['camera'],
             success: (res) => {
               let successUp = 0;
@@ -592,7 +626,7 @@ Page({
         } else if (res.tapIndex == 1) { //相册
           wx.chooseImage({
             count: 9,
-            sizeType: ['original', 'compressed'],
+            sizeType: ['compressed'],
             sourceType: ['album'],
             success: (res) => {
               let successUp = 0;
@@ -600,6 +634,7 @@ Page({
               let length = res.tempFilePaths.length;
               let count = 0;
               this.uploadOneByOne(res.tempFilePaths, successUp, failUp, count, length);
+              
             }
           });
         }
@@ -645,7 +680,8 @@ Page({
             title: '上传成功',
             icon: 'success',
             duration: 2000
-          })
+          });
+          this.initStartMusic();
         } else {
           this.uploadOneByOne(imgPaths, successUp, failUp, count, length);
         }
@@ -716,12 +752,14 @@ Page({
     wx.showLoading({
       title: '努力生成中...'
     })
+    let card_id;
+    this.data.templateId ? card_id = this.data.templateId : card_id =this.data.id
     // 获取二维码
     return request({
       url: 'system/Greetingcard/getSunpath.do',
       method: 'POST',
       data: {
-        card_id: this.data.id
+        card_id: card_id
       }
     }).then(res => {
       if (res.data.filePath) {
@@ -782,6 +820,12 @@ Page({
 
   //绑定
   bingwecharUser() {
+    // if (!this.data.nickName){
+    //   return
+    // }
+    // if (!this.data.avatarUrl){
+    //   return
+    // }
     request({
       url: 'system/Greetingcard/bingwecharUser.do',
       method: 'POST',
@@ -803,6 +847,7 @@ Page({
   onUnload: function() {
     this.data.innerAudioContext.destroy();
     if (this.data.templateId) {
+      this.data.innerAudioContext.destroy();
       wx.navigateBack({
         delta: 2
       })
@@ -812,6 +857,11 @@ Page({
     wx.setNavigationBarTitle({
       title: this.data.cardTitle
     });
+    //修改时查询接口
+    // if (this.data.templateId) {
+    //   this.getUserCardById(this.data.templateId);
+    // }
+
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
@@ -851,11 +901,9 @@ Page({
       coverImg;
     this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
     if (res.from === 'button') {
-      // wx.navigateTo({
-      //   url:`/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`
-      // })
       //模板分享人数统计
       this.greetcardShareScan();
+      this.stopMusic();
     }
     return {
       title: `【${nickName}】送您一张祝福贺卡`,

@@ -15,6 +15,8 @@ const formatNumber = n => {
 }
 
 const drawImage = (coverPath_canvas = '', codePath_canvas = '') => {
+  console.log('coverPath=' + coverPath_canvas);
+  console.log('codePath=' + codePath_canvas);
   const context = wx.createCanvasContext('myCanvas');
   context.rect(0, 0, 320,800);
   context.setFillStyle('#ffffff');
