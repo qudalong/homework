@@ -45,7 +45,7 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = options.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = options.itemIndex || ''; //
-    const getById = options.getById || decodeURIComponent(options.scene)||'302' ; //获取数据的id
+    const getById = options.getById || decodeURIComponent(options.scene) ||'431' ; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
@@ -128,6 +128,7 @@ Page({
       this.setData({
         cardInfo: res.data,
         itemInfo: res.data,
+        getById: res.data.id,
         v_coverimage_path: res.data.v_coverimage_path,
         v_music_path: res.data.v_music_path,
         cardTitle: res.data.v_card_name,
