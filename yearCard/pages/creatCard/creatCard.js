@@ -52,7 +52,6 @@ Page({
     this.initsendButton();
 
     // console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
-    // console.log('获取分享id=' + getById)
 
     this.setData({
       getById: getById,
@@ -125,6 +124,7 @@ Page({
           avatarUrl = res.data.v_wechar_path_low;
         }
       }
+      console.log(res.data)
       this.setData({
         cardInfo: res.data,
         itemInfo: res.data,

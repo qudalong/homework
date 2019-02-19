@@ -53,7 +53,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    // url: 'http://192.168.2.236:8080/lbt-xcx-server/',
+    // url: 'http://192.168.2.120:8080/lbt-xcx-server/',
     url: 'https://xcx.lebeitong.com/'
   }
 })
