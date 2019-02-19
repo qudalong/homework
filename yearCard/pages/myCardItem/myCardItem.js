@@ -111,6 +111,7 @@ Page({
           this.setData({
             tempData,
             // 页面数据
+            getById: tempData.id,
             v_coverimage_path: tempData.v_coverimage_path,
             cardTitle: tempData.v_card_name,
             nickName: tempData.v_nc_name,
@@ -351,7 +352,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function(res) {
-    let getById = wx.getStorageSync('getById'),
+    let getById = this.data.getById||wx.getStorageSync('getById'),
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
@@ -359,7 +360,8 @@ Page({
     if (res.from === 'button') {
       this.greetingcardScanShareU();
       this.stopMusic();
-      console.log('分享id' + getById)
+      console.log('将要分享的卡片id_接口=' + this.data.getById)
+      console.log('将要分享的卡片id=' + getById)
     }
     return {
       title: `【${nickName}】送您一张祝福贺卡`,

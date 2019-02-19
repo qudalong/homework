@@ -51,7 +51,8 @@ Page({
     const seachzf = this.seachzf();
     this.initsendButton();
 
-    // console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
+    console.log('getById=' + getById)
+    console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
 
     this.setData({
       getById: getById,
@@ -124,7 +125,6 @@ Page({
           avatarUrl = res.data.v_wechar_path_low;
         }
       }
-      console.log(res.data)
       this.setData({
         cardInfo: res.data,
         itemInfo: res.data,
@@ -754,7 +754,7 @@ Page({
 
  
   onShareAppMessage: function(res) {
-    let getById = wx.getStorageSync('getById'),
+    let getById = this.data.getById||wx.getStorageSync('getById'),
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
@@ -762,6 +762,8 @@ Page({
     if (res.from === 'button') {
       this.greetingcardScanShareU();
       this.stopMusic();
+      console.log('将要分享的卡片id_接口=' + this.data.getById)
+      console.log('将要分享的卡片id=' + getById)
     }
     return {
       title: `【${nickName}】送您一张祝福贺卡`,
