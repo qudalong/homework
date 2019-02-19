@@ -38,14 +38,15 @@ Page({
     animateData: []
   },
 
-  onLoad: function(option) {
+  onLoad: function(options) {
     wx.showLoading({
       title: '加载中...',
     })
-    const id = option.id || ''; //模板id
+    const id = options.id || ''; //模板id
     const openId = wx.getStorageSync('openid');
     const userInfo = wx.getStorageSync('userInfo');
-    const templateId = option.templateId || ''; //卡片id
+    const templateId = options.templateId || ''; //卡片id
+ 
     this.setData({
       id,
       templateId
@@ -857,7 +858,7 @@ Page({
       this.greetcardShareScan();
     }
     return {
-      title: `【${nickName}】送您一张新年祝福贺卡`,
+      title: `【${nickName}】送您一张祝福贺卡`,
       imageUrl: coverImg,
       path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
       success: function(res) {}

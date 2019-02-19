@@ -38,21 +38,23 @@ Page({
     timer:null
   },
 
-  onLoad: function(option) {
-
-   
+  onLoad: function(options) {
     wx.showLoading({
       title: '加载中...'
     })
     const userInfo = wx.getStorageSync('userInfo');
-    const openid = option.openid||'';//分享时带过来的为了验证是不是自己打开
-    const itemIndex = option.itemIndex || ''; //
-    const getById = option.getById||'302'; //获取数据的id
-    console.log('获取分享id' + getById)
+    const openid = options.openid||'';//分享时带过来的为了验证是不是自己打开
+    const itemIndex = options.itemIndex || ''; //
+    const getById = options.getById  || decodeURIComponent(options.scene)||'302' ; //获取数据的id
+    // const getById = options.getById  ||'302' ; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
     this.initsendButton();
+
+    console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
+    console.log('获取分享id=' + getById)
+
     this.setData({
       getById: getById,
       openid
@@ -615,16 +617,16 @@ Page({
         v_wechar_id: wx.getStorageSync('openid'), // 谁送的
       }
     }).then(res => { 
-      this.getFlowBycardId();
       if (!res.data.flag) {
         this.setData({
           sendOready: true
         })
+      }
         wx.showToast({
           title: '送花成功！',
           icon: 'none'
         });
-      }
+      this.getFlowBycardId();
     });
   },
 
@@ -727,6 +729,10 @@ Page({
         v_content: this.data.zufu
       }
     }).then(res => {
+      wx.showToast({
+        title: '祝福成功！',
+        icon: 'none'
+      });
       this.getMessageBycardId();
     });
     this.setData({
@@ -758,7 +764,7 @@ Page({
       this.greetingcardScanShareU();
     }
     return {
-      title: `【${nickName}】送您一张新年祝福贺卡`,
+      title: `【${nickName}】送您一张祝福贺卡`,
       imageUrl: coverImg,
       path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
       success: function(res) {

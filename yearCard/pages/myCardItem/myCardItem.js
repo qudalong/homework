@@ -41,7 +41,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const id = options.id || decodeURIComponent(options.scene);
+    // const id = options.id || decodeURIComponent(options.scene);
+    const id = options.id ;
     wx.showLoading({
       title: '加载中..',
     });
@@ -360,7 +361,7 @@ Page({
       console.log('分享id' + getById)
     }
     return {
-      title: `【${nickName}】送您一张新年祝福贺卡`,
+      title: `【${nickName}】送您一张祝福贺卡`,
       imageUrl: coverImg,
       path: `/pages/creatCard/creatCard?getById=${getById}&openid=${openid}`,
       success: function(res) {}

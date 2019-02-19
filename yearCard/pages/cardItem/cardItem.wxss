@@ -493,10 +493,11 @@
 .words textarea {
   width: 100%;
   overflow: scroll;
-  height: 200rpx;
+  max-height: 200rpx;
   position: relative;
   font-size: 30rpx;
   line-height: 1.5;
+  padding-bottom: 20rpx;
 }
 
 .words textarea text {
@@ -522,7 +523,7 @@
   bottom: 10rpx;
   right: 10rpx;
   display: block;
-  padding: 6rpx 10rpx;
+  padding:14rpx 24rpx;
   color: #57be4e;
   z-index: 200;
   font-size: 30rpx;

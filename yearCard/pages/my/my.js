@@ -41,7 +41,6 @@ Page({
       }
     }).then(res => {
       if (res.statusCode == 200) {
-        // res.data.datalist.splice(0, res.data.datalist.length-1);
         this.setData({
           coverList: res.data.datalist,
           page: res.data.page

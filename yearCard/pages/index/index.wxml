@@ -1,4 +1,4 @@
-
+<!-- <button bindtap='test'>调到分享</button> -->
 <view wx:if="{{coverList.length}}" class="card-list clearfix">
   <view bindtap='toCardItem' wx:for="{{coverList}}" wx:key="unique" class='item' data-id="{{item.id}}" >
     <image src="{{item.v_coverimage_path}}" mode='aspectFill' class='cover' />

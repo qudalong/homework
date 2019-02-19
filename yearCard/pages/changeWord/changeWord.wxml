@@ -23,7 +23,7 @@
     <text>祝福文字</text>
   </view>
   <view class='words relative'>
-    <textarea bindinput='cardContent' placeholder='那一张张朴实的面孔，那一双双辛勤的双手，为培育祖国的花朵而不辞辛劳的园丁，在您的季节里，祝你们春节快乐！' value='{{cardContent}}' maxlength='100' bindlinechange="textAreaLineChange" wx:if="{{!showMoreWish}}" />
+    <textarea bindinput='cardContent' placeholder='那一张张朴实的面孔，那一双双辛勤的双手，为培育祖国的花朵而不辞辛劳的园丁，在您的季节里，祝你们春节快乐！' value='{{cardContent}}' maxlength='200' bindlinechange="textAreaLineChange" wx:if="{{!showMoreWish}}" />
     <view class='rich-text' style="{{('height:' + txtHeight + 'px')}}" wx:else>
       <rich-text nodes="{{cardContent}}"></rich-text>
     </view>

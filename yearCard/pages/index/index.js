@@ -141,5 +141,10 @@ Page({
    */
   onShareAppMessage: function() {
 
+  },
+  test(){
+    wx.navigateTo({
+      url: '/pages/creatCard/creatCard?getById=302',
+    })
   }
 })

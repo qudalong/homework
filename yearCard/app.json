@@ -2,9 +2,9 @@
   "pages": [
     "pages/index/index",
     "pages/creatCard/creatCard",
+    "pages/myCardItem/myCardItem",
     "pages/outpage/outpage",
     "pages/my/my",
-    "pages/myCardItem/myCardItem",
     "pages/changeWord/changeWord",
     "pages/cardItem/cardItem"
   ],
