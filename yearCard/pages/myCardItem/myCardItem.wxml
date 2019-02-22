@@ -75,7 +75,7 @@
 <!-- 滚动评论 -->
 <!-- 评论的内容 -->
 <view wx:if="{{messageList.length||flowerList.length}}" class='userinfo-fix pageword pageword2'>
-  <view class='scrollarea_pinglun' style="animation-duration:{{messageList.length*3+flowerList.length}}s">
+  <view class='scrollarea_pinglun' style="animation-duration:{{(messageList.length==1?6:messageList.length*3)+(flowerList.length==1?6:flowerList.length)}}s">
     <view class='item' wx:for="{{messageList}}" wx:key="unique">
       <view>
         <image class="userAvatarUrl" mode='widthFix' src="{{item.v_wechar_path}}" />

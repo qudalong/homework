@@ -46,7 +46,7 @@ Page({
     const openid = options.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = options.itemIndex || ''; //
     const getById = options.getById || decodeURIComponent(options.scene) ||'467' ; //获取数据的id
-    // const getById = 467 ; //获取数据的id
+    // const getById = 490; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
