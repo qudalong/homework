@@ -39,7 +39,7 @@ Page({
   },
 
   onLoad: function(options) {
-    // wx.hideShareMenu();
+    wx.hideShareMenu();
     wx.showLoading({
       title: '加载中...',
     })
@@ -209,7 +209,37 @@ Page({
       }
     });
   },
-
+  // 分享
+  userInfoHandler(e) {
+    if (e.detail.userInfo) {
+      wx.setStorageSync('userInfo', e.detail.userInfo);
+      this.setData({
+        userInfo: e.detail.userInfo,
+        avatarUrl: this.data.avatarUrl || e.detail.userInfo.avatarUrl,
+        nickName: this.data.nickName || e.detail.userInfo.nickName
+      });
+      this.loginTag();
+      this.selectEdit();
+    }
+  },
+  // 生成贺卡
+  userInfoHandler_heka(e) {
+    if (e.detail.userInfo) {
+      wx.setStorageSync('userInfo', e.detail.userInfo);
+      this.setData({
+        userInfo: e.detail.userInfo,
+        avatarUrl: this.data.avatarUrl || e.detail.userInfo.avatarUrl,
+        nickName: this.data.nickName || e.detail.userInfo.nickName,
+        showbtns: true,
+      });
+      this.loginTag();
+      if (this.data.templateId) {
+        this.updateCard();
+      } else {
+        this.saveCard();
+      }
+    }
+  },
 
   stopMusic() {
     this.data.innerAudioContext.pause();
@@ -222,23 +252,6 @@ Page({
     this.setData({
       autoplay: true
     });
-  },
-
-  // 生成贺卡
-  userInfoHandler_heka(e) {
-    if (e.detail.userInfo) {
-      wx.setStorageSync('userInfo', e.detail.userInfo);
-      this.setData({
-        userInfo: e.detail.userInfo,
-        showbtns: true,
-      });
-      this.loginTag();
-      if (this.data.templateId) {
-        this.updateCard();
-      } else {
-        this.saveCard();
-      }
-    }
   },
 
 
@@ -267,28 +280,17 @@ Page({
       url: 'system/Greetingcard/saveCard.do',
       method: 'POST',
       data: {
-        //模板id 也就是首页模板中的id
         i_template_id: id,
         v_template_name: cardTitle,
-        //模板模板背景
         v_coverimage_path: v_coverimage_path_low,
-        //用户电话
         v_phone: '18768871893',
-        //昵称
         v_nc_name: nickName,
-        //卡片标题
         v_card_name: cardTitle,
-        //祝福语
         v_blessing_content: cardContent,
-        //园所简介
         v_yc_schema: gardenInfo || '',
-        //音乐路径
         v_music_path: v_music_path_low,
-        //微信唯一标识
         v_wechar_id: wx.getStorageSync('openid'),
-        //微信头像 路径
         v_wechar_path: headLow || wx.getStorageSync('userInfo').avatarUrl,
-        //用户自定义上传的照片 多个已逗号隔开
         v_user_images: bannerLista.join(',') || '',
         v_false_images: a_false_images.join(',') || ''
       }
@@ -553,18 +555,7 @@ Page({
   },
 
 
-  userInfoHandler(e) {
-    if (e.detail.userInfo) {
-      wx.setStorageSync('userInfo', e.detail.userInfo);
-      this.setData({
-        userInfo: e.detail.userInfo,
-        avatarUrl: this.data.avatarUrl || e.detail.userInfo.avatarUrl,
-        nickName: this.data.nickName || e.detail.userInfo.nickName
-      });
-      this.loginTag();
-      this.selectEdit();
-    }
-  },
+ 
 
   toOutpage() {
     wx.navigateTo({
@@ -821,12 +812,20 @@ Page({
 
   //绑定
   bingwecharUser() {
-    // if (!this.data.nickName){
-    //   return
-    // }
-    // if (!this.data.avatarUrl){
-    //   return
-    // }
+    if (!this.data.nickName){
+      wx.showToast({
+        title: '用户名不能为空',
+        icon:'none'
+      })
+      return
+    }
+    if (!this.data.avatarUrl){
+      wx.showToast({
+        title: '用户头像不能为空',
+        icon: 'none'
+      })
+      return
+    }
     request({
       url: 'system/Greetingcard/bingwecharUser.do',
       method: 'POST',
@@ -858,11 +857,6 @@ Page({
     wx.setNavigationBarTitle({
       title: this.data.cardTitle
     });
-    //修改时查询接口
-    // if (this.data.templateId) {
-    //   this.getUserCardById(this.data.templateId);
-    // }
-
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();

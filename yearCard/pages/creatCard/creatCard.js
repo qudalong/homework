@@ -674,6 +674,20 @@ Page({
     this.setData({
       bangding: false
     })
+    if (!this.data.nickName) {
+      wx.showToast({
+        title: '用户名不能为空',
+        icon: 'none'
+      })
+      return
+    }
+    if (!this.data.avatarUrl) {
+      wx.showToast({
+        title: '用户头像不能为空',
+        icon: 'none'
+      })
+      return
+    }
     request({
       url: 'system/Greetingcard/bingwecharUser.do',
       method: 'POST',
