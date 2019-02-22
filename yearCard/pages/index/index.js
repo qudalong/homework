@@ -35,8 +35,6 @@ Page({
         page: this.data.page
       }
     }).then(res => {
-      // console.log(res.data.datalist)
-      // res.data.datalist.splice(0, res.data.datalist.length - 1);
       this.setData({
         coverList: res.data.datalist,
         page: res.data.page

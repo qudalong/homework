@@ -66,13 +66,6 @@ Page({
     this.getFlowBycardId();
     //贺卡浏览人/次
     this.greetingcardScanU();
-    let timer = setInterval(()=> {
-      this.getMessageBycardId();
-      this.getFlowBycardId();
-    }, 10000);
-    this.setData({
-      timer
-    })
   },
 
   //贺卡浏览人/次
@@ -124,7 +117,6 @@ Page({
           avatarUrl = res.data.v_wechar_path_low;
         }
       }
-      console.log(res.data)
       this.setData({
         cardInfo: res.data,
         itemInfo: res.data,
@@ -520,7 +512,7 @@ Page({
 
   onUnload: function() {
     this.data.innerAudioContext.destroy();
-    clearInterval(this.data.timer);
+    // clearInterval(this.data.timer);
   },
 
   onShow() {
