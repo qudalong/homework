@@ -352,7 +352,6 @@
 }
 .scrollarea_pinglun {
   animation-name: autoscroll;
-  /* animation-duration:20s; */
   animation-timing-function: linear;
   animation-fill-mode: both;
   animation-iteration-count: infinite;
