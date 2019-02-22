@@ -39,6 +39,7 @@ Page({
   },
 
   onLoad: function(options) {
+    // wx.hideShareMenu();
     wx.showLoading({
       title: '加载中...',
     })
@@ -899,6 +900,14 @@ Page({
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
+    if (getById == 'undefined' || getById == '') {
+      wx.showToast({
+        title: '您还未保存生成贺卡哦，还不能分享',
+        icon: 'none'
+      });
+      return
+    }
+
     this.data.bannerList.length ? coverImg = this.data.bannerList[0].resultPath : coverImg = ''
     if (res.from === 'button') {
       //模板分享人数统计

@@ -45,17 +45,18 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = options.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = options.itemIndex || ''; //
-    const getById = options.getById || decodeURIComponent(options.scene) ||'431' ; //获取数据的id
+    const getById = options.getById || decodeURIComponent(options.scene) ||'467' ; //获取数据的id
+    // const getById = 467 ; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
     this.initsendButton();
 
-    console.log('getById=' + getById)
-    console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
+    // console.log('getById=' + getById)
+    // console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
 
     this.setData({
-      getById: getById,
+      getById: getById||'467',
       openid
     })
   
@@ -752,6 +753,7 @@ Page({
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
+   
     this.data.bannerList.length ? coverImg = this.data.bannerList[0] : coverImg = '';
     if (res.from === 'button') {
       this.greetingcardScanShareU();

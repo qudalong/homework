@@ -42,6 +42,7 @@ Page({
    */
   onLoad: function(options) {
     // const id = options.id || decodeURIComponent(options.scene);
+    wx.hideShareMenu();
     const id = options.id ;
     wx.showLoading({
       title: '加载中..',
