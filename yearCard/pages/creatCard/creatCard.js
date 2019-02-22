@@ -45,13 +45,14 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     const openid = options.openid||'';//分享时带过来的为了验证是不是自己打开
     const itemIndex = options.itemIndex || ''; //
-    const getById = options.getById || decodeURIComponent(options.scene)||'302' ; //获取数据的id
+    const getById = options.getById || decodeURIComponent(options.scene) ||'431' ; //获取数据的id
     const seachMusic = this.seachMusic();
     const seachfalsh = this.seachfalsh();
     const seachzf = this.seachzf();
     this.initsendButton();
 
-    // console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
+    console.log('getById=' + getById)
+    console.log('通过二维码进入scene=' + decodeURIComponent(options.scene))
 
     this.setData({
       getById: getById,
@@ -120,6 +121,7 @@ Page({
       this.setData({
         cardInfo: res.data,
         itemInfo: res.data,
+        getById: res.data.id,
         v_coverimage_path: res.data.v_coverimage_path,
         v_music_path: res.data.v_music_path,
         cardTitle: res.data.v_card_name,
@@ -746,7 +748,7 @@ Page({
 
  
   onShareAppMessage: function(res) {
-    let getById = wx.getStorageSync('getById'),
+    let getById = this.data.getById||wx.getStorageSync('getById'),
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
@@ -754,6 +756,8 @@ Page({
     if (res.from === 'button') {
       this.greetingcardScanShareU();
       this.stopMusic();
+      console.log('将要分享的卡片id_接口=' + this.data.getById)
+      console.log('将要分享的卡片id=' + getById)
     }
     return {
       title: `【${nickName}】送您一张祝福贺卡`,

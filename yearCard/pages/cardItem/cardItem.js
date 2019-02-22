@@ -753,7 +753,7 @@ Page({
       title: '努力生成中...'
     })
     let card_id;
-    this.data.templateId ? card_id = this.data.templateId : card_id =this.data.id
+    this.data.templateId ? card_id = this.data.templateId : card_id = this.data.getById
     // 获取二维码
     return request({
       url: 'system/Greetingcard/getSunpath.do',
@@ -895,7 +895,7 @@ Page({
   },
 
   onShareAppMessage: function(res) {
-    let getById = wx.getStorageSync('getById'),
+    let getById = this.data.getById||wx.getStorageSync('getById'),
       openid = wx.getStorageSync('openid'),
       nickName = this.data.nickName || '',
       coverImg;
@@ -904,6 +904,8 @@ Page({
       //模板分享人数统计
       this.greetcardShareScan();
       this.stopMusic();
+      console.log('将要分享的卡片id_接口=' + this.data.getById)
+      console.log('将要分享的卡片id=' + getById)
     }
     return {
       title: `【${nickName}】送您一张祝福贺卡`,

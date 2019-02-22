@@ -142,7 +142,7 @@ Page({
   },
   test(){
     wx.navigateTo({
-      url: '/pages/creatCard/creatCard?getById=302',
+      url: '/pages/creatCard/creatCard?getById=435',
     })
   }
 })
