@@ -97,9 +97,7 @@ Page({
           wx.hideLoading();
         });
     } else {
-     // this.data.innerAudioContext.destroy();
       console.log('-------这将是update操作-------')
-      // 修改时
       this.setData({
         templateId
       });
@@ -117,6 +115,7 @@ Page({
     }
     //模板浏览次(进入详情时)
     this.greetcardScanScan();
+    console.log('-------这将是update操作2-------')
   },
 
   //模板浏览次
@@ -190,6 +189,7 @@ Page({
         // 查找音乐序号
         for (let i in this.data.musicList) {
           if (this.data.musicList[i].v_music_path == this.data.tempData.v_music_path) {
+            console.log('音乐序号='+i)
             this.setData({
               mindex: i
             })
@@ -199,6 +199,7 @@ Page({
         for (let i in this.data.animateData) {
           for (let j in this.data.flashimages) {
             if (this.data.animateData[i].images[0].v_path_low == this.data.flashimages[j].v_path_low) {
+              console.log('动画序号=' + i)
               this.setData({
                 num: i
               })
