@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue数据传递</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-header :msg='msg' :list="list"></my-header>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '我是全局标题',
+                list: ['第一项', '第二项', '第三项']
+            },
+            // 局部组件
+            components: {
+                'my-header': {
+                    template: `<div>
+                                <h2 ref='myTitle'>{{newMsg}}</h2>
+                                    <ul>
+                                        <li v-for="item in list">{{item}}</li>
+                                    </ul>
+                                    <my-nav @changeEvents='getChildContent' :list='list'></my-nav>
+                                </div>
+                               `,
+                    // props:['list'],
+                    // 验证写法（可以设置默认值）
+                    props: {
+                        'list': {
+                            type: Array,
+                            default: function () {
+                                return ['第一项1', '第二项1']
+                            }
+                        },
+                        'msg': {
+                            type: String,
+                            default: '我是默认标题'
+                        }
+                    },
+                    data: function () {
+                        // 注意！！ 要改变父组件data值要再起一个别名  用新的名字改变以前的数据，不然会报错
+                        return {
+                            newMsg: this.msg
+                        }
+                    },
+                    methods: {
+                        getChildContent: function (str) {
+                            // 数据操作改变数据
+                            // this.newMsg = str;
+                            // 通过操作dom的方式改变数据
+                            this.$refs.myTitle.innerHTML = str;
+                        }
+                    },
+                    // 子组件传子组件
+                    components: {
+                        'my-nav': {
+                            template: `<ul>
+                                        <li @click='getContent' v-for="item in list">{{item}}</li>
+                                      </ul>`,
+                            props: ['list'],
+                            methods: {
+                                getContent: function (e) {
+                                    // 子组件传递父组件
+                                    this.$emit('changeEvents', e.target.innerHTML);
+                                }
+                            },
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

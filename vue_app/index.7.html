@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>通讯录实例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none
+        }
+
+        #header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            background: #666;
+            color: #fff;
+            text-align: center;
+            z-index: 10;
+        }
+
+        #header button {
+            height: 100%;
+            padding: 0 5px;
+
+        }
+
+        #header button:nth-of-type(1) {
+            float: left;
+        }
+
+        #header button:nth-of-type(2) {
+            float: right;
+        }
+
+        #list {
+            position: relative;
+            top: 40px;
+            overflow: hidden;
+        }
+
+        #list .list_user p {
+            padding: 5px 0 5px 10px;
+            background: #ccc;
+        }
+
+        #list .list_user ul li {
+            height: 50px;
+            line-height: 50px;
+            border-bottom: 1px solid #ccc;
+            padding-left: 10px;
+        }
+
+        #list .list_index {
+            position: fixed;
+            top: 50%;
+            right: 10px;
+            font-size: 20px;
+        }
+
+        #list .list_index li {
+            margin: 5px 0;
+        }
+
+        #alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            z-index: 100;
+            display: none;
+        }
+
+        #alert .alert_content {
+            position: relative;
+            width: 200px;
+            height: 150px;
+            background: #fff;
+            ;
+            border-radius: 5px;
+            margin: auto;
+        }
+
+        #alert .alert_title {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #alert .alert_body {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        #alert .alert_btn {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        #alert .alert_btn button {
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-header custom-title="通讯录" custom-fixed>
+            <button @touchstart="backBtn" slot="left">返回</button>
+            <button @touchstart="homeBtn" slot="right">主页</button>
+        </my-header>
+        <my-list :user-data="userData"></my-list>
+        <my-alert custom-title="呼叫">
+            <div class="alert_btn">
+                <button @touchstart='closeAlert'>确定</button>
+                <button>取消</button>
+            </div>
+        </my-alert>
+
+
+    </div>
+
+    <script>
+
+        var busVm = new Vue();
+
+        var userData = [
+            {
+                'index': 'A',
+                'users': [
+                    {
+                        'name': 'a1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'a2',
+                        'tel': '18768874894'
+                    }
+                ]
+            },
+            {
+                'index': 'B',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'C',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'D',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'E',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'F',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'G',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'H',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'M',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            },
+            {
+                'index': 'L',
+                'users': [
+                    {
+                        'name': 'b1',
+                        'tel': '18768874897'
+                    },
+                    {
+                        'name': 'b2',
+                        'tel': '18767574894'
+                    }
+                ]
+            }
+        ]
+
+        Vue.component('my-header', {
+            template: `<div id="header" :style="{'position':customFixed?'fixed':'absolute'}">
+                        <slot name='left'></slot>
+                        {{customTitle}}
+                        <slot name='right'></slot>
+                      </div>`,
+            props: {
+                'customTitle': {
+                    type: String,
+                    default: '标题'
+                },
+                'customFixed': {
+                    type: Boolean,
+                    default: false
+                }
+            }
+        });
+        Vue.component('my-alert', {
+            template: `<div id="alert" ref='alert'>
+                            <div class="alert_content">
+                                <div class="alert_title">{{customTitle}}</div>
+                                <div class="alert_body">{{customBody}}</div>
+                                <slot></slot>
+                            </div>
+                        </div>`,
+            props: {
+                'customTitle': {
+                    type: String,
+                    default: '弹窗'
+                },
+                'customFixed': {
+                    type: Boolean,
+                    default: false
+                }
+            },
+            data: function () {
+                // 起别名
+                return {
+                    'customBody': ''
+                }
+            },
+            mounted: function () {
+                busVm.$on('showTelEvent', function (tel) {
+                    this.customBody = tel;
+                    this.$refs.alert.style.display = 'flex';
+                }.bind(this));
+            }
+        });
+        Vue.component('my-list', {
+            template: `<div id="list" ref='userList'>
+                            <ul class="list_user" @touchmove='tMove=true'>
+                                <li v-for="item in userData">
+                                    <p>{{item.index}}</p>
+                                    <ul>
+                                        <li @touchend='showTel(user.tel)' v-for="user in item.users">{{user.name}}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="list_index" ref='listIndex'>
+                                <li @touchstart='setScroll' v-for="item in userIndex">{{item}}</li>
+                            </ul>
+                        </div>`,
+            props: {
+                'userData': {
+                    type: Array,
+                    default: []
+                }
+            },
+            data: function () {
+                return {
+                    tMove: false
+                }
+            },
+            computed: {
+                userIndex: function () {
+                    return this.filterIndex(this.userData);
+                }
+            },
+            methods: {
+
+                // 过滤索引值
+                filterIndex: function (data) {
+                    var result = [];
+                    for (var i in data) {
+                        if (data[i].index) {
+                            result.push(data[i].index);
+                        }
+                    }
+                    return result;
+                },
+
+                //索引导航位置动态获取
+                setListIndexPos: function () {
+                    var oListIndex = this.$refs.listIndex;
+                    var iH = oListIndex.offsetHeight;
+                    oListIndex.style.marginTop = -iH / 2 + 'px';
+                },
+
+                // 位置精确定位
+                setScroll: function (e) {
+                    var aP = this.$refs.userList.getElementsByTagName('p');
+                    for (var i in aP) {
+                        if (aP[i].innerHTML == e.target.innerHTML) {
+                            document.documentElement.scrollTop = aP[i].offsetTop;
+                        }
+                    }
+                },
+                // 显示电话号码(解决滑动时也会触发弹窗的bug   )
+                showTel: function (tel) {
+                    if (!this.tMove) {
+                        busVm.$emit('showTelEvent', tel);
+
+                    } else {
+                        this.tMove = false;
+                    }
+                }
+            },
+            mounted() {
+                this.setListIndexPos();
+            },
+        });
+
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                userData: userData
+            },
+            methods: {
+                backBtn: function () {
+                    console.log(1)
+                },
+                homeBtn: function () {
+                    console.log(2)
+                },
+                closeAlert: function () {
+                    // 获取内部组件refs
+                    this.$children[2].$el.style.display = 'none';
+                }
+            },
+            
+        });
+    </script>
+</body>
+
+</html>

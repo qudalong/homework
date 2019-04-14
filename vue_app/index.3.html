@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 非父子组件数据传递 $on()</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-header></my-header>
+        <my-list></my-list>
+    </div>
+    <script>
+        // 兄弟组件数据传递 要先定义一个空实例（这样在大型项目太麻烦了，解决它有更好的方法vuex）
+        var busVm = new Vue();
+
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                'my-header': {
+                    template: `<h2>{{msg}}</h2>`,
+                    data: function () {
+                        return {
+                            msg: 'hello MyHeader'
+                        }
+                    },
+                    mounted() {
+                        busVm.$on('changeEvents', function (str) {
+                            console.log(str);
+                            this.msg = str
+                        }.bind(this));
+                    },
+                },
+                'my-list': {
+                    template: `<ul>
+                                 <li @click='getContent' v-for="item in list">{{item}}</li>
+                               </ul>`,
+                    data: function () {
+                        return {
+                            list: ['第一项', '第二项', '第三项']
+                        }
+                    },
+                    methods: {
+                        getContent: function (e) {
+                            busVm.$emit('changeEvents', e.target.innerHTML);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

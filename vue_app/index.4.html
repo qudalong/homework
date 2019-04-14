@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 非父子组件数据传递 发布$emit 订阅$on  vuex</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p> {{count}}</p>
+        <my-addbtn :count='count'></my-addbtn>
+        <my-removebtn :count='count'></my-removebtn>
+    </div>
+    <script>
+        // 兄弟组件数据传递 要先定义一个空实例
+        var busVm = new Vue();
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                count: 0
+            },
+            mounted:function() {
+                busVm.$on('changeEvents',function(num){
+                     this.count=num;
+                    //  console.log(num)
+                }.bind(this));
+            },
+            components: {
+                'my-addbtn': {
+                    template: `<button @click='setCount'>+</button>`,
+                    props: ['count'],
+                    methods: {
+                        setCount: function () {
+                            busVm.$emit('changeEvents',this.count+1);
+                        }
+                    }
+                },
+                'my-removebtn': {
+                    template: `<button @click='setCount'>-</button>`,
+                    props: ['count'],
+                    methods: {
+                        setCount: function () {
+                            busVm.$emit('changeEvents',this.count-1);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

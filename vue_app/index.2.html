@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue is特殊情况下用法</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 打破常规布局  table里面嵌套标签 -->
+        <table >
+            <!-- 事件加在组件身上要加.native才能触发 -->
+            <tr @click.native='show' is='my-header'></tr>
+        </table>
+        <!-- <my-header></my-header> -->
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                'my-header': {
+                    template: `<h2 >hello world</h2>`
+                }
+            },
+            methods: {
+                show:function(){
+                    console.log(123);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vuex状态管理 slot</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuex.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-header> 
+            <my-header2></my-header2>
+        </my-header>
+        <p> {{count}}</p>
+        <my-addbtn></my-addbtn>
+        <my-removebtn></my-removebtn>
+    </div>
+    <script>
+        var store = new Vuex.Store({
+            state: {
+                count: 0
+            },
+            mutations: {
+                add: function (state) {
+                    state.count++
+                },
+                remove: function (state) {
+                    state.count--
+                }
+            }
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            computed: {
+                count: function () {
+                    return store.state.count;
+                }
+            },
+            components: {
+                'my-addbtn': {
+                    template: `<button @click='setCount'>+</button>`,
+                    methods: {
+                        setCount: function () {
+                            store.commit('add');
+                        }
+                    }
+                },
+                'my-removebtn': {
+                    template: `<button @click='setCount'>-</button>`,
+                    methods: {
+                        setCount: function () {
+                            store.commit('remove');
+                        }
+                    }
+                },
+                'my-header': {
+                    template: `<div>header<slot></slot></div>`
+                },
+                'my-header2': {
+                    template: `<div>header2</div>`
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

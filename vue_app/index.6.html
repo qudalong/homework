@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue组件切换 keep-alive</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="change(1)">第一项</button>
+        <button @click="change(2)">第二项</button>
+        <button @click="change(3)">第三项</button>
+        <keep-alive>
+            <component :is="nowHeader"></component>
+        </keep-alive>
+    </div>
+    <script>
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                nowHeader: 'my-header1'
+            },
+            components: {
+                'my-header1': {
+                    template: `<div>header1<input type="text"></div>`
+                },
+                'my-header2': {
+                    template: `<div>header2<input type="text"></div>`
+                },
+                'my-header3': {
+                    template: `<div>header3<input type="text"></div>`
+                }
+            },
+            methods: {
+                change: function (index) {
+                    this.nowHeader = 'my-header' + index
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
